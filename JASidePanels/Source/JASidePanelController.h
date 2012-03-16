@@ -19,11 +19,16 @@
 @property (nonatomic) CGFloat minimumMovePercentage;
 @property (nonatomic) CGFloat maximumAnimationDuration;
 @property (nonatomic) CGFloat bounceDuration;
+@property (nonatomic) CGFloat bouncePercentage;
+
+@property (nonatomic, readonly) UIViewController *gestureController;
 
 + (UIImage *)defaultImage;
 
 - (void)showLeftPanel:(BOOL)animated;
 - (void)showRightPanel:(BOOL)animated;
 - (void)showCenterPanel:(BOOL)animated;
+
+- (UIBarButtonItem *)leftButtonForCenterPanel;
 
 @end
