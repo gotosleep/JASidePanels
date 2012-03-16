@@ -23,6 +23,8 @@ typedef enum _JASidePanelState {
 
 @property (nonatomic) JASidePanelState state;
 
+// internal helpers
+- (UIViewController *)_gestureController:(UIViewController *)parent;
 - (BOOL)_validateThreshold:(CGFloat)movement;
 - (void)_activateLeftPanel;
 - (void)_activateRightPanel;
@@ -58,6 +60,26 @@ typedef enum _JASidePanelState {
 @synthesize maximumAnimationDuration = _maximumAnimationDuration;
 @synthesize bounceDuration = _bounceDuration;
 
+#pragma mark - Icon
+
++ (UIImage *)defaultImage {
+	UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);
+	
+	[[UIColor blackColor] setFill];
+	[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 1)] fill];
+	[[UIBezierPath bezierPathWithRect:CGRectMake(0, 5, 20, 1)] fill];
+	[[UIBezierPath bezierPathWithRect:CGRectMake(0, 10, 20, 1)] fill];
+
+	[[UIColor whiteColor] setFill];
+	[[UIBezierPath bezierPathWithRect:CGRectMake(0, 1, 20, 2)] fill];
+	[[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  20, 2)] fill];
+	[[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 20, 2)] fill];   
+	
+	UIImage *iconImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return iconImage;
+}
+
 #pragma mark - NSObject
 
 - (id)init {
@@ -71,12 +93,11 @@ typedef enum _JASidePanelState {
 	return self;
 }
 
-
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	self.state = JASidePanelCenterVisible;
 }
 
@@ -85,14 +106,55 @@ typedef enum _JASidePanelState {
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-	    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-	} else {
-	    return YES;
+	return YES;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	_centerPanelRestingFrame.size = self.view.bounds.size;
+	switch (self.state) {
+		case JASidePanelLeftVisible:
+			[self _showLeftPanel:NO bounce:NO];
+			break;
+		case JASidePanelRightVisible:
+			[self _showRightPanel:NO bounce:NO];
+			break;
+		default:
+			break;
 	}
 }
 
 #pragma mark - Panels
+
+- (void)setCenterPanel:(UIViewController *)centerPanel {
+	if (centerPanel != _centerPanel) {
+		CGRect frame = _centerPanel ? _centerPanel.view.frame : self.view.bounds;
+		[_centerPanel willMoveToParentViewController:nil];
+		[_centerPanel removeFromParentViewController];
+		_centerPanel = centerPanel;
+		[self addChildViewController:_centerPanel];
+		[self.view addSubview:_centerPanel.view];
+		
+		UIViewController *gestureController = [self _gestureController:_centerPanel];
+		
+		UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
+		panGesture.maximumNumberOfTouches = 1;
+		panGesture.minimumNumberOfTouches = 1;	
+		[gestureController.view addGestureRecognizer:panGesture];
+		
+		_centerPanel.view.frame = frame;	
+		_centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_centerPanelRestingFrame = _centerPanel.view.frame;
+		
+		_centerPanel.view.layer.shadowColor = [UIColor blackColor].CGColor;
+		_centerPanel.view.layer.shadowRadius = 10.0f;
+		_centerPanel.view.layer.shadowOpacity = 0.5f;
+		_centerPanel.view.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_centerPanel.view.bounds cornerRadius:0.0f].CGPath;
+		
+		if (!gestureController.navigationItem.leftBarButtonItem) {
+			gestureController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(_leftButtonTouched:)];
+		}
+	}
+}
 
 - (void)setLeftPanel:(UIViewController *)leftPanel {
 	if (leftPanel != _leftPanel) {
@@ -100,30 +162,7 @@ typedef enum _JASidePanelState {
 		[_leftPanel removeFromParentViewController];
 		_leftPanel = leftPanel;
 		[self addChildViewController:_leftPanel];
-		_leftPanel.view.frame = self.view.bounds;
-	}
-}
-
-- (void)setCenterPanel:(UIViewController *)centerPanel {
-	if (centerPanel != _centerPanel) {
-		[_centerPanel willMoveToParentViewController:nil];
-		[_centerPanel removeFromParentViewController];
-		_centerPanel = centerPanel;
-		[self addChildViewController:_centerPanel];
-		[self.view addSubview:_centerPanel.view];
-		
-		UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
-		panGesture.maximumNumberOfTouches = 1;
-		panGesture.minimumNumberOfTouches = 1;	
-		[_centerPanel.view addGestureRecognizer:panGesture];
-		
-		_centerPanel.view.frame = self.view.bounds;		
-		_centerPanelRestingFrame = _centerPanel.view.frame;
-		
-		_centerPanel.view.layer.shadowColor = [UIColor blackColor].CGColor;
-		_centerPanel.view.layer.shadowRadius = 10.0f;
-		_centerPanel.view.layer.shadowOpacity = 0.5f;
-		_centerPanel.view.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_centerPanel.view.bounds cornerRadius:0.0f].CGPath;
+		_leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 }
 
@@ -133,7 +172,7 @@ typedef enum _JASidePanelState {
 		[_rightPanel removeFromParentViewController];
 		_rightPanel = rightPanel;
 		[self addChildViewController:_rightPanel];
-		_rightPanel.view.frame = self.view.bounds;
+		_rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 }
 
@@ -143,7 +182,7 @@ typedef enum _JASidePanelState {
 	if ([sender isKindOfClass:[UIPanGestureRecognizer class]]) {
 		UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)sender;
 		
-		if (sender.state == UIGestureRecognizerStateBegan) {
+		if (pan.state == UIGestureRecognizerStateBegan) {
 			_locationBeforePan = self.centerPanel.view.frame.origin;
 		}
 		
@@ -203,12 +242,22 @@ typedef enum _JASidePanelState {
 
 #pragma mark - Internal Methods
 
+- (UIViewController *)_gestureController:(UIViewController *)parent {
+	UIViewController *result = parent;
+	if ([parent isKindOfClass:[UINavigationController class]]) {
+		UINavigationController *nav = (UINavigationController *)parent;
+		if ([nav.viewControllers count] > 0) {
+			result = [nav.viewControllers objectAtIndex:0];
+		}
+	}
+	return result;
+}
+
+
 - (CGFloat)_correctMovement:(CGFloat)movement {	
 	if (self.state == JASidePanelCenterVisible) {
 		CGFloat position = _centerPanelRestingFrame.origin.x + movement;		
-		if (position > 0.0f && !self.leftPanel) {
-			return 0.0f;
-		} else if (position < 0.0f && !self.rightPanel) {
+		if ((position > 0.0f && !self.leftPanel) || (position < 0.0f && !self.rightPanel)) {
 			return 0.0f;
 		}
 	}
@@ -216,7 +265,7 @@ typedef enum _JASidePanelState {
 }
 
 - (BOOL)_validateThreshold:(CGFloat)movement {
-	CGFloat minimum = floorf(self.view.frame.size.width * self.minimumMovePercentage);
+	CGFloat minimum = floorf(self.view.bounds.size.width * self.minimumMovePercentage);
 	switch (self.state) {
 		case JASidePanelLeftVisible:
 			return movement <= -minimum;
@@ -233,6 +282,7 @@ typedef enum _JASidePanelState {
 - (void)_activateLeftPanel {
 	if ( !_leftPanel.view.superview) {
 		[_rightPanel.view removeFromSuperview];
+		_leftPanel.view.frame = self.view.bounds;
 		[self.view addSubview:_leftPanel.view];
 		[self.view bringSubviewToFront:_centerPanel.view];
 	}
@@ -241,6 +291,7 @@ typedef enum _JASidePanelState {
 - (void)_activateRightPanel {
 	if ( !_rightPanel.view.superview) {
 		[_leftPanel.view removeFromSuperview];
+		_rightPanel.view.frame = self.view.bounds;
 		[self.view addSubview:_rightPanel.view];
 		[self.view bringSubviewToFront:_centerPanel.view];
 	}
@@ -261,6 +312,13 @@ typedef enum _JASidePanelState {
 		self.centerPanel.view.frame = _centerPanelRestingFrame;				
 	} completion:^(BOOL finished) {
 		if (shouldBounce) {
+			// make sure correct panel is displayed under the bounce
+			if (bounceDistance > 0.0f) {
+				[self _activateLeftPanel];
+			} else {
+				[self _activateRightPanel];
+			}
+			// animate the bounce
 			[UIView animateWithDuration:self.bounceDuration delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
 				CGRect bounceFrame = _centerPanelRestingFrame;
 				bounceFrame.origin.x += bounceDistance;
@@ -281,8 +339,8 @@ typedef enum _JASidePanelState {
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
 	self.state = JASidePanelLeftVisible;
 	[self _activateLeftPanel];
-	CGFloat gap = floorf(self.view.frame.size.width * self.leftGapPercentage);
-	_centerPanelRestingFrame.origin.x = self.view.frame.size.width - gap;
+	CGFloat gap = floorf(self.view.bounds.size.width * self.leftGapPercentage);
+	_centerPanelRestingFrame.origin.x = self.view.bounds.size.width - gap;
 		
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:nil];
@@ -294,8 +352,8 @@ typedef enum _JASidePanelState {
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
 	self.state = JASidePanelRightVisible;
 	[self _activateRightPanel];
-	CGFloat gap = floorf(self.view.frame.size.width * self.rightGapPercentage);
-	_centerPanelRestingFrame.origin.x = -self.view.frame.size.width + gap;
+	CGFloat gap = floorf(self.view.bounds.size.width * self.rightGapPercentage);
+	_centerPanelRestingFrame.origin.x = -self.view.bounds.size.width + gap;
 	
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:nil];
@@ -332,6 +390,16 @@ typedef enum _JASidePanelState {
 
 - (void)showCenterPanel:(BOOL)animated {
 	[self _showCenterPanel:animated bounce:NO];
+}
+
+#pragma mark - Buttons
+
+- (void)_leftButtonTouched:(id)sender {
+	if (self.state == JASidePanelLeftVisible) {
+		[self _showCenterPanel:YES bounce:NO];
+	} else if (self.state == JASidePanelCenterVisible) {
+		[self _showLeftPanel:YES bounce:NO];
+	}
 }
 
 @end

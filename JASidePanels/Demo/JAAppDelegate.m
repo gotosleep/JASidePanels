@@ -23,7 +23,7 @@
 	
 	self.viewController = [[JASidePanelViewController alloc] init];
 	self.viewController.leftPanel = [[JALeftViewController alloc] init];
-	self.viewController.centerPanel = [[JACenterViewController alloc] init];
+	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
 	self.viewController.rightPanel = [[JARightViewController alloc] init];
 	
 	self.window.rootViewController = self.viewController;

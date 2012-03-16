@@ -20,6 +20,8 @@
 @property (nonatomic) CGFloat maximumAnimationDuration;
 @property (nonatomic) CGFloat bounceDuration;
 
++ (UIImage *)defaultImage;
+
 - (void)showLeftPanel:(BOOL)animated;
 - (void)showRightPanel:(BOOL)animated;
 - (void)showCenterPanel:(BOOL)animated;
