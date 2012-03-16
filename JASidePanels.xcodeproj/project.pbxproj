@@ -11,7 +11,7 @@
 		9561ACB4151286EE005889C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9561ACB3151286EE005889C6 /* Foundation.framework */; };
 		9561ACB6151286EE005889C6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9561ACB5151286EE005889C6 /* CoreGraphics.framework */; };
 		9561ACBC151286EE005889C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9561ACBA151286EE005889C6 /* InfoPlist.strings */; };
-		9561AD0F15130EE2005889C6 /* JASidePanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD0E15130EE2005889C6 /* JASidePanelViewController.m */; };
+		9561AD0F15130EE2005889C6 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD0E15130EE2005889C6 /* JASidePanelController.m */; };
 		9561AD1915130F10005889C6 /* JAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1215130F10005889C6 /* JAAppDelegate.m */; };
 		9561AD1A15130F10005889C6 /* JACenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1415130F10005889C6 /* JACenterViewController.m */; };
 		9561AD1B15130F10005889C6 /* JALeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1615130F10005889C6 /* JALeftViewController.m */; };
@@ -26,8 +26,8 @@
 		9561ACB3151286EE005889C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9561ACB5151286EE005889C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9561ACBB151286EE005889C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		9561AD0D15130EE2005889C6 /* JASidePanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JASidePanelViewController.h; path = Source/JASidePanelViewController.h; sourceTree = "<group>"; };
-		9561AD0E15130EE2005889C6 /* JASidePanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JASidePanelViewController.m; path = Source/JASidePanelViewController.m; sourceTree = "<group>"; };
+		9561AD0D15130EE2005889C6 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JASidePanelController.h; path = Source/JASidePanelController.h; sourceTree = "<group>"; };
+		9561AD0E15130EE2005889C6 /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JASidePanelController.m; path = Source/JASidePanelController.m; sourceTree = "<group>"; };
 		9561AD1115130F10005889C6 /* JAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JAAppDelegate.h; path = Demo/JAAppDelegate.h; sourceTree = "<group>"; };
 		9561AD1215130F10005889C6 /* JAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JAAppDelegate.m; path = Demo/JAAppDelegate.m; sourceTree = "<group>"; };
 		9561AD1315130F10005889C6 /* JACenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JACenterViewController.h; path = Demo/JACenterViewController.h; sourceTree = "<group>"; };
@@ -105,8 +105,8 @@
 		9561AD0C15130E96005889C6 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				9561AD0D15130EE2005889C6 /* JASidePanelViewController.h */,
-				9561AD0E15130EE2005889C6 /* JASidePanelViewController.m */,
+				9561AD0D15130EE2005889C6 /* JASidePanelController.h */,
+				9561AD0E15130EE2005889C6 /* JASidePanelController.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -190,7 +190,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9561AD0F15130EE2005889C6 /* JASidePanelViewController.m in Sources */,
+				9561AD0F15130EE2005889C6 /* JASidePanelController.m in Sources */,
 				9561AD1915130F10005889C6 /* JAAppDelegate.m in Sources */,
 				9561AD1A15130F10005889C6 /* JACenterViewController.m in Sources */,
 				9561AD1B15130F10005889C6 /* JALeftViewController.m in Sources */,
@@ -303,6 +303,7 @@
 				9561ACD0151286EE005889C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

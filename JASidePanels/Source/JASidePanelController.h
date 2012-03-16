@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JASidePanelViewController : UIViewController
+@interface JASidePanelController : UIViewController
 
 @property (nonatomic, strong) UIViewController *leftPanel;
 @property (nonatomic, strong) UIViewController *centerPanel;

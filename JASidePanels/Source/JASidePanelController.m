@@ -8,7 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "JASidePanelViewController.h"
+#import "JASidePanelController.h"
 
 typedef enum _JASidePanelState {
 	JASidePanelCenterVisible = 1,
@@ -16,7 +16,7 @@ typedef enum _JASidePanelState {
 	JASidePanelRightVisible
 } JASidePanelState;
 
-@interface JASidePanelViewController() {
+@interface JASidePanelController() {
 	CGRect _centerPanelRestingFrame;		
 	CGPoint _locationBeforePan;
 }
@@ -45,7 +45,7 @@ typedef enum _JASidePanelState {
 
 @end
 
-@implementation JASidePanelViewController
+@implementation JASidePanelController
 
 @synthesize state = _state;
 

@@ -8,7 +8,7 @@
 
 #import "JAAppDelegate.h"
 
-#import "JASidePanelViewController.h"
+#import "JASidePanelController.h"
 #import "JACenterViewController.h"
 #import "JALeftViewController.h"
 #import "JARightViewController.h"
@@ -21,7 +21,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
-	self.viewController = [[JASidePanelViewController alloc] init];
+	self.viewController = [[JASidePanelController alloc] init];
 	self.viewController.leftPanel = [[JALeftViewController alloc] init];
 	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
 	self.viewController.rightPanel = [[JARightViewController alloc] init];

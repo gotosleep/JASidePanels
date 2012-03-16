@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class JASidePanelViewController;
+@class JASidePanelController;
 
 @interface JAAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) JASidePanelViewController *viewController;
+@property (strong, nonatomic) JASidePanelController *viewController;
 
 @end
