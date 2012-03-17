@@ -22,6 +22,7 @@ typedef enum _JASidePanelState {
 }
 
 @property (nonatomic) JASidePanelState state;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
 // center panel
 - (void)_swapCenter:(UIViewController *)previous with:(UIViewController *)next;
@@ -51,6 +52,8 @@ typedef enum _JASidePanelState {
 @end
 
 @implementation JASidePanelController
+
+@synthesize tapGesture = _tapGesture;
 
 @synthesize state = _state;
 
@@ -263,6 +266,17 @@ typedef enum _JASidePanelState {
 	}
 }
 
+- (void)setTapGesture:(UITapGestureRecognizer *)tapGesture {
+	if (tapGesture != _tapGesture) {
+		[_tapGesture.view removeGestureRecognizer:_tapGesture];
+		_tapGesture = tapGesture;
+	}
+}
+
+- (void)_centerPanelTapped:(UIGestureRecognizer *)gesture {
+	[self _showCenterPanel:YES bounce:NO];
+}
+
 #pragma mark - Internal Methods
 
 - (CGFloat)_correctMovement:(CGFloat)movement {	
@@ -386,6 +400,10 @@ typedef enum _JASidePanelState {
 	} else {
 		self.centerPanel.view.frame = _centerPanelRestingFrame;			
 	}
+	
+	self.tapGesture = [[UITapGestureRecognizer alloc] init];
+	[self.tapGesture addTarget:self action:@selector(_centerPanelTapped:)];
+	[self.gestureController.view addGestureRecognizer:self.tapGesture];
 }
 
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
@@ -399,11 +417,17 @@ typedef enum _JASidePanelState {
 	} else {
 		self.centerPanel.view.frame = _centerPanelRestingFrame;			
 	}
+	
+	self.tapGesture = [[UITapGestureRecognizer alloc] init];
+	[self.tapGesture addTarget:self action:@selector(_centerPanelTapped:)];
+	[self.gestureController.view addGestureRecognizer:self.tapGesture];
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
 	self.state = JASidePanelCenterVisible;
 	_centerPanelRestingFrame.origin.x = 0.0f;
+	
+	self.tapGesture = nil;
 	
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
