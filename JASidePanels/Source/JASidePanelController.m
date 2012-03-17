@@ -22,7 +22,7 @@ typedef enum _JASidePanelState {
 }
 
 @property (nonatomic) JASidePanelState state;
-@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+@property (nonatomic, strong) UIView *tapView;
 
 // center panel
 - (void)_swapCenter:(UIViewController *)previous with:(UIViewController *)next;
@@ -31,6 +31,7 @@ typedef enum _JASidePanelState {
 - (BOOL)_validateThreshold:(CGFloat)movement;
 
 // panel loading
+- (void)_addPanGestureToView:(UIView *)view;
 - (void)_loadCenterPanel;
 - (void)_loadLeftPanel;
 - (void)_loadRightPanel;
@@ -39,7 +40,6 @@ typedef enum _JASidePanelState {
 - (void)_handlePan:(UIGestureRecognizer *)sender;
 - (void)_completePan:(CGFloat)deltaX;
 - (void)_undoPan:(CGFloat)deltaX;
-- (void)_toggleScrollGestures:(BOOL)on forView:(UIView *)view;
 
 // showing panels
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce;
@@ -54,7 +54,7 @@ typedef enum _JASidePanelState {
 
 @implementation JASidePanelController
 
-@synthesize tapGesture = _tapGesture;
+@synthesize tapView = _tapView;
 
 @synthesize state = _state;
 
@@ -116,6 +116,7 @@ typedef enum _JASidePanelState {
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+	self.tapView = nil;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -191,15 +192,27 @@ typedef enum _JASidePanelState {
 	}
 }
 
-#pragma mark - Gesture Recognizer
+#pragma mark - Gesture Recognizer Delegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-	if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+	if (gestureRecognizer.view == self.tapView) {
+		return YES;
+	} else if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
 		UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)gestureRecognizer;
 		CGPoint translate = [pan translationInView:self.centerPanel.view];
 		return translate.x != 0 && ((translate.y / translate.x) < 1.0f);
 	}
 	return NO;
+}
+
+#pragma mark - Pan Gestures
+
+- (void)_addPanGestureToView:(UIView *)view {
+	UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
+	panGesture.delegate = self;
+	panGesture.maximumNumberOfTouches = 1;
+	panGesture.minimumNumberOfTouches = 1;
+	[view addGestureRecognizer:panGesture];	
 }
 
 - (void)_handlePan:(UIGestureRecognizer *)sender {
@@ -267,25 +280,23 @@ typedef enum _JASidePanelState {
 	}
 }
 
-- (void)setTapGesture:(UITapGestureRecognizer *)tapGesture {
-	if (tapGesture != _tapGesture) {
-		[_tapGesture.view removeGestureRecognizer:_tapGesture];
-		_tapGesture = tapGesture;
-		
-		[self _toggleScrollGestures:tapGesture == nil forView:self.gestureController.view];
+#pragma mark - Tap Gesture
+
+- (void)setTapView:(UIView *)tapView {
+	if (tapView != _tapView) {
+		[_tapView removeFromSuperview];
+		_tapView = tapView;
+		if (_tapView) {
+			[self _addTapGestureToView:_tapView];
+			[self _addPanGestureToView:_tapView];
+			[self.view addSubview:_tapView];
+		}
 	}
 }
 
-- (void)_toggleScrollGestures:(BOOL)on forView:(UIView *)view {
-	if ([view isKindOfClass:[UIScrollView class]]) {
-		UIScrollView *scroll = (UIScrollView *)view;
-		scroll.panGestureRecognizer.enabled = on;
-		scroll.pinchGestureRecognizer.enabled = on;
-	} else {
-		for (UIView *subview in view.subviews) {
-			[self _toggleScrollGestures:on forView:subview];
-		}	
-	}
+- (void)_addTapGestureToView:(UIView *)view {
+	UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_centerPanelTapped:)];
+	[view addGestureRecognizer:tapGesture];	
 }
 
 - (void)_centerPanelTapped:(UIGestureRecognizer *)gesture {
@@ -322,12 +333,10 @@ typedef enum _JASidePanelState {
 #pragma mark - Loading Panels
 
 - (void)_loadCenterPanel {
-	UIViewController *gestureController = self.gestureController;
-	UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
-	panGesture.delegate = self;
-	panGesture.maximumNumberOfTouches = 1;
-	panGesture.minimumNumberOfTouches = 1;	
-	[gestureController.view addGestureRecognizer:panGesture];
+	if (self.gestureController.isViewLoaded) {
+		[self _addPanGestureToView:self.gestureController.view];
+	}
+	[self.gestureController addObserver:self forKeyPath:@"view" options:0 context:nil];
 	
 	_centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	_centerPanel.view.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -335,11 +344,11 @@ typedef enum _JASidePanelState {
 	_centerPanel.view.layer.shadowOpacity = 0.5f;
 	_centerPanel.view.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_centerPanel.view.bounds cornerRadius:0.0f].CGPath;
 	
-	if (!gestureController.navigationItem.leftBarButtonItem) {
+	if (!self.gestureController.navigationItem.leftBarButtonItem) {
 		UIBarButtonItem *button = [self leftButtonForCenterPanel];
 		button.target = self;
 		button.action = @selector(_leftButtonTouched:);
-		gestureController.navigationItem.leftBarButtonItem = button;
+		self.gestureController.navigationItem.leftBarButtonItem = button;
 	}
 }
 
@@ -416,9 +425,7 @@ typedef enum _JASidePanelState {
 		self.centerPanel.view.frame = _centerPanelRestingFrame;			
 	}
 	
-	self.tapGesture = [[UITapGestureRecognizer alloc] init];
-	[self.tapGesture addTarget:self action:@selector(_centerPanelTapped:)];
-	[self.gestureController.view addGestureRecognizer:self.tapGesture];
+	self.tapView = [[UIView alloc] initWithFrame:_centerPanelRestingFrame];
 }
 
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
@@ -433,16 +440,14 @@ typedef enum _JASidePanelState {
 		self.centerPanel.view.frame = _centerPanelRestingFrame;			
 	}
 	
-	self.tapGesture = [[UITapGestureRecognizer alloc] init];
-	[self.tapGesture addTarget:self action:@selector(_centerPanelTapped:)];
-	[self.gestureController.view addGestureRecognizer:self.tapGesture];
+	self.tapView = [[UIView alloc] initWithFrame:_centerPanelRestingFrame];
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
 	self.state = JASidePanelCenterVisible;
 	_centerPanelRestingFrame.origin.x = 0.0f;
 	
-	self.tapGesture = nil;
+	self.tapView = nil;
 	
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
@@ -500,6 +505,16 @@ typedef enum _JASidePanelState {
 		[self _showCenterPanel:YES bounce:NO];
 	} else if (self.state == JASidePanelCenterVisible) {
 		[self _showLeftPanel:YES bounce:NO];
+	}
+}
+
+#pragma mark - Key Value Observing
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if ([keyPath isEqualToString:@"view"]) {
+		if (self.gestureController.isViewLoaded) {
+			[self _addPanGestureToView:self.gestureController.view];
+		}
 	}
 }
 
