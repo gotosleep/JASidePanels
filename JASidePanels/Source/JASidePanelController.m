@@ -39,6 +39,7 @@ typedef enum _JASidePanelState {
 - (void)_handlePan:(UIGestureRecognizer *)sender;
 - (void)_completePan:(CGFloat)deltaX;
 - (void)_undoPan:(CGFloat)deltaX;
+- (void)_toggleScrollGestures:(BOOL)on forView:(UIView *)view;
 
 // showing panels
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce;
@@ -270,6 +271,20 @@ typedef enum _JASidePanelState {
 	if (tapGesture != _tapGesture) {
 		[_tapGesture.view removeGestureRecognizer:_tapGesture];
 		_tapGesture = tapGesture;
+		
+		[self _toggleScrollGestures:tapGesture == nil forView:self.gestureController.view];
+	}
+}
+
+- (void)_toggleScrollGestures:(BOOL)on forView:(UIView *)view {
+	if ([view isKindOfClass:[UIScrollView class]]) {
+		UIScrollView *scroll = (UIScrollView *)view;
+		scroll.panGestureRecognizer.enabled = on;
+		scroll.pinchGestureRecognizer.enabled = on;
+	} else {
+		for (UIView *subview in view.subviews) {
+			[self _toggleScrollGestures:on forView:subview];
+		}	
 	}
 }
 
