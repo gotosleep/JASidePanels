@@ -28,8 +28,11 @@ typedef enum _JASidePanelState {
 
 // internal helpers
 - (BOOL)_validateThreshold:(CGFloat)movement;
-- (void)_activateLeftPanel;
-- (void)_activateRightPanel;
+
+// panel loading
+- (void)_loadCenterPanel;
+- (void)_loadLeftPanel;
+- (void)_loadRightPanel;
 
 // gestures
 - (void)_handlePan:(UIGestureRecognizer *)sender;
@@ -103,6 +106,8 @@ typedef enum _JASidePanelState {
     [super viewDidLoad];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	self.state = JASidePanelCenterVisible;
+	
+	[self _swapCenter:nil with:_centerPanel];
 }
 
 - (void)viewDidUnload {
@@ -129,30 +134,12 @@ typedef enum _JASidePanelState {
 	UIViewController *previous = _centerPanel;
 	if (centerPanel != _centerPanel) {
 		_centerPanel = centerPanel;
-		
-		UIViewController *gestureController = self.gestureController;
-		UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
-		panGesture.maximumNumberOfTouches = 1;
-		panGesture.minimumNumberOfTouches = 1;	
-		[gestureController.view addGestureRecognizer:panGesture];
-		
-		_centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_centerPanel.view.layer.shadowColor = [UIColor blackColor].CGColor;
-		_centerPanel.view.layer.shadowRadius = 10.0f;
-		_centerPanel.view.layer.shadowOpacity = 0.5f;
-		_centerPanel.view.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_centerPanel.view.bounds cornerRadius:0.0f].CGPath;
-		
-		if (!gestureController.navigationItem.leftBarButtonItem) {
-			UIBarButtonItem *button = [self leftButtonForCenterPanel];
-			button.target = self;
-			button.action = @selector(_leftButtonTouched:);
-			gestureController.navigationItem.leftBarButtonItem = button;
-		}
 	}
-	if (self.state == JASidePanelCenterVisible) {
+	if (self.isViewLoaded && self.state == JASidePanelCenterVisible) {
 		[self _swapCenter:previous with:_centerPanel];
-	} else {
+	} else if (self.isViewLoaded) {
 		[UIView animateWithDuration:0.2f animations:^{
+			// first move the centerPanel offscreen
 			CGFloat x = self.state == JASidePanelLeftVisible ? self.view.bounds.size.width : -self.view.bounds.size.width;
 			_centerPanelRestingFrame.origin.x = x;
 			previous.view.frame = _centerPanelRestingFrame;
@@ -173,6 +160,7 @@ typedef enum _JASidePanelState {
 		next.view.frame = frame;
 		_centerPanelRestingFrame = frame;
 		if (next) {
+			[self _loadCenterPanel];
 			[self addChildViewController:next];
 			[self.view addSubview:next.view];
 		}
@@ -182,24 +170,33 @@ typedef enum _JASidePanelState {
 - (void)setLeftPanel:(UIViewController *)leftPanel {
 	if (leftPanel != _leftPanel) {
 		[_leftPanel willMoveToParentViewController:nil];
+		[_leftPanel.view removeFromSuperview];
 		[_leftPanel removeFromParentViewController];
 		_leftPanel = leftPanel;
 		[self addChildViewController:_leftPanel];
-		_leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 }
 
 - (void)setRightPanel:(UIViewController *)rightPanel {
 	if (rightPanel != _rightPanel) {
 		[_rightPanel willMoveToParentViewController:nil];
+		[_rightPanel.view removeFromSuperview];
 		[_rightPanel removeFromParentViewController];
 		_rightPanel = rightPanel;
 		[self addChildViewController:_rightPanel];
-		_rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 }
 
 #pragma mark - Gesture Recognizer
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+	if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+		UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)gestureRecognizer;
+		CGPoint translate = [pan translationInView:self.centerPanel.view];
+		return translate.x != 0 && ((translate.y / translate.x) < 1.0f);
+	}
+	return NO;
+}
 
 - (void)_handlePan:(UIGestureRecognizer *)sender {
 	if ([sender isKindOfClass:[UIPanGestureRecognizer class]]) {
@@ -215,9 +212,9 @@ typedef enum _JASidePanelState {
 		self.centerPanel.view.frame = frame;
 		
 		if (frame.origin.x > 0.0f) {
-			[self _activateLeftPanel];
+			[self _loadLeftPanel];
 		} else if(frame.origin.x < 0.0f) {
-			[self _activateRightPanel];
+			[self _loadRightPanel];
 		}
 		
 		if (sender.state == UIGestureRecognizerStateEnded) {
@@ -293,19 +290,45 @@ typedef enum _JASidePanelState {
 	return NO;
 }
 
-- (void)_activateLeftPanel {
+#pragma mark - Loading Panels
+
+- (void)_loadCenterPanel {
+	UIViewController *gestureController = self.gestureController;
+	UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
+	panGesture.delegate = self;
+	panGesture.maximumNumberOfTouches = 1;
+	panGesture.minimumNumberOfTouches = 1;	
+	[gestureController.view addGestureRecognizer:panGesture];
+	
+	_centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	_centerPanel.view.layer.shadowColor = [UIColor blackColor].CGColor;
+	_centerPanel.view.layer.shadowRadius = 10.0f;
+	_centerPanel.view.layer.shadowOpacity = 0.5f;
+	_centerPanel.view.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_centerPanel.view.bounds cornerRadius:0.0f].CGPath;
+	
+	if (!gestureController.navigationItem.leftBarButtonItem) {
+		UIBarButtonItem *button = [self leftButtonForCenterPanel];
+		button.target = self;
+		button.action = @selector(_leftButtonTouched:);
+		gestureController.navigationItem.leftBarButtonItem = button;
+	}
+}
+
+- (void)_loadLeftPanel {
 	if ( !_leftPanel.view.superview) {
 		[_rightPanel.view removeFromSuperview];
 		_leftPanel.view.frame = self.view.bounds;
+		_leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.view addSubview:_leftPanel.view];
 		[self.view bringSubviewToFront:_centerPanel.view];
 	}
 }
 
-- (void)_activateRightPanel {
+- (void)_loadRightPanel {
 	if ( !_rightPanel.view.superview) {
 		[_leftPanel.view removeFromSuperview];
 		_rightPanel.view.frame = self.view.bounds;
+		_rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.view addSubview:_rightPanel.view];
 		[self.view bringSubviewToFront:_centerPanel.view];
 	}
@@ -329,9 +352,9 @@ typedef enum _JASidePanelState {
 			// make sure correct panel is displayed under the bounce
 			if (self.state == JASidePanelCenterVisible) {
 				if (bounceDistance > 0.0f) {
-					[self _activateLeftPanel];
+					[self _loadLeftPanel];
 				} else {
-					[self _activateRightPanel];
+					[self _loadRightPanel];
 				}
 			}
 			// animate the bounce
@@ -354,7 +377,7 @@ typedef enum _JASidePanelState {
 
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
 	self.state = JASidePanelLeftVisible;
-	[self _activateLeftPanel];
+	[self _loadLeftPanel];
 	CGFloat gap = floorf(self.view.bounds.size.width * self.leftGapPercentage);
 	_centerPanelRestingFrame.origin.x = self.view.bounds.size.width - gap;
 		
@@ -367,7 +390,7 @@ typedef enum _JASidePanelState {
 
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
 	self.state = JASidePanelRightVisible;
-	[self _activateRightPanel];
+	[self _loadRightPanel];
 	CGFloat gap = floorf(self.view.bounds.size.width * self.rightGapPercentage);
 	_centerPanelRestingFrame.origin.x = -self.view.bounds.size.width + gap;
 	
@@ -384,13 +407,21 @@ typedef enum _JASidePanelState {
 	
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
-			[_leftPanel.view removeFromSuperview];
-			[_rightPanel.view removeFromSuperview];
+			if (_leftPanel.isViewLoaded) {
+				[_leftPanel.view removeFromSuperview];
+			}
+			if (_rightPanel.isViewLoaded) {
+				[_rightPanel.view removeFromSuperview];
+			}
 		}];
 	} else {
 		self.centerPanel.view.frame = _centerPanelRestingFrame;		
-		[_leftPanel.view removeFromSuperview];
-		[_rightPanel.view removeFromSuperview];
+		if (_leftPanel.isViewLoaded) {
+			[_leftPanel.view removeFromSuperview];
+		}
+		if (_rightPanel.isViewLoaded) {
+			[_rightPanel.view removeFromSuperview];
+		}
 	}
 }
 
