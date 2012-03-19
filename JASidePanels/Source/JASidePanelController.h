@@ -13,10 +13,19 @@ typedef enum _JASidePanelStyle {
 	JASidePanelMultipleActive
 } JASidePanelStyle;
 
+typedef enum _JASidePanelState {
+	JASidePanelCenterVisible = 1,
+	JASidePanelLeftVisible,
+	JASidePanelRightVisible
+} JASidePanelState;
+
 @interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
 
 // style
 @property (nonatomic) JASidePanelStyle style;
+
+// state
+@property (nonatomic, readonly) JASidePanelState state;
 
 // panels
 @property (nonatomic, strong) UIViewController *leftPanel;

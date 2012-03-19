@@ -10,18 +10,12 @@
 
 #import "JASidePanelController.h"
 
-typedef enum _JASidePanelState {
-	JASidePanelCenterVisible = 1,
-	JASidePanelLeftVisible,
-	JASidePanelRightVisible
-} JASidePanelState;
-
 @interface JASidePanelController() {
 	CGRect _centerPanelRestingFrame;		
 	CGPoint _locationBeforePan;
 }
 
-@property (nonatomic) JASidePanelState state;
+@property (nonatomic, readwrite) JASidePanelState state;
 @property (nonatomic, strong) UIView *tapView;
 
 // panel containers
