@@ -61,6 +61,7 @@ typedef enum _JASidePanelState {
 // animation
 - (CGFloat)_calculatedDuration;
 - (void)_animateCenterPanel:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion;
+- (void)_adjustCenterFrame;
 
 @end
 
@@ -469,6 +470,14 @@ typedef enum _JASidePanelState {
 
 #pragma mark - Animation
 
+- (void)_adjustCenterFrame {
+	if (self.style == JASidePanelMultipleActive) {
+		if (_centerPanelRestingFrame.origin.x >= 0.0f) {
+			_centerPanelRestingFrame.size.width = self.view.bounds.size.width - _centerPanelRestingFrame.origin.x;	
+		}
+	}
+}
+
 - (CGFloat)_calculatedDuration {
 	CGFloat remaining = fabsf(self.centerPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x);	
 	CGFloat max = _locationBeforePan.x == _centerPanelRestingFrame.origin.x ? remaining : fabsf(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
@@ -478,11 +487,7 @@ typedef enum _JASidePanelState {
 - (void)_animateCenterPanel:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
 	CGFloat bounceDistance = (_centerPanelRestingFrame.origin.x - self.centerPanelContainer.frame.origin.x) * self.bouncePercentage;
 	
-	if (self.style == JASidePanelMultipleActive) {
-		if (_centerPanelRestingFrame.origin.x >= 0.0f) {
-			_centerPanelRestingFrame.size.width = self.view.bounds.size.width - _centerPanelRestingFrame.origin.x;	
-		}
-	}
+	[self _adjustCenterFrame];
 	
 	[UIView animateWithDuration:[self _calculatedDuration] delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
 		self.centerPanelContainer.frame = _centerPanelRestingFrame;		
@@ -533,6 +538,7 @@ typedef enum _JASidePanelState {
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:nil];
 	} else {
+		[self _adjustCenterFrame];
 		self.centerPanelContainer.frame = _centerPanelRestingFrame;			
 	}
 	
@@ -550,6 +556,7 @@ typedef enum _JASidePanelState {
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:nil];
 	} else {
+		[self _adjustCenterFrame];
 		self.centerPanelContainer.frame = _centerPanelRestingFrame;			
 	}
 	
@@ -561,19 +568,20 @@ typedef enum _JASidePanelState {
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
 	self.state = JASidePanelCenterVisible;
 	_centerPanelRestingFrame.origin.x = 0.0f;
-	
-	self.tapView = nil;
-	
+		
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
 			self.leftPanelContainer.hidden = YES;
 			self.rightPanelContainer.hidden = YES;
 		}];
 	} else {
+		[self _adjustCenterFrame];
 		self.centerPanelContainer.frame = _centerPanelRestingFrame;		
 		self.leftPanelContainer.hidden = YES;
 		self.rightPanelContainer.hidden = YES;
 	}
+	
+	self.tapView = nil;
 }
 
 #pragma mark - Key Value Observing
