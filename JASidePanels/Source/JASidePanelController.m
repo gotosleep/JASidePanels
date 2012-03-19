@@ -30,6 +30,9 @@
 // center panel
 - (void)_swapCenter:(UIViewController *)previous with:(UIViewController *)next;
 
+// buttons
+- (void)_placeButtonForLeftPanel;
+
 // internal helpers
 - (BOOL)_validateThreshold:(CGFloat)movement;
 
@@ -243,7 +246,9 @@
 - (void)setCenterPanel:(UIViewController *)centerPanel {
 	UIViewController *previous = _centerPanel;
 	if (centerPanel != _centerPanel) {
+		[_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
 		_centerPanel = centerPanel;
+		[_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:nil];
 	}
 	if (self.isViewLoaded && self.state == JASidePanelCenterVisible) {
 		[self _swapCenter:previous with:_centerPanel];
@@ -281,6 +286,7 @@
 		[_leftPanel removeFromParentViewController];
 		_leftPanel = leftPanel;
 		[self addChildViewController:_leftPanel];
+		[self _placeButtonForLeftPanel];
 	}
 }
 
@@ -292,6 +298,23 @@
 		_rightPanel = rightPanel;
 		[self addChildViewController:_rightPanel];
 	}
+}
+
+#pragma mark - Panel Buttons
+
+- (void)_placeButtonForLeftPanel {
+	if (self.leftPanel) {
+		UIViewController *buttonController = self.gestureController;
+		if ([buttonController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController *nav = (UINavigationController *)buttonController;
+			if ([nav.viewControllers count] > 0) {
+				buttonController = [nav.viewControllers objectAtIndex:0];
+			}
+		}
+		if (!buttonController.navigationItem.leftBarButtonItem) {
+			buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
+		}
+	}	
 }
 
 #pragma mark - Gesture Recognizer Delegate
@@ -442,14 +465,12 @@
 		[self _addPanGestureToView:self.gestureController.view];
 	}
 	[self.gestureController addObserver:self forKeyPath:@"view" options:0 context:nil];
+
+	[self _placeButtonForLeftPanel];
 	
 	_centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	_centerPanel.view.frame = self.centerPanelContainer.bounds;
 	[self stylePanel:_centerPanel.view];
-		
-	if (self.leftPanel && !self.gestureController.navigationItem.leftBarButtonItem) {
-		self.gestureController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
-	}
 }
 
 - (void)_loadLeftPanel {
@@ -623,6 +644,9 @@
 		if (self.gestureController.isViewLoaded) {
 			[self _addPanGestureToView:self.gestureController.view];
 		}
+	} else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
+		// view controllers have changed, need to replace the button
+		[self _placeButtonForLeftPanel];
 	}
 }
 
@@ -633,14 +657,7 @@
 }
 
 - (UIViewController *)gestureController {
-	UIViewController *result = self.centerPanel;
-	if ([result isKindOfClass:[UINavigationController class]]) {
-		UINavigationController *nav = (UINavigationController *)result;
-		if ([nav.viewControllers count] > 0) {
-			result = [nav.viewControllers objectAtIndex:0];
-		}
-	}
-	return result;
+	return self.centerPanel;
 }
 
 - (void)showLeftPanel:(BOOL)animated {
