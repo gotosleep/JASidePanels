@@ -30,6 +30,7 @@
 	UILabel *label  = [[UILabel alloc] init];
 	label.text = @"Left Panel";
 	[label sizeToFit];
+	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[self.view addSubview:label];}
 
 - (void)viewDidUnload

@@ -22,8 +22,9 @@
 	label.text = @"Right Panel";
 	[label sizeToFit];
 	CGRect frame = label.frame;
-	frame.origin.x = 100.0f;
+	frame.origin.x = self.view.bounds.size.width - 100.0f;
 	label.frame = frame;
+	label.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[self.view addSubview:label];
 }
 
