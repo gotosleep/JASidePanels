@@ -58,7 +58,7 @@ typedef enum _JASidePanelState {
 - (void)toggleRightPanel:(id)sender;
 
 // subclasses may override to change panel style
-- (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(CGFloat)duration;
+- (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration;
 - (void)stylePanel:(UIView *)panel;
 
 //

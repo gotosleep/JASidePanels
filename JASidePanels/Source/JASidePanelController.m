@@ -195,7 +195,7 @@
 	}
 }
 
-- (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(CGFloat)duration {
+- (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration {
 	UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:container.bounds cornerRadius:0.0f];
 	if (animate) {
 		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
