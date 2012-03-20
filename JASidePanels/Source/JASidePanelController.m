@@ -676,9 +676,12 @@
 }
 
 - (void)_toggleScrollsToTopForCenter:(BOOL)center left:(BOOL)left right:(BOOL)right {
-	[self _toggleScrollsToTop:center forView:self.centerPanelContainer];
-	[self _toggleScrollsToTop:left forView:self.leftPanelContainer];
-	[self _toggleScrollsToTop:right forView:self.rightPanelContainer];
+	// iPhone only supports 1 active UIScrollViewController at a time
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		[self _toggleScrollsToTop:center forView:self.centerPanelContainer];
+		[self _toggleScrollsToTop:left forView:self.leftPanelContainer];
+		[self _toggleScrollsToTop:right forView:self.rightPanelContainer];
+	}
 }
 
 - (BOOL)_toggleScrollsToTop:(BOOL)enabled forView:(UIView *)view {
