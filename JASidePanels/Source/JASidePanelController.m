@@ -246,6 +246,7 @@
 - (void)setCenterPanel:(UIViewController *)centerPanel {
 	UIViewController *previous = _centerPanel;
 	if (centerPanel != _centerPanel) {
+		[self.gestureController removeObserver:self forKeyPath:@"view"];
 		[_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
 		_centerPanel = centerPanel;
 		[_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:nil];
