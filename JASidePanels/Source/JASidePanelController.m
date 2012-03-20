@@ -131,7 +131,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor redColor];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
 	self.centerPanelContainer = [[UIView alloc] initWithFrame:self.view.bounds];
