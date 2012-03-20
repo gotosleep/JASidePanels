@@ -25,7 +25,7 @@
 
 // setup
 - (void)_configureContainers;
-- (void)_sizeSidePanels;
+- (void)_layoutSideContainers:(BOOL)animate duration:(NSTimeInterval)duration;
 
 // center panel
 - (void)_swapCenter:(UIViewController *)previous with:(UIViewController *)next;
@@ -143,11 +143,8 @@
 	self.rightPanelContainer.hidden = YES;
 	
 	[self _configureContainers];
-	[self _sizeSidePanels];
-
+	[self _layoutSideContainers:NO duration:0.0f];
 	[self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
-	[self styleContainer:self.leftPanelContainer animate:NO duration:0.0f];
-	[self styleContainer:self.rightPanelContainer animate:NO duration:0.0f];
 	
 	[self.view addSubview:self.centerPanelContainer];
 	[self.view addSubview:self.leftPanelContainer];
@@ -184,10 +181,8 @@
 			break;
 	}
 	
-	[self _sizeSidePanels];
+	[self _layoutSideContainers:YES duration:duration];
 	[self styleContainer:self.centerPanelContainer animate:YES duration:duration];	
-	[self styleContainer:self.leftPanelContainer animate:YES duration:duration];	
-	[self styleContainer:self.rightPanelContainer animate:YES duration:duration];	
 }
 
 #pragma mark - State
@@ -219,7 +214,7 @@
 		_style = style;
 		if (self.isViewLoaded) {
 			[self _configureContainers];
-			[self _sizeSidePanels];
+			[self _layoutSideContainers:NO duration:0.0f];
 		}
 	}
 }
@@ -252,7 +247,7 @@
 	self.centerPanelContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
-- (void)_sizeSidePanels {
+- (void)_layoutSideContainers:(BOOL)animate duration:(NSTimeInterval)duration {
 	CGRect leftFrame = self.view.bounds;
 	CGRect rightFrame = self.view.bounds;
 	if (self.style == JASidePanelMultipleActive) {
@@ -265,6 +260,8 @@
 	}
 	self.leftPanelContainer.frame = leftFrame;
 	self.rightPanelContainer.frame = rightFrame;
+	[self styleContainer:self.leftPanelContainer animate:animate duration:duration];	
+	[self styleContainer:self.rightPanelContainer animate:animate duration:duration];	
 }
 
 #pragma mark - Panels
@@ -535,25 +532,6 @@
 
 #pragma mark - Animation
 
-- (void)_adjustCenterFrame {
-	if (self.style == JASidePanelMultipleActive) {
-		switch (self.state) {
-			case JASidePanelCenterVisible:
-				_centerPanelRestingFrame.size.width = self.view.bounds.size.width;	
-				break;
-			case JASidePanelLeftVisible:
-				_centerPanelRestingFrame.size.width = self.view.bounds.size.width - [self _leftPanelWidth];
-				break;
-			case JASidePanelRightVisible:
-				_centerPanelRestingFrame.origin.x = 0.0f;
-				_centerPanelRestingFrame.size.width = self.view.bounds.size.width - [self _rightPanelWidth];
-				break;
-			default:
-				break;
-		}
-	}
-}
-
 - (CGFloat)_calculatedDuration {
 	CGFloat remaining = fabsf(self.centerPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x);	
 	CGFloat max = _locationBeforePan.x == _centerPanelRestingFrame.origin.x ? remaining : fabsf(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
@@ -562,9 +540,7 @@
 
 - (void)_animateCenterPanel:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
 	CGFloat bounceDistance = (_centerPanelRestingFrame.origin.x - self.centerPanelContainer.frame.origin.x) * self.bouncePercentage;
-	
-	[self _adjustCenterFrame];
-	
+		
 	// looks bad if we bounce when the center panel grows
 	if (_centerPanelRestingFrame.size.width > self.centerPanelContainer.frame.size.width) {
 		shouldBounce = NO;
@@ -600,7 +576,35 @@
 	}];
 }
 
-#pragma mark - Panel Width
+#pragma mark - Panel Sizing
+
+- (void)_adjustCenterFrame {
+	CGRect frame = self.view.bounds;
+	switch (self.state) {
+		case JASidePanelCenterVisible:
+			frame.origin.x = 0.0f;
+			if (self.style == JASidePanelMultipleActive) {
+				frame.size.width = self.view.bounds.size.width;	
+			}
+			break;
+		case JASidePanelLeftVisible:
+			frame.origin.x = [self _leftPanelWidth];
+			if (self.style == JASidePanelMultipleActive) {
+				frame.size.width = self.view.bounds.size.width - [self _leftPanelWidth];
+			}
+			break;
+		case JASidePanelRightVisible:
+			frame.origin.x = -[self _rightPanelWidth];
+			if (self.style == JASidePanelMultipleActive) {
+				frame.origin.x = 0.0f;
+				frame.size.width = self.view.bounds.size.width - [self _rightPanelWidth];
+			}
+			break;
+		default:
+			break;
+	}
+	_centerPanelRestingFrame = frame;
+}
 
 - (CGFloat)_leftPanelWidth {
 	return self.leftFixedWidth ? self.leftFixedWidth : floorf(self.view.bounds.size.width * self.leftGapPercentage);
@@ -616,13 +620,13 @@
 	self.state = JASidePanelLeftVisible;
 	[self _loadLeftPanel];
 	
-	_centerPanelRestingFrame.origin.x = [self _leftPanelWidth];
-		
+	[self _adjustCenterFrame];
+	
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:nil];
 	} else {
-		[self _adjustCenterFrame];
-		self.centerPanelContainer.frame = _centerPanelRestingFrame;			
+		self.centerPanelContainer.frame = _centerPanelRestingFrame;	
+		[self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
 	}
 	
 	if (self.style == JASidePanelSingleActive) {
@@ -635,13 +639,13 @@
 	self.state = JASidePanelRightVisible;
 	[self _loadRightPanel];
 	
-	_centerPanelRestingFrame.origin.x = -[self _rightPanelWidth];
+	[self _adjustCenterFrame];
 	
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:nil];
 	} else {
-		[self _adjustCenterFrame];
-		self.centerPanelContainer.frame = _centerPanelRestingFrame;			
+		self.centerPanelContainer.frame = _centerPanelRestingFrame;	
+		[self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
 	}
 	
 	if (self.style == JASidePanelSingleActive) {
@@ -652,16 +656,17 @@
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
 	self.state = JASidePanelCenterVisible;
-	_centerPanelRestingFrame.origin.x = 0.0f;
-		
+	
+	[self _adjustCenterFrame];
+	
 	if (animated) {
 		[self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
 			self.leftPanelContainer.hidden = YES;
 			self.rightPanelContainer.hidden = YES;
 		}];
 	} else {
-		[self _adjustCenterFrame];
-		self.centerPanelContainer.frame = _centerPanelRestingFrame;		
+		self.centerPanelContainer.frame = _centerPanelRestingFrame;	
+		[self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
 		self.leftPanelContainer.hidden = YES;
 		self.rightPanelContainer.hidden = YES;
 	}
