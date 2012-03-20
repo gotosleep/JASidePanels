@@ -56,6 +56,10 @@
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce;
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce;
 
+// fix scrolls to top
+- (void)_toggleScrollsToTopForCenter:(BOOL)center left:(BOOL)left right:(BOOL)right;
+- (BOOL)_toggleScrollsToTop:(BOOL)enabled forView:(UIView *)view;
+
 // animation
 - (CGFloat)_calculatedDuration;
 - (void)_animateCenterPanel:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion;
@@ -127,6 +131,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor redColor];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
 	self.centerPanelContainer = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -599,6 +604,7 @@
 	if (self.style == JASidePanelSingleActive) {
 		self.tapView = [[UIView alloc] initWithFrame:_centerPanelRestingFrame];
 	}
+	[self _toggleScrollsToTopForCenter:NO left:YES right:NO];
 }
 
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
@@ -617,6 +623,7 @@
 	if (self.style == JASidePanelSingleActive) {
 		self.tapView = [[UIView alloc] initWithFrame:_centerPanelRestingFrame];
 	}
+	[self _toggleScrollsToTopForCenter:NO left:NO right:YES];
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
@@ -636,6 +643,28 @@
 	}
 	
 	self.tapView = nil;
+	[self _toggleScrollsToTopForCenter:YES left:NO right:NO];
+}
+
+- (void)_toggleScrollsToTopForCenter:(BOOL)center left:(BOOL)left right:(BOOL)right {
+	[self _toggleScrollsToTop:center forView:self.centerPanelContainer];
+	[self _toggleScrollsToTop:left forView:self.leftPanelContainer];
+	[self _toggleScrollsToTop:right forView:self.rightPanelContainer];
+}
+
+- (BOOL)_toggleScrollsToTop:(BOOL)enabled forView:(UIView *)view {
+	if ([view isKindOfClass:[UIScrollView class]]) {
+		UIScrollView *scrollView = (UIScrollView *)view;
+		scrollView.scrollsToTop = enabled;
+		return YES;
+	} else {
+		for (UIView *subview in view.subviews) {
+			if([self _toggleScrollsToTop:enabled forView:subview]) {
+				return YES;
+			}
+		}
+	}
+	return NO;
 }
 
 #pragma mark - Key Value Observing
