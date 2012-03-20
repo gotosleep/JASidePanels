@@ -190,6 +190,28 @@
 	[self styleContainer:self.rightPanelContainer animate:YES duration:duration];	
 }
 
+#pragma mark - State
+
+- (void)setState:(JASidePanelState)state {
+	if (state != _state) {
+		_state = state;
+		switch (_state) {
+			case JASidePanelCenterVisible:
+				self.leftPanelContainer.userInteractionEnabled = NO;
+				self.rightPanelContainer.userInteractionEnabled = NO;
+				break;
+			case JASidePanelLeftVisible:
+				self.leftPanelContainer.userInteractionEnabled = YES;
+				break;
+			case JASidePanelRightVisible:
+				self.rightPanelContainer.userInteractionEnabled = YES;
+				break;
+			default:
+				break;
+		}
+	}
+}
+
 #pragma mark - Style
 
 - (void)setStyle:(JASidePanelStyle)style {
@@ -258,9 +280,12 @@
 	if (self.isViewLoaded && self.state == JASidePanelCenterVisible) {
 		[self _swapCenter:previous with:_centerPanel];
 	} else if (self.isViewLoaded) {
+		// update the state immediately to prevent user interaction on the side panels while animating
+		JASidePanelState previousState = self.state;
+		self.state = JASidePanelCenterVisible;
 		[UIView animateWithDuration:0.2f animations:^{
 			// first move the centerPanel offscreen
-			CGFloat x = self.state == JASidePanelLeftVisible ? self.view.bounds.size.width : -self.view.bounds.size.width;
+			CGFloat x = (previousState == JASidePanelLeftVisible) ? self.view.bounds.size.width : -self.view.bounds.size.width;
 			_centerPanelRestingFrame.origin.x = x;
 			self.centerPanelContainer.frame = _centerPanelRestingFrame;
 		} completion:^(BOOL finished) {
