@@ -35,6 +35,7 @@
 
 // internal helpers
 - (BOOL)_validateThreshold:(CGFloat)movement;
+- (BOOL)_isOnTopLevelViewController:(UIViewController *)root;
 
 // panel loading
 - (void)_addPanGestureToView:(UIView *)view;
@@ -92,6 +93,8 @@
 @synthesize bounceDuration = _bounceDuration;
 @synthesize bouncePercentage = _bouncePercentage;
 
+@synthesize panningLimitedToTopViewController = _panningLimitedToTopViewController;
+
 #pragma mark - Icon
 
 + (UIImage *)defaultImage {
@@ -123,6 +126,7 @@
 		self.maximumAnimationDuration = 0.2f;
 		self.bounceDuration = 0.1f;
 		self.bouncePercentage = 0.075f;
+		self.panningLimitedToTopViewController = YES;
 	}
 	return self;
 }
@@ -349,12 +353,25 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
 	if (gestureRecognizer.view == self.tapView) {
 		return YES;
+	} else if (self.panningLimitedToTopViewController && ![self _isOnTopLevelViewController:self.gestureController]) {
+		return NO;
 	} else if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
 		UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)gestureRecognizer;
 		CGPoint translate = [pan translationInView:self.centerPanelContainer];
 		return translate.x != 0 && ((translate.y / translate.x) < 1.0f);
 	}
 	return NO;
+}
+
+- (BOOL)_isOnTopLevelViewController:(UIViewController *)root {
+	if ([root isKindOfClass:[UINavigationController class]]) {
+		UINavigationController *nav = (UINavigationController *)root;
+		return [nav.viewControllers count] == 1;
+	} else if ([root isKindOfClass:[UITabBarController class]]) {
+		UITabBarController *tab = (UITabBarController *)tab;
+		return [self _isOnTopLevelViewController:tab.selectedViewController];
+	}
+	return root != nil;
 }
 
 #pragma mark - Pan Gestures

@@ -46,6 +46,9 @@ typedef enum _JASidePanelState {
 @property (nonatomic) CGFloat bounceDuration;
 @property (nonatomic) CGFloat bouncePercentage;
 
+// panning
+@property (nonatomic) BOOL panningLimitedToTopViewController;
+
 @property (nonatomic, readonly) UIViewController *gestureController;
 
 + (UIImage *)defaultImage;
