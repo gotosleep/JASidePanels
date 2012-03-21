@@ -375,7 +375,7 @@
 		UINavigationController *nav = (UINavigationController *)root;
 		return [nav.viewControllers count] == 1;
 	} else if ([root isKindOfClass:[UITabBarController class]]) {
-		UITabBarController *tab = (UITabBarController *)tab;
+		UITabBarController *tab = (UITabBarController *)root;
 		return [self _isOnTopLevelViewController:tab.selectedViewController];
 	}
 	return root != nil;
