@@ -27,6 +27,11 @@ typedef enum _JASidePanelState {
 // state
 @property (nonatomic, readonly) JASidePanelState state;
 
+// panel containers
+@property (nonatomic, strong, readonly) UIView *leftPanelContainer;
+@property (nonatomic, strong, readonly) UIView *rightPanelContainer;
+@property (nonatomic, strong, readonly) UIView *centerPanelContainer;
+
 // panels
 @property (nonatomic, strong) UIViewController *leftPanel;
 @property (nonatomic, strong) UIViewController *centerPanel;

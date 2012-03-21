@@ -19,9 +19,9 @@
 @property (nonatomic, strong) UIView *tapView;
 
 // panel containers
-@property (nonatomic, strong) UIView *leftPanelContainer;
-@property (nonatomic, strong) UIView *rightPanelContainer;
-@property (nonatomic, strong) UIView *centerPanelContainer;
+@property (nonatomic, strong, readwrite) UIView *leftPanelContainer;
+@property (nonatomic, strong, readwrite) UIView *rightPanelContainer;
+@property (nonatomic, strong, readwrite) UIView *centerPanelContainer;
 
 // setup
 - (void)_configureContainers;
@@ -64,7 +64,7 @@
 // animation
 - (CGFloat)_calculatedDuration;
 - (void)_animateCenterPanel:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion;
-- (void)_adjustCenterFrame;
+- (CGRect)_adjustCenterFrame;
 
 @end
 
@@ -147,8 +147,6 @@
 	self.rightPanelContainer.hidden = YES;
 	
 	[self _configureContainers];
-	[self _layoutSideContainers:NO duration:0.0f];
-	[self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
 	
 	[self.view addSubview:self.centerPanelContainer];
 	[self.view addSubview:self.leftPanelContainer];
@@ -166,6 +164,15 @@
 	self.centerPanelContainer = nil;
 	self.leftPanelContainer = nil;
 	self.rightPanelContainer = nil;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	// ensure correct view dimensions
+	[self _layoutSideContainers:NO duration:0.0f];
+	self.centerPanelContainer.frame = [self _adjustCenterFrame];
+	[self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
+	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -595,7 +602,7 @@
 
 #pragma mark - Panel Sizing
 
-- (void)_adjustCenterFrame {
+- (CGRect)_adjustCenterFrame {
 	CGRect frame = self.view.bounds;
 	switch (self.state) {
 		case JASidePanelCenterVisible:
@@ -621,6 +628,7 @@
 			break;
 	}
 	_centerPanelRestingFrame = frame;
+	return _centerPanelRestingFrame;
 }
 
 - (CGFloat)_leftPanelWidth {
