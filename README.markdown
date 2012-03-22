@@ -1,10 +1,12 @@
 JASidePanels
 ===
 
-JASidePanels is a UIViewController container made for presenting a center panel with revealable side panels - one to the left and one to the right.  The main inspiration for this project is the menuing system in Path 2.0 and Facebook's iOS apps.
+JASidePanels is a UIViewController container designed for presenting a center panel with revealable side panels - one to the left and one to the right.  The main inspiration for this project is the menuing system in Path 2.0 and Facebook's iOS apps.
 
 Demo
 ---
+![iPhone Example](https://img.skitch.com/20120322-k38tnahynk8rcygycwm9uxmngh.jpg)
+![iPad Example](https://img.skitch.com/20120322-ttu951nfb8cpd5ti5r1ni8428y.jpg)
 
 Example Code
 ---
@@ -44,7 +46,7 @@ Example Code
 Usage
 ---
 
-Only two files are required for using JASidePanels: JASidePanelController.h & JASidePanelController.m
+Only two files are required for using JASidePanels: ` JASidePanelController.h ` & ` JASidePanelController.m `
 
 The easiest method for usage to just copy the files into your XCode Project. Alternatively, you can setup a git submodule and reference the files in your Xcode project. I prefer this method as it enables you to receive bugfixes/updates for the project.
 
