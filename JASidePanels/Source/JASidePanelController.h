@@ -38,55 +38,83 @@ typedef enum _JASidePanelState {
 
 @interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
 
-// style
-@property (nonatomic) JASidePanelStyle style;
+#pragma mark - Usage
 
-// state
-@property (nonatomic, readonly) JASidePanelState state;
-
-// panel containers
-@property (nonatomic, strong, readonly) UIView *leftPanelContainer;
-@property (nonatomic, strong, readonly) UIView *rightPanelContainer;
-@property (nonatomic, strong, readonly) UIView *centerPanelContainer;
-
-// panels
+// set the panels
 @property (nonatomic, strong) UIViewController *leftPanel;
 @property (nonatomic, strong) UIViewController *centerPanel;
 @property (nonatomic, strong) UIViewController *rightPanel;
 
-// left panel size
-@property (nonatomic) CGFloat leftGapPercentage;
-@property (nonatomic) CGFloat leftFixedWidth;
-
-// right panel size
-@property (nonatomic) CGFloat rightGapPercentage;
-@property (nonatomic) CGFloat rightFixedWidth;
-
-// animation
-@property (nonatomic) CGFloat minimumMovePercentage;
-@property (nonatomic) CGFloat maximumAnimationDuration;
-@property (nonatomic) CGFloat bounceDuration;
-@property (nonatomic) CGFloat bouncePercentage;
-
-// panning
-@property (nonatomic) BOOL panningLimitedToTopViewController;
-
-@property (nonatomic, readonly) UIViewController *gestureController;
-
-+ (UIImage *)defaultImage;
-
+// show the panels
 - (void)showLeftPanel:(BOOL)animated;
 - (void)showRightPanel:(BOOL)animated;
 - (void)showCenterPanel:(BOOL)animated;
 
+// toggle them opened/closed
 - (void)toggleLeftPanel:(id)sender;
 - (void)toggleRightPanel:(id)sender;
 
-// subclasses may override to change panel style
+#pragma mark - Look & Feel
+
+// style
+@property (nonatomic) JASidePanelStyle style; // default is JASidePanelSingleActive
+
+// size the left panel based on % of total screen width
+@property (nonatomic) CGFloat leftGapPercentage; 
+
+// size the left panel based on this fixed size. overrides leftGapPercentage
+@property (nonatomic) CGFloat leftFixedWidth;
+
+// size the right panel based on % of total screen width
+@property (nonatomic) CGFloat rightGapPercentage;
+
+// size the right panel based on this fixed size. overrides rightGapPercentage
+@property (nonatomic) CGFloat rightFixedWidth;
+
+// by default applies a black shadow to the container. override in sublcass to change
 - (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration;
+
+// by default applies rounded corners to the panel. override in sublcass to change
 - (void)stylePanel:(UIView *)panel;
 
-//
+#pragma mark - Animation
+
+// the minimum % of total screen width the gestureController.view must move for panGesture to succeed
+@property (nonatomic) CGFloat minimumMovePercentage;
+
+// the maximum time panel opening/closing should take. Actual time may be less if panGesture has already moved the view.
+@property (nonatomic) CGFloat maximumAnimationDuration;
+
+// how long the bounce animation should take
+@property (nonatomic) CGFloat bounceDuration;
+
+// how far the view should bounce
+@property (nonatomic) CGFloat bouncePercentage;
+
+#pragma mark - Gesture Behavior
+
+// Determines whether the pan gesture is limited to the top ViewController in a UINavigationController/UITabBarController
+@property (nonatomic) BOOL panningLimitedToTopViewController; // default is YES
+
+// The UIViewController to apply the pan gesture to. Defaults to [self centerPanel].
+@property (nonatomic, readonly) UIViewController *gestureController;
+
+#pragma mark - Menu Buttons
+
+// Gives you an image to use for your menu button. The image is three stacked white lines, similar to Path 2.0 or Facebook's menu button.
++ (UIImage *)defaultImage;
+
+// Default button to place in gestureViewControllers top viewController. Override in sublcass to change look of default button
 - (UIBarButtonItem *)leftButtonForCenterPanel;
+
+#pragma mark - Nuts & Bolts
+
+// Current state of panels. Use KVO to monitor state changes
+@property (nonatomic, readonly) JASidePanelState state;
+
+// Containers for the panels.
+@property (nonatomic, strong, readonly) UIView *leftPanelContainer;
+@property (nonatomic, strong, readonly) UIView *rightPanelContainer;
+@property (nonatomic, strong, readonly) UIView *centerPanelContainer;
 
 @end
