@@ -41,9 +41,9 @@ typedef enum _JASidePanelState {
 #pragma mark - Usage
 
 // set the panels
-@property (nonatomic, strong) UIViewController *leftPanel;
-@property (nonatomic, strong) UIViewController *centerPanel;
-@property (nonatomic, strong) UIViewController *rightPanel;
+@property (nonatomic, strong) UIViewController *leftPanel;   // optional
+@property (nonatomic, strong) UIViewController *centerPanel; // required
+@property (nonatomic, strong) UIViewController *rightPanel;  // optional
 
 // show the panels
 - (void)showLeftPanel:(BOOL)animated;
