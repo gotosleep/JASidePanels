@@ -198,7 +198,6 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
-    self.tapView.frame = self.centerPanelContainer.frame;
     [self _layoutSideContainers:YES duration:duration];
     [self styleContainer:self.centerPanelContainer animate:YES duration:duration];	
 }
@@ -464,9 +463,11 @@
         [_tapView removeFromSuperview];
         _tapView = tapView;
         if (_tapView) {
+            _tapView.frame = self.centerPanelContainer.bounds;
+            _tapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self _addTapGestureToView:_tapView];
             [self _addPanGestureToView:_tapView];
-            [self.view addSubview:_tapView];
+            [self.centerPanelContainer addSubview:_tapView];
         }
     }
 }
@@ -664,7 +665,7 @@
     }
     
     if (self.style == JASidePanelSingleActive) {
-        self.tapView = [[UIView alloc] initWithFrame:_centerPanelRestingFrame];
+        self.tapView = [[UIView alloc] init];
     }
     [self _toggleScrollsToTopForCenter:NO left:YES right:NO];
 }
@@ -683,7 +684,7 @@
     }
     
     if (self.style == JASidePanelSingleActive) {
-        self.tapView = [[UIView alloc] initWithFrame:_centerPanelRestingFrame];
+        self.tapView = [[UIView alloc] init];
     }
     [self _toggleScrollsToTopForCenter:NO left:NO right:YES];
 }
