@@ -197,19 +197,9 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	_centerPanelRestingFrame.size = self.centerPanelContainer.bounds.size;
-	switch (self.state) {
-		case JASidePanelLeftVisible:
-			[self _showLeftPanel:NO bounce:NO];
-			break;
-		case JASidePanelRightVisible:
-			[self _showRightPanel:NO bounce:NO];
-			break;
-		default:
-			break;
-	}
-	
-	[self _layoutSideContainers:YES duration:duration];
+    self.centerPanelContainer.frame = [self _adjustCenterFrame];	
+	self.tapView.frame = self.centerPanelContainer.frame;
+    [self _layoutSideContainers:YES duration:duration];
 	[self styleContainer:self.centerPanelContainer animate:YES duration:duration];	
 }
 
