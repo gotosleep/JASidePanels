@@ -26,14 +26,14 @@
 #import <UIKit/UIKit.h>
 
 typedef enum _JASidePanelStyle {
-	JASidePanelSingleActive = 0,
-	JASidePanelMultipleActive
+    JASidePanelSingleActive = 0,
+    JASidePanelMultipleActive
 } JASidePanelStyle;
 
 typedef enum _JASidePanelState {
-	JASidePanelCenterVisible = 1,
-	JASidePanelLeftVisible,
-	JASidePanelRightVisible
+    JASidePanelCenterVisible = 1,
+    JASidePanelLeftVisible,
+    JASidePanelRightVisible
 } JASidePanelState;
 
 @interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
