@@ -67,7 +67,7 @@
 // gestures
 - (void)_handlePan:(UIGestureRecognizer *)sender;
 - (void)_completePan:(CGFloat)deltaX;
-- (void)_undoPan:(CGFloat)deltaX;
+- (void)_undoPan;
 
 // showing panels
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce;
@@ -377,17 +377,6 @@
     return NO;
 }
 
-- (BOOL)_isOnTopLevelViewController:(UIViewController *)root {
-    if ([root isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController *)root;
-        return [nav.viewControllers count] == 1;
-    } else if ([root isKindOfClass:[UITabBarController class]]) {
-        UITabBarController *tab = (UITabBarController *)root;
-        return [self _isOnTopLevelViewController:tab.selectedViewController];
-    }
-    return root != nil;
-}
-
 #pragma mark - Pan Gestures
 
 - (void)_addPanGestureToView:(UIView *)view {
@@ -425,8 +414,10 @@
             if ([self _validateThreshold:deltaX]) {
                 [self _completePan:deltaX];
             } else {
-                [self _undoPan:deltaX];
+                [self _undoPan];
             }
+        } else if (sender.state == UIGestureRecognizerStateCancelled) {
+            [self _undoPan];
         }
     }
 }
@@ -451,7 +442,7 @@
     }	
 }
 
-- (void)_undoPan:(CGFloat)deltaX {
+- (void)_undoPan {
     switch (self.state) {
         case JASidePanelCenterVisible:
             [self _showCenterPanel:YES bounce:NO];
@@ -514,6 +505,17 @@
             break;
     }
     return NO;
+}
+
+- (BOOL)_isOnTopLevelViewController:(UIViewController *)root {
+    if ([root isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)root;
+        return [nav.viewControllers count] == 1;
+    } else if ([root isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tab = (UITabBarController *)root;
+        return [self _isOnTopLevelViewController:tab.selectedViewController];
+    }
+    return root != nil;
 }
 
 #pragma mark - Loading Panels
