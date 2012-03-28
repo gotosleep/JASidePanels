@@ -48,9 +48,25 @@ Usage
 
 Only two files are required for using JASidePanels: ` JASidePanelController.h ` & ` JASidePanelController.m `
 
-The easiest way to use JASidePanels is to copy the files into your XCode Project. Alternatively, you can setup a git submodule and reference the files in your Xcode project. I prefer this method as it enables you to receive bugfixes/updates for the project.
+The easiest way to use JASidePanels is to copy the files into your XCode Project.
+
+Alternatively, you can setup a git submodule and reference the files in your Xcode project. I prefer this method as it enables you to receive bugfixes/updates for the project.
+` git submodule add git@github.com:gotosleep/JASidePanels.git JASidePanels `
 
 Requirements
 ---
 
-JASidePanels requires iOS 5.0+ The projects uses ARC, but it may be used with non-ARC projects by setting the: ` -fobjc-arc ` compiler flag. You can set this flag under Target -> Build Phases -> Compile Sources
+JASidePanels requires iOS 5.0+ The projects uses ARC, but it may be used with non-ARC projects by setting the: ` -fobjc-arc ` compiler flag on ` JASidePanelController.m `. You can set this flag under Target -> Build Phases -> Compile Sources
+
+Apps
+---
+JASidePanels is used in the following apps:
+* Float Reader - [http://itunes.apple.com/us/app/float-reader/id447992005?ls=1&mt=8](http://itunes.apple.com/us/app/float-reader/id447992005?ls=1&mt=8 "Float Reader")
+
+Alternatives
+---
+Other projects implementing a similar UI
+* DDMenuController - [https://github.com/devindoty/DDMenuController](https://github.com/devindoty/DDMenuController)
+* JTRevealSidebarDemo - [https://github.com/mystcolor/JTRevealSidebarDemo](https://github.com/mystcolor/JTRevealSidebarDemo)
+* ECSlidingViewController - [https://github.com/edgecase/ECSlidingViewController](https://github.com/edgecase/ECSlidingViewController)
+* ViewDeck - [https://github.com/Inferis/ViewDeck](https://github.com/Inferis/ViewDeck)
