@@ -61,11 +61,13 @@ JASidePanels requires iOS 5.0+ The projects uses ARC, but it may be used with no
 Apps
 ---
 JASidePanels is used in the following apps:
+
 * Float Reader - [http://itunes.apple.com/us/app/float-reader/id447992005?ls=1&mt=8](http://itunes.apple.com/us/app/float-reader/id447992005?ls=1&mt=8 "Float Reader")
 
 Alternatives
 ---
 Other projects implementing a similar UI
+
 * DDMenuController - [https://github.com/devindoty/DDMenuController](https://github.com/devindoty/DDMenuController)
 * JTRevealSidebarDemo - [https://github.com/mystcolor/JTRevealSidebarDemo](https://github.com/mystcolor/JTRevealSidebarDemo)
 * ECSlidingViewController - [https://github.com/edgecase/ECSlidingViewController](https://github.com/edgecase/ECSlidingViewController)
