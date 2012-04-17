@@ -65,11 +65,17 @@ typedef enum _JASidePanelState {
 // size the left panel based on this fixed size. overrides leftGapPercentage
 @property (nonatomic) CGFloat leftFixedWidth;
 
+// the visible width of the left panel
+@property (nonatomic, readonly) CGFloat leftVisibleWidth;
+
 // size the right panel based on % of total screen width
 @property (nonatomic) CGFloat rightGapPercentage;
 
 // size the right panel based on this fixed size. overrides rightGapPercentage
 @property (nonatomic) CGFloat rightFixedWidth;
+
+// the visible width of the right panel
+@property (nonatomic, readonly) CGFloat rightVisibleWidth;
 
 // by default applies a black shadow to the container. override in sublcass to change
 - (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration;

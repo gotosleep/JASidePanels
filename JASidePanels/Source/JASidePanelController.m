@@ -60,10 +60,6 @@
 - (void)_loadLeftPanel;
 - (void)_loadRightPanel;
 
-// panel width
-- (CGFloat)_leftPanelWidth;
-- (CGFloat)_rightPanelWidth;
-
 // gestures
 - (void)_handlePan:(UIGestureRecognizer *)sender;
 - (void)_completePan:(CGFloat)deltaX;
@@ -269,10 +265,10 @@
     CGRect rightFrame = self.view.bounds;
     if (self.style == JASidePanelMultipleActive) {
         // left panel container
-        leftFrame.size.width = [self _leftPanelWidth];
+        leftFrame.size.width = self.leftVisibleWidth;
         
         // right panel container
-        rightFrame.size.width = [self _rightPanelWidth];
+        rightFrame.size.width = self.rightVisibleWidth;
         rightFrame.origin.x = self.view.bounds.size.width - rightFrame.size.width;
     }
     self.leftPanelContainer.frame = leftFrame;
@@ -622,16 +618,16 @@
             }
             break;
         case JASidePanelLeftVisible:
-            frame.origin.x = [self _leftPanelWidth];
+            frame.origin.x = self.leftVisibleWidth;
             if (self.style == JASidePanelMultipleActive) {
-                frame.size.width = self.view.bounds.size.width - [self _leftPanelWidth];
+                frame.size.width = self.view.bounds.size.width - self.leftVisibleWidth;
             }
             break;
         case JASidePanelRightVisible:
-            frame.origin.x = -[self _rightPanelWidth];
+            frame.origin.x = -self.rightVisibleWidth;
             if (self.style == JASidePanelMultipleActive) {
                 frame.origin.x = 0.0f;
-                frame.size.width = self.view.bounds.size.width - [self _rightPanelWidth];
+                frame.size.width = self.view.bounds.size.width - self.rightVisibleWidth;
             }
             break;
         default:
@@ -641,11 +637,11 @@
     return _centerPanelRestingFrame;
 }
 
-- (CGFloat)_leftPanelWidth {
+- (CGFloat)leftVisibleWidth {
     return self.leftFixedWidth ? self.leftFixedWidth : floorf(self.view.bounds.size.width * self.leftGapPercentage);
 }
 
-- (CGFloat)_rightPanelWidth {
+- (CGFloat)rightVisibleWidth {
     return self.rightFixedWidth ? self.rightFixedWidth : floorf(self.view.bounds.size.width * self.rightGapPercentage);
 }
 
