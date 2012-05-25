@@ -73,3 +73,4 @@ Other projects implementing a similar UI
 * ECSlidingViewController - [https://github.com/edgecase/ECSlidingViewController](https://github.com/edgecase/ECSlidingViewController)
 * ViewDeck - [https://github.com/Inferis/ViewDeck](https://github.com/Inferis/ViewDeck)
 * ZUUIRevealController - [https://github.com/pkluz/ZUUIRevealController](https://github.com/pkluz/ZUUIRevealController)
+* GHSidebarNav - [https://github.com/gresrun/GHSidebarNav](https://github.com/gresrun/GHSidebarNav)
