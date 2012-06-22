@@ -286,6 +286,7 @@
         [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
         _centerPanel = centerPanel;
         [_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:nil];
+        [self.gestureController addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionInitial context:nil];
     }
     if (self.isViewLoaded && self.state == JASidePanelCenterVisible) {
         [self _swapCenter:previous with:_centerPanel];
@@ -518,11 +519,6 @@
 #pragma mark - Loading Panels
 
 - (void)_loadCenterPanel {
-    if (self.gestureController.isViewLoaded) {
-        [self _addPanGestureToView:self.gestureController.view];
-    }
-    [self.gestureController addObserver:self forKeyPath:@"view" options:0 context:nil];
-    
     [self _placeButtonForLeftPanel];
     
     _centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
