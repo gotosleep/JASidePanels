@@ -51,7 +51,7 @@ Only two files are required for using JASidePanels: ` JASidePanelController.h ` 
 The easiest way to use JASidePanels is to copy the files into your XCode Project.
 
 Alternatively, you can setup a git submodule and reference the files in your Xcode project. I prefer this method as it enables you to receive bugfixes/updates for the project.
-` git submodule add git@github.com:gotosleep/JASidePanels.git JASidePanels `
+` git submodule add https://github.com/gotosleep/JASidePanels.git JASidePanels `
 
 Requirements
 ---
@@ -72,3 +72,5 @@ Other projects implementing a similar UI
 * JTRevealSidebarDemo - [https://github.com/mystcolor/JTRevealSidebarDemo](https://github.com/mystcolor/JTRevealSidebarDemo)
 * ECSlidingViewController - [https://github.com/edgecase/ECSlidingViewController](https://github.com/edgecase/ECSlidingViewController)
 * ViewDeck - [https://github.com/Inferis/ViewDeck](https://github.com/Inferis/ViewDeck)
+* ZUUIRevealController - [https://github.com/pkluz/ZUUIRevealController](https://github.com/pkluz/ZUUIRevealController)
+* GHSidebarNav - [https://github.com/gresrun/GHSidebarNav](https://github.com/gresrun/GHSidebarNav)
