@@ -41,6 +41,7 @@
 @property (nonatomic, strong, readwrite) UIView *centerPanelContainer;
 
 // setup
+- (void)baseInit;
 - (void)_configureContainers;
 - (void)_layoutSideContainers:(BOOL)animate duration:(NSTimeInterval)duration;
 
@@ -107,6 +108,7 @@
 @synthesize bouncePercentage = _bouncePercentage;
 
 @synthesize panningLimitedToTopViewController = _panningLimitedToTopViewController;
+@synthesize recognizesPanGesture = _recognizesPanGesture;
 
 #pragma mark - Icon
 
@@ -130,18 +132,33 @@
 
 #pragma mark - NSObject
 
-- (id)init {
-    if (self = [super init]) {
-        self.style = JASidePanelSingleActive;
-        self.leftGapPercentage = 0.8f;
-        self.rightGapPercentage = 0.8f;
-        self.minimumMovePercentage = 0.15f;
-        self.maximumAnimationDuration = 0.2f;
-        self.bounceDuration = 0.1f;
-        self.bouncePercentage = 0.075f;
-        self.panningLimitedToTopViewController = YES;
+//Support creating from Storyboard
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self baseInit];
     }
     return self;
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self baseInit];
+    }
+    return self;
+}
+
+- (void)baseInit {
+    self.style = JASidePanelSingleActive;
+    self.leftGapPercentage = 0.8f;
+    self.rightGapPercentage = 0.8f;
+    self.minimumMovePercentage = 0.15f;
+    self.maximumAnimationDuration = 0.2f;
+    self.bounceDuration = 0.1f;
+    self.bouncePercentage = 0.075f;
+    self.panningLimitedToTopViewController = YES;
+    self.recognizesPanGesture = YES;
 }
 
 #pragma mark - UIViewController
@@ -463,7 +480,9 @@
             _tapView.frame = self.centerPanelContainer.bounds;
             _tapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self _addTapGestureToView:_tapView];
-            [self _addPanGestureToView:_tapView];
+            if (self.recognizesPanGesture) {
+                [self _addPanGestureToView:_tapView];
+            }
             [self.centerPanelContainer addSubview:_tapView];
         }
     }
@@ -730,7 +749,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"view"]) {
-        if (self.gestureController.isViewLoaded) {
+        if (self.gestureController.isViewLoaded && self.recognizesPanGesture) {
             [self _addPanGestureToView:self.gestureController.view];
         }
     } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
