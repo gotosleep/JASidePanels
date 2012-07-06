@@ -102,6 +102,9 @@ typedef enum _JASidePanelState {
 // Determines whether the pan gesture is limited to the top ViewController in a UINavigationController/UITabBarController
 @property (nonatomic) BOOL panningLimitedToTopViewController; // default is YES
 
+// Determines whether showing panels can be controlled through pan gestures, or only through buttons
+@property (nonatomic) BOOL recognizesPanGesture; // default is YES
+
 // The UIViewController to apply the pan gesture to. Defaults to [self centerPanel].
 @property (nonatomic, readonly) UIViewController *gestureController;
 

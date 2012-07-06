@@ -108,6 +108,7 @@
 @synthesize bouncePercentage = _bouncePercentage;
 
 @synthesize panningLimitedToTopViewController = _panningLimitedToTopViewController;
+@synthesize recognizesPanGesture = _recognizesPanGesture;
 
 #pragma mark - Icon
 
@@ -157,6 +158,7 @@
     self.bounceDuration = 0.1f;
     self.bouncePercentage = 0.075f;
     self.panningLimitedToTopViewController = YES;
+    self.recognizesPanGesture = YES;
 }
 
 #pragma mark - UIViewController
@@ -478,7 +480,9 @@
             _tapView.frame = self.centerPanelContainer.bounds;
             _tapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self _addTapGestureToView:_tapView];
-            [self _addPanGestureToView:_tapView];
+            if (self.recognizesPanGesture) {
+                [self _addPanGestureToView:_tapView];
+            }
             [self.centerPanelContainer addSubview:_tapView];
         }
     }
@@ -745,7 +749,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"view"]) {
-        if (self.gestureController.isViewLoaded) {
+        if (self.gestureController.isViewLoaded && self.recognizesPanGesture) {
             [self _addPanGestureToView:self.gestureController.view];
         }
     } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
