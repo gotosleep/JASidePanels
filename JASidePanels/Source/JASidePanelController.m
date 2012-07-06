@@ -41,6 +41,7 @@
 @property (nonatomic, strong, readwrite) UIView *centerPanelContainer;
 
 // setup
+- (void)baseInit;
 - (void)_configureContainers;
 - (void)_layoutSideContainers:(BOOL)animate duration:(NSTimeInterval)duration;
 
@@ -130,18 +131,32 @@
 
 #pragma mark - NSObject
 
-- (id)init {
-    if (self = [super init]) {
-        self.style = JASidePanelSingleActive;
-        self.leftGapPercentage = 0.8f;
-        self.rightGapPercentage = 0.8f;
-        self.minimumMovePercentage = 0.15f;
-        self.maximumAnimationDuration = 0.2f;
-        self.bounceDuration = 0.1f;
-        self.bouncePercentage = 0.075f;
-        self.panningLimitedToTopViewController = YES;
+//Support creating from Storyboard
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self baseInit];
     }
     return self;
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self baseInit];
+    }
+    return self;
+}
+
+- (void)baseInit {
+    self.style = JASidePanelSingleActive;
+    self.leftGapPercentage = 0.8f;
+    self.rightGapPercentage = 0.8f;
+    self.minimumMovePercentage = 0.15f;
+    self.maximumAnimationDuration = 0.2f;
+    self.bounceDuration = 0.1f;
+    self.bouncePercentage = 0.075f;
+    self.panningLimitedToTopViewController = YES;
 }
 
 #pragma mark - UIViewController
