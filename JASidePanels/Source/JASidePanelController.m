@@ -41,7 +41,7 @@
 @property (nonatomic, strong, readwrite) UIView *centerPanelContainer;
 
 // setup
-- (void)baseInit;
+- (void)_baseInit;
 - (void)_configureContainers;
 - (void)_layoutSideContainers:(BOOL)animate duration:(NSTimeInterval)duration;
 
@@ -134,22 +134,20 @@
 
 //Support creating from Storyboard
 - (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        [self baseInit];
+    if (self = [super initWithCoder:aDecoder]) {
+        [self _baseInit];
     }
     return self;
 }
 
 - (id)init {
-    self = [super init];
-    if (self) {
-        [self baseInit];
+    if (self = [super init]) {
+        [self _baseInit];
     }
     return self;
 }
 
-- (void)baseInit {
+- (void)_baseInit {
     self.style = JASidePanelSingleActive;
     self.leftGapPercentage = 0.8f;
     self.rightGapPercentage = 0.8f;
