@@ -113,21 +113,26 @@
 #pragma mark - Icon
 
 + (UIImage *)defaultImage {
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);
-    
-    [[UIColor blackColor] setFill];
-    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 1)] fill];
-    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 5, 20, 1)] fill];
-    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 10, 20, 1)] fill];
-    
-    [[UIColor whiteColor] setFill];
-    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 1, 20, 2)] fill];
-    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  20, 2)] fill];
-    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 20, 2)] fill];   
-    
-    UIImage *iconImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return iconImage;
+	static UIImage *defaultImage = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);
+		
+		[[UIColor blackColor] setFill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 1)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 5, 20, 1)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 10, 20, 1)] fill];
+		
+		[[UIColor whiteColor] setFill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 1, 20, 2)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  20, 2)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 20, 2)] fill];   
+		
+		defaultImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+
+	});
+    return defaultImage;
 }
 
 #pragma mark - NSObject
@@ -219,18 +224,19 @@
     if (state != _state) {
         _state = state;
         switch (_state) {
-            case JASidePanelCenterVisible:
+            case JASidePanelCenterVisible: {
                 self.leftPanelContainer.userInteractionEnabled = NO;
                 self.rightPanelContainer.userInteractionEnabled = NO;
                 break;
-            case JASidePanelLeftVisible:
+			}
+            case JASidePanelLeftVisible: {
                 self.leftPanelContainer.userInteractionEnabled = YES;
                 break;
-            case JASidePanelRightVisible:
+			}
+            case JASidePanelRightVisible: {
                 self.rightPanelContainer.userInteractionEnabled = YES;
                 break;
-            default:
-                break;
+			}
         }
     }
 }
@@ -435,36 +441,38 @@
 
 - (void)_completePan:(CGFloat)deltaX {
     switch (self.state) {
-        case JASidePanelCenterVisible:
+        case JASidePanelCenterVisible: {
             if (deltaX > 0.0f) {
                 [self _showLeftPanel:YES bounce:YES];
             } else {
                 [self _showRightPanel:YES bounce:YES];
             }
             break;
-        case JASidePanelLeftVisible:
+		}
+        case JASidePanelLeftVisible: {
             [self _showCenterPanel:YES bounce:_rightPanel != nil];
             break;
-        case JASidePanelRightVisible:
+		}
+        case JASidePanelRightVisible: {
             [self _showCenterPanel:YES bounce:_leftPanel != nil];
             break;
-        default:
-            break;
-    }	
+		}
+    }
 }
 
 - (void)_undoPan {
     switch (self.state) {
-        case JASidePanelCenterVisible:
+        case JASidePanelCenterVisible: {
             [self _showCenterPanel:YES bounce:NO];
             break;
-        case JASidePanelLeftVisible:
+		}
+        case JASidePanelLeftVisible: {
             [self _showLeftPanel:YES bounce:NO];
             break;
-        case JASidePanelRightVisible:
+		}
+        case JASidePanelRightVisible: {
             [self _showRightPanel:YES bounce:NO];
-        default:
-            break;
+		}
     }
 }
 
@@ -510,14 +518,15 @@
 - (BOOL)_validateThreshold:(CGFloat)movement {
     CGFloat minimum = floorf(self.view.bounds.size.width * self.minimumMovePercentage);
     switch (self.state) {
-        case JASidePanelLeftVisible:
+        case JASidePanelLeftVisible: {
             return movement <= -minimum;
-        case JASidePanelCenterVisible:
+		}
+        case JASidePanelCenterVisible: {
             return fabsf(movement) >= minimum;
-        case JASidePanelRightVisible:
+		}
+        case JASidePanelRightVisible: {
             return movement >= minimum;
-        default:
-            break;
+		}
     }
     return NO;
 }
@@ -624,27 +633,28 @@
 - (CGRect)_adjustCenterFrame {
     CGRect frame = self.view.bounds;
     switch (self.state) {
-        case JASidePanelCenterVisible:
+        case JASidePanelCenterVisible: {
             frame.origin.x = 0.0f;
             if (self.style == JASidePanelMultipleActive) {
                 frame.size.width = self.view.bounds.size.width;	
             }
             break;
-        case JASidePanelLeftVisible:
+		}
+        case JASidePanelLeftVisible: {
             frame.origin.x = self.leftVisibleWidth;
             if (self.style == JASidePanelMultipleActive) {
                 frame.size.width = self.view.bounds.size.width - self.leftVisibleWidth;
             }
             break;
-        case JASidePanelRightVisible:
+		}
+        case JASidePanelRightVisible: {
             frame.origin.x = -self.rightVisibleWidth;
             if (self.style == JASidePanelMultipleActive) {
                 frame.origin.x = 0.0f;
                 frame.size.width = self.view.bounds.size.width - self.rightVisibleWidth;
             }
             break;
-        default:
-            break;
+		}
     }
     _centerPanelRestingFrame = frame;
     return _centerPanelRestingFrame;
