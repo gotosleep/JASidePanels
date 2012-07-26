@@ -40,46 +40,6 @@
 @property (nonatomic, strong, readwrite) UIView *rightPanelContainer;
 @property (nonatomic, strong, readwrite) UIView *centerPanelContainer;
 
-// setup
-- (void)_baseInit;
-- (void)_configureContainers;
-- (void)_layoutSideContainers:(BOOL)animate duration:(NSTimeInterval)duration;
-
-// center panel
-- (void)_swapCenter:(UIViewController *)previous with:(UIViewController *)next;
-
-// buttons
-- (void)_placeButtonForLeftPanel;
-
-// internal helpers
-- (BOOL)_validateThreshold:(CGFloat)movement;
-- (BOOL)_isOnTopLevelViewController:(UIViewController *)root;
-
-// panel loading
-- (void)_addPanGestureToView:(UIView *)view;
-- (void)_loadCenterPanel;
-- (void)_loadLeftPanel;
-- (void)_loadRightPanel;
-
-// gestures
-- (void)_handlePan:(UIGestureRecognizer *)sender;
-- (void)_completePan:(CGFloat)deltaX;
-- (void)_undoPan;
-
-// showing panels
-- (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce;
-- (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce;
-- (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce;
-
-// fix scrolls to top
-- (void)_toggleScrollsToTopForCenter:(BOOL)center left:(BOOL)left right:(BOOL)right;
-- (BOOL)_toggleScrollsToTop:(BOOL)enabled forView:(UIView *)view;
-
-// animation
-- (CGFloat)_calculatedDuration;
-- (void)_animateCenterPanel:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion;
-- (CGRect)_adjustCenterFrame;
-
 @end
 
 @implementation JASidePanelController
@@ -87,26 +47,20 @@
 @synthesize leftPanelContainer = _leftPanelContainer;
 @synthesize rightPanelContainer = _rightPanelContainer;
 @synthesize centerPanelContainer = _centerPanelContainer;
-
 @synthesize tapView = _tapView;
-
 @synthesize style = _style;
 @synthesize state = _state;
-
 @synthesize leftPanel = _leftPanel;
 @synthesize centerPanel = _centerPanel;
 @synthesize rightPanel = _rightPanel;
-
 @synthesize leftGapPercentage = _leftGapPercentage;
 @synthesize leftFixedWidth = _leftFixedWidth;
 @synthesize rightGapPercentage = _rightGapPercentage;
 @synthesize rightFixedWidth = _rightFixedWidth;
-
 @synthesize minimumMovePercentage = _minimumMovePercentage;
 @synthesize maximumAnimationDuration = _maximumAnimationDuration;
 @synthesize bounceDuration = _bounceDuration;
 @synthesize bouncePercentage = _bouncePercentage;
-
 @synthesize panningLimitedToTopViewController = _panningLimitedToTopViewController;
 @synthesize recognizesPanGesture = _recognizesPanGesture;
 
