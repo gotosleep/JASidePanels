@@ -65,6 +65,10 @@
 @synthesize recognizesPanGesture = _recognizesPanGesture;
 @synthesize canUnloadRightPanel = _canUnloadRightPanel;
 @synthesize canUnloadLeftPanel = _canUnloadLeftPanel;
+@synthesize shouldResizeLeftPanel = _shouldResizeLeftPanel;
+@synthesize shouldResizeRightPanel = _shouldResizeRightPanel;
+@synthesize allowLeftOverpan = _allowLeftOverpan;
+@synthesize allowRightOverpan = _allowRightOverpan;
 
 #pragma mark - Icon
 
@@ -118,6 +122,8 @@
     self.bouncePercentage = 0.075f;
     self.panningLimitedToTopViewController = YES;
     self.recognizesPanGesture = YES;
+    self.allowLeftOverpan = YES;
+    self.allowRightOverpan = YES;
 }
 
 #pragma mark - UIViewController
@@ -159,9 +165,9 @@
     [super viewWillAppear:animated];
     // ensure correct view dimensions
     [self _layoutSideContainers:NO duration:0.0f];
+    [self _layoutSidePanels];
     self.centerPanelContainer.frame = [self _adjustCenterFrame];
     [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
-    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -171,7 +177,8 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
     [self _layoutSideContainers:YES duration:duration];
-    [self styleContainer:self.centerPanelContainer animate:YES duration:duration];	
+    [self _layoutSidePanels];
+    [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
 }
 
 #pragma mark - State
@@ -252,6 +259,24 @@
     self.rightPanelContainer.frame = rightFrame;
     [self styleContainer:self.leftPanelContainer animate:animate duration:duration];	
     [self styleContainer:self.rightPanelContainer animate:animate duration:duration];	
+}
+
+- (void)_layoutSidePanels {
+    if (self.rightPanel.isViewLoaded) {
+        CGRect frame = self.rightPanelContainer.bounds;
+        if (self.shouldResizeRightPanel) {
+            frame.origin.x = self.rightPanelContainer.bounds.size.width - self.rightVisibleWidth;
+            frame.size.width = self.rightVisibleWidth;
+        }
+        self.rightPanel.view.frame = frame;
+    }
+    if (self.leftPanel.isViewLoaded) {
+        CGRect frame = self.leftPanelContainer.bounds;
+        if (self.shouldResizeLeftPanel) {
+            frame.size.width = self.leftVisibleWidth;
+        }
+        self.leftPanel.view.frame = frame;
+    }
 }
 
 #pragma mark - Panels
@@ -465,11 +490,23 @@
 
 #pragma mark - Internal Methods
 
-- (CGFloat)_correctMovement:(CGFloat)movement {	
+- (CGFloat)_correctMovement:(CGFloat)movement {
+    CGFloat position = _centerPanelRestingFrame.origin.x + movement;
     if (self.state == JASidePanelCenterVisible) {
-        CGFloat position = _centerPanelRestingFrame.origin.x + movement;		
         if ((position > 0.0f && !self.leftPanel) || (position < 0.0f && !self.rightPanel)) {
             return 0.0f;
+        }
+    } else if (self.state == JASidePanelRightVisible && !self.allowRightOverpan) {
+        if ((position + _centerPanelRestingFrame.size.width) < (self.rightPanelContainer.frame.size.width - self.rightVisibleWidth)) {
+            return 0.0f;
+        } else if (position > self.rightPanelContainer.frame.origin.x) {
+            return self.rightPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x;
+        }
+    } else if (self.state == JASidePanelLeftVisible  && !self.allowLeftOverpan) {
+        if (position > self.leftVisibleWidth) {
+            return 0.0f;
+        } else if (position < self.leftPanelContainer.frame.origin.x) {
+            return  self.leftPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x;
         }
     }
     return movement;
@@ -517,7 +554,7 @@
     if (self.leftPanelContainer.hidden && self.leftPanel) {
         
         if (!_leftPanel.view.superview) {
-            _leftPanel.view.frame = self.leftPanelContainer.bounds;
+            [self _layoutSidePanels];
             _leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_leftPanel.view];
             [self.leftPanelContainer addSubview:_leftPanel.view];
@@ -532,7 +569,7 @@
     if (self.rightPanelContainer.hidden && self.rightPanel) {
         
         if (!_rightPanel.view.superview) {
-            _rightPanel.view.frame = self.rightPanelContainer.bounds;
+            [self _layoutSidePanels];
             _rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_rightPanel.view];
             [self.rightPanelContainer addSubview:_rightPanel.view];

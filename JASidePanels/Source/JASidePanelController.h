@@ -125,6 +125,14 @@ typedef enum _JASidePanelState {
 @property (nonatomic, assign) BOOL canUnloadRightPanel; // defaults to NO
 @property (nonatomic, assign) BOOL canUnloadLeftPanel;  // defaults to NO
 
+// Determines whether or not the panel's views should be resized when they are displayed. If yes, the views will be resized to their visible width
+@property (nonatomic, assign) BOOL shouldResizeRightPanel; // defaults to NO
+@property (nonatomic, assign) BOOL shouldResizeLeftPanel;  // defaults to NO
+
+// Determines whether or not the center panel can be panned beyound the the visible area of the side panels
+@property (nonatomic, assign) BOOL allowRightOverpan; // defaults to YES
+@property (nonatomic, assign) BOOL allowLeftOverpan;  // defaults to YES
+
 // Containers for the panels.
 @property (nonatomic, strong, readonly) UIView *leftPanelContainer;
 @property (nonatomic, strong, readonly) UIView *rightPanelContainer;
