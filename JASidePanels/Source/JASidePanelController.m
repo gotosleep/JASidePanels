@@ -63,6 +63,8 @@
 @synthesize bouncePercentage = _bouncePercentage;
 @synthesize panningLimitedToTopViewController = _panningLimitedToTopViewController;
 @synthesize recognizesPanGesture = _recognizesPanGesture;
+@synthesize canUnloadRightPanel = _canUnloadRightPanel;
+@synthesize canUnloadLeftPanel = _canUnloadLeftPanel;
 
 #pragma mark - Icon
 
@@ -301,8 +303,10 @@
         [_leftPanel.view removeFromSuperview];
         [_leftPanel removeFromParentViewController];
         _leftPanel = leftPanel;
-        [self addChildViewController:_leftPanel];
-        [self _placeButtonForLeftPanel];
+        if (_leftPanel) {
+            [self addChildViewController:_leftPanel];
+            [self _placeButtonForLeftPanel];
+        }
     }
 }
 
@@ -312,7 +316,9 @@
         [_rightPanel.view removeFromSuperview];
         [_rightPanel removeFromParentViewController];
         _rightPanel = rightPanel;
-        [self addChildViewController:_rightPanel];
+        if (_rightPanel) {
+            [self addChildViewController:_rightPanel];
+        }
     }
 }
 
@@ -536,6 +542,15 @@
     }
 }
 
+- (void)_unloadPanels {
+    if (self.canUnloadLeftPanel && self.leftPanel.isViewLoaded) {
+        [self.leftPanel.view removeFromSuperview];
+    }
+    if (self.canUnloadRightPanel && self.rightPanel.isViewLoaded) {
+        [self.rightPanel.view removeFromSuperview];
+    }
+}
+
 #pragma mark - Animation
 
 - (CGFloat)_calculatedDuration {
@@ -671,12 +686,14 @@
         [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
             self.leftPanelContainer.hidden = YES;
             self.rightPanelContainer.hidden = YES;
+            [self _unloadPanels];
         }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
         self.leftPanelContainer.hidden = YES;
         self.rightPanelContainer.hidden = YES;
+        [self _unloadPanels];
     }
     
     self.tapView = nil;
