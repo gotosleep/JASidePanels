@@ -97,6 +97,11 @@
 
 #pragma mark - NSObject
 
+- (void)dealloc {
+    [_centerPanel removeObserver:self forKeyPath:@"view"];
+    [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
+}
+
 //Support creating from Storyboard
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
@@ -284,11 +289,11 @@
 - (void)setCenterPanel:(UIViewController *)centerPanel {
     UIViewController *previous = _centerPanel;
     if (centerPanel != _centerPanel) {
-        [self.gestureController removeObserver:self forKeyPath:@"view"];
+        [_centerPanel removeObserver:self forKeyPath:@"view"];
         [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
         _centerPanel = centerPanel;
         [_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:nil];
-        [self.gestureController addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionInitial context:nil];
+        [_centerPanel addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionInitial context:nil];
     }
     if (self.isViewLoaded && self.state == JASidePanelCenterVisible) {
         [self _swapCenter:previous with:_centerPanel];
@@ -351,7 +356,7 @@
 
 - (void)_placeButtonForLeftPanel {
     if (self.leftPanel) {
-        UIViewController *buttonController = self.gestureController;
+        UIViewController *buttonController = self.centerPanel;
         if ([buttonController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *nav = (UINavigationController *)buttonController;
             if ([nav.viewControllers count] > 0) {
@@ -369,7 +374,7 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer.view == self.tapView) {
         return YES;
-    } else if (self.panningLimitedToTopViewController && ![self _isOnTopLevelViewController:self.gestureController]) {
+    } else if (self.panningLimitedToTopViewController && ![self _isOnTopLevelViewController:self.centerPanel]) {
         return NO;
     } else if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)gestureRecognizer;
@@ -768,8 +773,8 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"view"]) {
-        if (self.gestureController.isViewLoaded && self.recognizesPanGesture) {
-            [self _addPanGestureToView:self.gestureController.view];
+        if (self.centerPanel.isViewLoaded && self.recognizesPanGesture) {
+            [self _addPanGestureToView:self.centerPanel.view];
         }
     } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
         // view controllers have changed, need to replace the button
@@ -781,10 +786,6 @@
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
     return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
-}
-
-- (UIViewController *)gestureController {
-    return self.centerPanel;
 }
 
 - (void)showLeftPanel:(BOOL)animated {

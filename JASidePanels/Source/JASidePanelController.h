@@ -85,7 +85,7 @@ typedef enum _JASidePanelState {
 
 #pragma mark - Animation
 
-// the minimum % of total screen width the gestureController.view must move for panGesture to succeed
+// the minimum % of total screen width the centerPanel.view must move for panGesture to succeed
 @property (nonatomic) CGFloat minimumMovePercentage;
 
 // the maximum time panel opening/closing should take. Actual time may be less if panGesture has already moved the view.
@@ -104,9 +104,6 @@ typedef enum _JASidePanelState {
 
 // Determines whether showing panels can be controlled through pan gestures, or only through buttons
 @property (nonatomic) BOOL recognizesPanGesture; // default is YES
-
-// The UIViewController to apply the pan gesture to. Defaults to [self centerPanel].
-@property (nonatomic, readonly) UIViewController *gestureController;
 
 #pragma mark - Menu Buttons
 
