@@ -69,6 +69,8 @@
 @synthesize shouldResizeRightPanel = _shouldResizeRightPanel;
 @synthesize allowLeftOverpan = _allowLeftOverpan;
 @synthesize allowRightOverpan = _allowRightOverpan;
+@synthesize bounceOnSidePanelOpen = _bounceOnSidePanelOpen;
+@synthesize bounceOnSidePanelClose = _bounceOnSidePanelClose;
 
 #pragma mark - Icon
 
@@ -129,6 +131,7 @@
     self.recognizesPanGesture = YES;
     self.allowLeftOverpan = YES;
     self.allowRightOverpan = YES;
+    self.bounceOnSidePanelOpen = YES;
 }
 
 #pragma mark - UIViewController
@@ -436,18 +439,18 @@
     switch (self.state) {
         case JASidePanelCenterVisible: {
             if (deltaX > 0.0f) {
-                [self _showLeftPanel:YES bounce:YES];
+                [self _showLeftPanel:YES bounce:self.bounceOnSidePanelOpen];
             } else {
-                [self _showRightPanel:YES bounce:YES];
+                [self _showRightPanel:YES bounce:self.bounceOnSidePanelOpen];
             }
             break;
 		}
         case JASidePanelLeftVisible: {
-            [self _showCenterPanel:YES bounce:_rightPanel != nil];
+            [self _showCenterPanel:YES bounce:self.bounceOnSidePanelClose];
             break;
 		}
         case JASidePanelRightVisible: {
-            [self _showCenterPanel:YES bounce:_leftPanel != nil];
+            [self _showCenterPanel:YES bounce:self.bounceOnSidePanelClose];
             break;
 		}
     }

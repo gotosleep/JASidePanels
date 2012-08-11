@@ -97,6 +97,12 @@ typedef enum _JASidePanelState {
 // how far the view should bounce
 @property (nonatomic) CGFloat bouncePercentage;
 
+// should the center panel bounce when you are panning open a left/right panel.
+@property (nonatomic) BOOL bounceOnSidePanelOpen; // defaults to YES
+
+// should the center panel bounce when you are panning closed a left/right panel.
+@property (nonatomic) BOOL bounceOnSidePanelClose; // defaults to NO
+
 #pragma mark - Gesture Behavior
 
 // Determines whether the pan gesture is limited to the top ViewController in a UINavigationController/UITabBarController
