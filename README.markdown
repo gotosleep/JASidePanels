@@ -56,7 +56,7 @@ Alternatively, you can setup a git submodule and reference the files in your Xco
 UIViewController+JASidePanel Category
 ---
 
-A UIViewController+JASidePanel category is included in the project. Usage is optional. The category adds a single convenience property to UIViewController: sidePanelController. The property provides access to the nearest JASidePanelController ancestor in your view controller heirarchy. Here's an example:
+A UIViewController+JASidePanel category is included in the project. Usage is optional. The category adds a single convenience property to UIViewController: __sidePanelController__. The property provides access to the nearest JASidePanelController ancestor in your view controller heirarchy. It behaves similar to the _navigationController_ UIViewController property provided by Apple. Here's an example:
 
 ``` objc
 

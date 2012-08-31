@@ -27,7 +27,7 @@
 
 @class JASidePanelController;
 
-/* This optional category provides a convienence method for finding the current
+/* This optional category provides a convenience method for finding the current
  side panel controller that your view controller belongs to. It is similar to the
  Apple provided "navigationController" and "tabBarController" methods.
  */
