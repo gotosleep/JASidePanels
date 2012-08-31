@@ -53,10 +53,10 @@ The easiest way to use JASidePanels is to copy the files into your XCode Project
 Alternatively, you can setup a git submodule and reference the files in your Xcode project. I prefer this method as it enables you to receive bugfixes/updates for the project.
 ` git submodule add https://github.com/gotosleep/JASidePanels.git JASidePanels `
 
-The UIViewController+JASidePanel Category
+UIViewController+JASidePanel Category
 ---
 
-Optionally, a UIViewController+JASidePanel category is included in the project. This category adds a single convienence property to UIViewController, sidePanelController, for accessing the nearest JASidePanelController ancestor in your view controller heirarchy. Here's an example:
+A UIViewController+JASidePanel category is included in the project. Usage is optional. The category adds a single convenience property to UIViewController: sidePanelController. The property provides access to the nearest JASidePanelController ancestor in your view controller heirarchy. Here's an example:
 
 ``` objc
 
