@@ -23,7 +23,9 @@
  SOFTWARE.
  */
 
-#import "JASidePanelController.h"
+#import <Foundation/Foundation.h>
+
+@class JASidePanelController;
 
 /* This optional category provides a convienence method for finding the current
  side panel controller that your view controller belongs to. It is similar to the

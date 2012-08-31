@@ -25,6 +25,7 @@
 
 
 #import "JARightViewController.h"
+#import "JASidePanelController.h"
 
 #import "UIViewController+JASidePanel.h"
 

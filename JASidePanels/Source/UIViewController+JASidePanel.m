@@ -25,6 +25,8 @@
 
 #import "UIViewController+JASidePanel.h"
 
+#import "JASidePanelController.h"
+
 @implementation UIViewController (JASidePanel)
 
 - (JASidePanelController *)sidePanelController {
