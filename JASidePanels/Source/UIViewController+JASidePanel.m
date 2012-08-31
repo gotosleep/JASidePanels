@@ -23,26 +23,22 @@
  SOFTWARE.
  */
 
-#import "JACenterViewController.h"
+#import "UIViewController+JASidePanel.h"
 
-@interface JACenterViewController ()
+@implementation UIViewController (JASidePanel)
 
-@end
-
-@implementation JACenterViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    UILabel *label  = [[UILabel alloc] init];
-    label.font = [UIFont boldSystemFontOfSize:20.0f];
-    label.text = @"Center Panel";
-    [label sizeToFit];
-    label.center = CGPointMake(floorf(self.view.bounds.size.width/2.0f), floorf((self.view.bounds.size.height - self.navigationController.navigationBar.frame.size.height)/2.0f));
-    label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-    [self.view addSubview:label];
+- (JASidePanelController *)sidePanelController {
+    UIViewController *iter = self.parentViewController;
+    while (iter) {
+        if ([iter isKindOfClass:[JASidePanelController class]]) {
+            return (JASidePanelController *)iter;
+        } else if (iter.parentViewController && iter.parentViewController != iter) {
+            iter = iter.parentViewController;
+        } else {
+            iter = nil;
+        }
+    }
+    return nil;
 }
 
 @end

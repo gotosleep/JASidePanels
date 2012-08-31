@@ -26,40 +26,33 @@
 
 #import "JALeftViewController.h"
 
+#import "UIViewController+JASidePanel.h"
+
 @interface JALeftViewController ()
+
+@property (nonatomic, weak) UILabel *label;
 
 @end
 
 @implementation JALeftViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor blueColor];
 	
 	UILabel *label  = [[UILabel alloc] init];
+    label.font = [UIFont boldSystemFontOfSize:20.0f];
+    label.textColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
 	label.text = @"Left Panel";
 	[label sizeToFit];
-	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	[self.view addSubview:label];}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+    [self.view addSubview:label];
+    self.label = label;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+- (void)viewWillAppear:(BOOL)animated {
+    self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), floorf(self.view.bounds.size.height/2.0f));
 }
 
 @end

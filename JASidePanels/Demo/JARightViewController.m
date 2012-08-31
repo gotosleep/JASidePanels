@@ -26,7 +26,11 @@
 
 #import "JARightViewController.h"
 
+#import "UIViewController+JASidePanel.h"
+
 @interface JARightViewController ()
+
+@property (nonatomic, weak) UILabel *label;
 
 @end
 
@@ -35,15 +39,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor redColor];
-	
-	UILabel *label  = [[UILabel alloc] init];
+    
+    UILabel *label  = [[UILabel alloc] init];
+    label.font = [UIFont boldSystemFontOfSize:20.0f];
+    label.textColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
 	label.text = @"Right Panel";
 	[label sizeToFit];
-	CGRect frame = label.frame;
-	frame.origin.x = self.view.bounds.size.width - 100.0f;
-	label.frame = frame;
-	label.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
 	[self.view addSubview:label];
+    self.label = label;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    self.label.center = CGPointMake(floorf((self.view.bounds.size.width - self.sidePanelController.rightVisibleWidth) + self.sidePanelController.rightVisibleWidth/2.0f), floorf(self.view.bounds.size.height/2.0f));
 }
 
 @end

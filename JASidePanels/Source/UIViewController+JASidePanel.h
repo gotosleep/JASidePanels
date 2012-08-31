@@ -23,26 +23,15 @@
  SOFTWARE.
  */
 
-#import "JACenterViewController.h"
+#import "JASidePanelController.h"
 
-@interface JACenterViewController ()
+/* This optional category provides a convienence method for finding the current
+ side panel controller that your view controller belongs to. It is similar to the
+ Apple provided "navigationController" and "tabBarController" methods.
+ */
+@interface UIViewController (JASidePanel)
 
-@end
-
-@implementation JACenterViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    UILabel *label  = [[UILabel alloc] init];
-    label.font = [UIFont boldSystemFontOfSize:20.0f];
-    label.text = @"Center Panel";
-    [label sizeToFit];
-    label.center = CGPointMake(floorf(self.view.bounds.size.width/2.0f), floorf((self.view.bounds.size.height - self.navigationController.navigationBar.frame.size.height)/2.0f));
-    label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-    [self.view addSubview:label];
-}
+// The nearest ancestor in the view controller hierarchy that is a side panel controller.
+@property (nonatomic, weak, readonly) JASidePanelController *sidePanelController;
 
 @end
