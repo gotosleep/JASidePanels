@@ -258,10 +258,11 @@
     if (self.style == JASidePanelMultipleActive) {
         // left panel container
         leftFrame.size.width = self.leftVisibleWidth;
+        leftFrame.origin.x = self.centerPanelContainer.frame.origin.x - leftFrame.size.width;
         
         // right panel container
         rightFrame.size.width = self.rightVisibleWidth;
-        rightFrame.origin.x = self.view.bounds.size.width - rightFrame.size.width;
+        rightFrame.origin.x = self.centerPanelContainer.frame.origin.x + self.centerPanelContainer.frame.size.width;
     }
     self.leftPanelContainer.frame = leftFrame;
     self.rightPanelContainer.frame = rightFrame;
@@ -617,8 +618,11 @@
     
     CGFloat duration = [self _calculatedDuration];
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear|UIViewAnimationOptionLayoutSubviews animations:^{
-        self.centerPanelContainer.frame = _centerPanelRestingFrame;	
+        self.centerPanelContainer.frame = _centerPanelRestingFrame;
         [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
+        if (self.style == JASidePanelMultipleActive) {
+            [self _layoutSideContainers:NO duration:0.0f];
+        }
     } completion:^(BOOL finished) {
         if (shouldBounce) {
             // make sure correct panel is displayed under the bounce
@@ -698,6 +702,9 @@
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
+        if (self.style == JASidePanelMultipleActive) {
+            [self _layoutSideContainers:NO duration:0.0f];
+        }
     }
     
     if (self.style == JASidePanelSingleActive) {
@@ -717,6 +724,9 @@
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
+        if (self.style == JASidePanelMultipleActive) {
+            [self _layoutSideContainers:NO duration:0.0f];
+        }
     }
     
     if (self.style == JASidePanelSingleActive) {
@@ -739,6 +749,9 @@
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
+        if (self.style == JASidePanelMultipleActive) {
+            [self _layoutSideContainers:NO duration:0.0f];
+        }
         self.leftPanelContainer.hidden = YES;
         self.rightPanelContainer.hidden = YES;
         [self _unloadPanels];
