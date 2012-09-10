@@ -72,6 +72,8 @@
 @synthesize allowRightOverpan = _allowRightOverpan;
 @synthesize bounceOnSidePanelOpen = _bounceOnSidePanelOpen;
 @synthesize bounceOnSidePanelClose = _bounceOnSidePanelClose;
+@synthesize visiblePanel = _visiblePanel;
+@synthesize shouldDelegateAutorotateToVisiblePanel = _shouldDelegateAutorotateToVisiblePanel;
 
 #pragma mark - Icon
 
@@ -133,6 +135,7 @@
     self.allowLeftOverpan = YES;
     self.allowRightOverpan = YES;
     self.bounceOnSidePanelOpen = YES;
+    self.shouldDelegateAutorotateToVisiblePanel = YES;
 }
 
 #pragma mark - UIViewController
@@ -180,7 +183,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if (self.visiblePanel) {
+    if (self.shouldDelegateAutorotateToVisiblePanel) {
         return [self.visiblePanel shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
     } else {
         return YES;

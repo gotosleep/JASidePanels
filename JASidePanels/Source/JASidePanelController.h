@@ -123,7 +123,12 @@ typedef enum _JASidePanelState {
 
 // Current state of panels. Use KVO to monitor state changes
 @property (nonatomic, readonly) JASidePanelState state;
+
+// The currently visible panel
 @property (nonatomic, weak, readonly) UIViewController *visiblePanel;
+
+// If set to yes, "shouldAutorotateToInterfaceOrientation:" will be passed to self.visiblePanel instead of handled directly
+@property (nonatomic, assign) BOOL shouldDelegateAutorotateToVisiblePanel; // defaults to YES
 
 // Determines whether or not the panel's views are removed when not visble. If YES, rightPanel & leftPanel's views are eligible for viewDidUnload
 @property (nonatomic, assign) BOOL canUnloadRightPanel; // defaults to NO
