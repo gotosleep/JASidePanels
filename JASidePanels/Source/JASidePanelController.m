@@ -179,7 +179,11 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return YES;
+    if (self.visiblePanel) {
+        return [self.visiblePanel shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    } else {
+        return YES;
+    }
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -210,6 +214,24 @@
 			}
         }
     }
+}
+
+- (UIViewController *)visiblePanel {
+    UIViewController *panel = nil;
+    switch (_state) {
+        case JASidePanelCenterVisible:
+            panel = self.centerPanel;
+            break;
+        case JASidePanelLeftVisible:
+            panel = self.leftPanel;
+            break;
+        case JASidePanelRightVisible:
+            panel = self.rightPanel;
+            break;
+        default:
+            break;
+    }
+    return panel;
 }
 
 #pragma mark - Style
