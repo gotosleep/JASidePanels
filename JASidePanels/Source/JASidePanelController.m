@@ -33,12 +33,13 @@
 }
 
 @property (nonatomic, readwrite) JASidePanelState state;
+@property (nonatomic, weak) UIViewController *visiblePanel;
 @property (nonatomic, strong) UIView *tapView;
 
 // panel containers
-@property (nonatomic, strong, readwrite) UIView *leftPanelContainer;
-@property (nonatomic, strong, readwrite) UIView *rightPanelContainer;
-@property (nonatomic, strong, readwrite) UIView *centerPanelContainer;
+@property (nonatomic, strong) UIView *leftPanelContainer;
+@property (nonatomic, strong) UIView *rightPanelContainer;
+@property (nonatomic, strong) UIView *centerPanelContainer;
 
 @end
 
@@ -200,38 +201,23 @@
         _state = state;
         switch (_state) {
             case JASidePanelCenterVisible: {
+                self.visiblePanel = self.centerPanel;
                 self.leftPanelContainer.userInteractionEnabled = NO;
                 self.rightPanelContainer.userInteractionEnabled = NO;
                 break;
 			}
             case JASidePanelLeftVisible: {
+                self.visiblePanel = self.leftPanel;
                 self.leftPanelContainer.userInteractionEnabled = YES;
                 break;
 			}
             case JASidePanelRightVisible: {
+                self.visiblePanel = self.rightPanel;
                 self.rightPanelContainer.userInteractionEnabled = YES;
                 break;
 			}
         }
     }
-}
-
-- (UIViewController *)visiblePanel {
-    UIViewController *panel = nil;
-    switch (_state) {
-        case JASidePanelCenterVisible:
-            panel = self.centerPanel;
-            break;
-        case JASidePanelLeftVisible:
-            panel = self.leftPanel;
-            break;
-        case JASidePanelRightVisible:
-            panel = self.rightPanel;
-            break;
-        default:
-            break;
-    }
-    return panel;
 }
 
 #pragma mark - Style
@@ -320,6 +306,9 @@
         _centerPanel = centerPanel;
         [_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:nil];
         [_centerPanel addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionInitial context:nil];
+        if (self.state == JASidePanelCenterVisible) {
+            self.visiblePanel = _centerPanel;
+        }
     }
     if (self.isViewLoaded && self.state == JASidePanelCenterVisible) {
         [self _swapCenter:previous with:_centerPanel];
@@ -363,6 +352,9 @@
             [self addChildViewController:_leftPanel];
             [self _placeButtonForLeftPanel];
         }
+        if (self.state == JASidePanelLeftVisible) {
+            self.visiblePanel = _leftPanel;
+        }
     }
 }
 
@@ -374,6 +366,9 @@
         _rightPanel = rightPanel;
         if (_rightPanel) {
             [self addChildViewController:_rightPanel];
+        }
+        if (self.state == JASidePanelRightVisible) {
+            self.visiblePanel = _rightPanel;
         }
     }
 }

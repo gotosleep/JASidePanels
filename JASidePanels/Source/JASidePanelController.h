@@ -123,7 +123,7 @@ typedef enum _JASidePanelState {
 
 // Current state of panels. Use KVO to monitor state changes
 @property (nonatomic, readonly) JASidePanelState state;
-@property (nonatomic, readonly) UIViewController *visiblePanel;
+@property (nonatomic, weak, readonly) UIViewController *visiblePanel;
 
 // Determines whether or not the panel's views are removed when not visble. If YES, rightPanel & leftPanel's views are eligible for viewDidUnload
 @property (nonatomic, assign) BOOL canUnloadRightPanel; // defaults to NO
