@@ -8,7 +8,7 @@ Demo
 ![iPhone Example](https://img.skitch.com/20120322-dx6k69577ra37wwgqgmsgksqpx.jpg)
 ![iPad Example](https://img.skitch.com/20120322-ttu951nfb8cpd5ti5r1ni8428y.jpg)
 
-Example Code
+Example 1: Code
 ---
 
 ```  objc
@@ -40,6 +40,26 @@ Example Code
 
 
 @end
+
+```
+
+Example 2: Storyboards
+---
+
+1. Create a subclass of `JASidePanelController`. In this example we call it `mySidePanelController`.
+2. In the Storyboard designate the root view's owner as `mySiePanelController`.
+3. Make sure to `#import "JASidePanelController.h"` in `mySidePanelController.h`.
+4. Add more views to your Storyboard, and give them identifiers "leftViewController", "centerViewController" and "rightViewController". Note that in the new XCode the identifier is called "Storyboard ID" and can be found in the Identity inspector (in older versions the identifier is found in the Attributes inspector).
+5. Add a method `awakeFromNib` to `mySidePanelController.m` with the following code:
+
+```  objc
+
+-(void) awakeFromNib
+{
+  [self setLeftPanel:[self.storyboard instantiateViewControllerWithIdentifier:@"leftViewController"]];
+  [self setCenterPanel:[self.storyboard instantiateViewControllerWithIdentifier:@"centerViewController"]];
+  [self setRightPanel:[self.storyboard instantiateViewControllerWIthIdentifier:@"rightViewController"]];
+}
 
 ```
 
