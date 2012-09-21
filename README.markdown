@@ -53,6 +53,8 @@ The easiest way to use JASidePanels is to copy the files into your XCode Project
 Alternatively, you can setup a git submodule and reference the files in your Xcode project. I prefer this method as it enables you to receive bugfixes/updates for the project.
 ` git submodule add https://github.com/gotosleep/JASidePanels.git JASidePanels `
 
+Make sure to include the QuartzCore framework in your target.
+
 UIViewController+JASidePanel Category
 ---
 
