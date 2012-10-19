@@ -54,6 +54,9 @@ typedef enum _JASidePanelState {
 - (void)toggleLeftPanel:(id)sender;
 - (void)toggleRightPanel:(id)sender;
 
+// Calling this while the left or right panel is visible causes the center panel to be completely hidden
+- (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval) duration;
+
 #pragma mark - Look & Feel
 
 // style
@@ -123,6 +126,9 @@ typedef enum _JASidePanelState {
 
 // Current state of panels. Use KVO to monitor state changes
 @property (nonatomic, readonly) JASidePanelState state;
+
+// Whether or not the center panel is completely hidden
+@property (nonatomic, assign) BOOL centerPanelHidden;
 
 // The currently visible panel
 @property (nonatomic, weak, readonly) UIViewController *visiblePanel;

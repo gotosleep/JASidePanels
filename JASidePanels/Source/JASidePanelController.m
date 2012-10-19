@@ -74,6 +74,7 @@
 @synthesize bounceOnSidePanelClose = _bounceOnSidePanelClose;
 @synthesize visiblePanel = _visiblePanel;
 @synthesize shouldDelegateAutorotateToVisiblePanel = _shouldDelegateAutorotateToVisiblePanel;
+@synthesize centerPanelHidden = _centerPanelHidden;
 
 #pragma mark - Icon
 
@@ -146,6 +147,7 @@
     
     self.centerPanelContainer = [[UIView alloc] initWithFrame:self.view.bounds];
     _centerPanelRestingFrame = self.centerPanelContainer.frame;
+    _centerPanelHidden = NO;
     
     self.leftPanelContainer = [[UIView alloc] initWithFrame:self.view.bounds];
     self.leftPanelContainer.hidden = YES;
@@ -195,6 +197,11 @@
     [self _layoutSideContainers:YES duration:duration];
     [self _layoutSidePanels];
     [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
+    if (self.centerPanelHidden) {
+        CGRect frame = self.centerPanelContainer.frame;
+        frame.origin.x = self.state == JASidePanelLeftVisible ? self.centerPanelContainer.frame.size.width : -self.centerPanelContainer.frame.size.width;
+        self.centerPanelContainer.frame = frame;
+    }
 }
 
 #pragma mark - State
@@ -702,11 +709,19 @@
 }
 
 - (CGFloat)leftVisibleWidth {
-    return self.leftFixedWidth ? self.leftFixedWidth : floorf(self.view.bounds.size.width * self.leftGapPercentage);
+    if (self.centerPanelHidden && self.shouldResizeLeftPanel) {
+        return self.view.bounds.size.width;
+    } else {
+        return self.leftFixedWidth ? self.leftFixedWidth : floorf(self.view.bounds.size.width * self.leftGapPercentage);
+    }
 }
 
 - (CGFloat)rightVisibleWidth {
-    return self.rightFixedWidth ? self.rightFixedWidth : floorf(self.view.bounds.size.width * self.rightGapPercentage);
+    if (self.centerPanelHidden && self.shouldResizeRightPanel) {
+        return self.view.bounds.size.width;
+    } else {
+        return self.rightFixedWidth ? self.rightFixedWidth : floorf(self.view.bounds.size.width * self.rightGapPercentage);
+    }    
 }
 
 #pragma mark - Showing Panels
@@ -781,6 +796,23 @@
     [self _toggleScrollsToTopForCenter:YES left:NO right:NO];
 }
 
+- (void)_hideCenterPanel {
+    self.centerPanelContainer.hidden = YES;
+    if (self.centerPanel.isViewLoaded) {
+        [self.centerPanel.view removeFromSuperview];
+    }
+}
+
+- (void)_unhideCenterPanel {
+    self.centerPanelContainer.hidden = NO;
+    if (!self.centerPanel.view.superview) {
+        self.centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.centerPanel.view.frame = self.centerPanelContainer.bounds;
+        [self stylePanel:self.centerPanel.view];
+        [self.centerPanelContainer addSubview:self.centerPanel.view];
+    }
+}
+
 - (void)_toggleScrollsToTopForCenter:(BOOL)center left:(BOOL)left right:(BOOL)right {
     // iPhone only supports 1 active UIScrollViewController at a time
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -833,6 +865,11 @@
 }
 
 - (void)showCenterPanel:(BOOL)animated {
+    // make sure center panel isn't hidden
+    if (_centerPanelHidden) {
+        _centerPanelHidden = NO;
+        [self _unhideCenterPanel];
+    }
     [self _showCenterPanel:animated bounce:NO];
 }
 
@@ -849,6 +886,44 @@
         [self _showCenterPanel:YES bounce:NO];
     } else if (self.state == JASidePanelCenterVisible) {
         [self _showRightPanel:YES bounce:NO];
+    }
+}
+
+- (void)setCenterPanelHidden:(BOOL)centerPanelHidden {
+    [self setCenterPanelHidden:centerPanelHidden animated:NO duration:0.0];
+}
+
+- (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval) duration {
+    if (centerPanelHidden != _centerPanelHidden && self.state != JASidePanelCenterVisible) {
+        _centerPanelHidden = centerPanelHidden;
+        duration = animated ? duration : 0.0f;
+        if (centerPanelHidden) {
+            [UIView animateWithDuration:duration animations:^{
+                CGRect frame = self.centerPanelContainer.frame;
+                frame.origin.x = self.state == JASidePanelLeftVisible ? self.centerPanelContainer.frame.size.width : -self.centerPanelContainer.frame.size.width;
+                self.centerPanelContainer.frame = frame;
+                if (self.shouldResizeLeftPanel || self.shouldResizeRightPanel) {
+                    [self _layoutSidePanels];
+                }
+            } completion:^(BOOL finished) {
+                // need to double check in case the user tapped really fast
+                if (_centerPanelHidden) {
+                    [self _hideCenterPanel];
+                }
+            }];
+        } else {
+            [self _unhideCenterPanel];
+            [UIView animateWithDuration:duration animations:^{
+                if (self.state == JASidePanelLeftVisible) {
+                    [self showLeftPanel:NO];
+                } else {
+                    [self showRightPanel:NO];
+                }
+                if (self.shouldResizeLeftPanel || self.shouldResizeRightPanel) {
+                    [self _layoutSidePanels];
+                }
+            }];
+        }
     }
 }
 
