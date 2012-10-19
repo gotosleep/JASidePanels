@@ -26,6 +26,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JARightViewController : UIViewController
+#import "JALeftViewController.h"
+
+@interface JARightViewController : JALeftViewController
 
 @end

@@ -28,4 +28,8 @@
 
 @interface JALeftViewController : UIViewController
 
+@property (nonatomic, weak, readonly) UILabel *label;
+@property (nonatomic, weak, readonly) UIButton *hide;
+@property (nonatomic, weak, readonly) UIButton *show;
+
 @end

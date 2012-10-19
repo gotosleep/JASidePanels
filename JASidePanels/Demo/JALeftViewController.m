@@ -32,6 +32,8 @@
 @interface JALeftViewController ()
 
 @property (nonatomic, weak) UILabel *label;
+@property (nonatomic, weak) UIButton *hide;
+@property (nonatomic, weak) UIButton *show;
 
 @end
 
@@ -50,10 +52,41 @@
 	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
     [self.view addSubview:label];
     self.label = label;
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.frame = CGRectMake(20.0f, 20.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Hide Center" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_hideTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    self.hide = button;
+    
+    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.frame = self.hide.frame;
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Show Center" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_showTapped:) forControlEvents:UIControlEventTouchUpInside];
+    button.hidden = YES;
+    [self.view addSubview:button];
+    self.show = button;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), floorf(self.view.bounds.size.height/2.0f));
+}
+
+#pragma mark - Button Actions
+
+- (void)_hideTapped:(id)sender {
+    [self.sidePanelController setCenterPanelHidden:YES animated:YES duration:0.2f];
+    self.hide.hidden = YES;
+    self.show.hidden = NO;
+}
+
+- (void)_showTapped:(id)sender {
+    [self.sidePanelController setCenterPanelHidden:NO animated:YES duration:0.2f];
+    self.hide.hidden = NO;
+    self.show.hidden = YES;
 }
 
 @end

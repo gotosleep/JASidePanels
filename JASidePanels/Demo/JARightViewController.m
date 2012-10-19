@@ -40,16 +40,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor redColor];
-    
-    UILabel *label  = [[UILabel alloc] init];
-    label.font = [UIFont boldSystemFontOfSize:20.0f];
-    label.textColor = [UIColor whiteColor];
-    label.backgroundColor = [UIColor clearColor];
-	label.text = @"Right Panel";
-	[label sizeToFit];
-	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-	[self.view addSubview:label];
-    self.label = label;
+    self.label.text = @"Right Panel";
+    [self.label sizeToFit];
+    self.hide.frame = CGRectMake(self.view.bounds.size.width - 220.0f, 20.0f, 200.0f, 40.0f);
+    self.hide.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+    self.show.frame = self.hide.frame;
+    self.show.autoresizingMask = self.hide.autoresizingMask;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
