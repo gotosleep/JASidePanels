@@ -46,6 +46,10 @@
     self.hide.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.show.frame = self.hide.frame;
     self.show.autoresizingMask = self.hide.autoresizingMask;
+    
+    self.removeRightPanel.hidden = YES;
+    self.addRightPanel.hidden = YES;
+    self.changeCenterPanel.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

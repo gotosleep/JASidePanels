@@ -31,5 +31,8 @@
 @property (nonatomic, weak, readonly) UILabel *label;
 @property (nonatomic, weak, readonly) UIButton *hide;
 @property (nonatomic, weak, readonly) UIButton *show;
+@property (nonatomic, weak, readonly) UIButton *removeRightPanel;
+@property (nonatomic, weak, readonly) UIButton *addRightPanel;
+@property (nonatomic, weak, readonly) UIButton *changeCenterPanel;
 
 @end
