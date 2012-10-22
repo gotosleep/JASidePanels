@@ -46,10 +46,34 @@
     self.hide.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.show.frame = self.hide.frame;
     self.show.autoresizingMask = self.hide.autoresizingMask;
+    
+    self.removeRightPanel.hidden = YES;
+    self.addRightPanel.hidden = YES;
+    self.changeCenterPanel.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"%@ viewWillAppear", self);
     self.label.center = CGPointMake(floorf((self.view.bounds.size.width - self.sidePanelController.rightVisibleWidth) + self.sidePanelController.rightVisibleWidth/2.0f), floorf(self.view.bounds.size.height/2.0f));
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	NSLog(@"%@ viewDidAppear", self);
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	NSLog(@"%@ viewWillDisappear", self);
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	NSLog(@"%@ viewDidDisappear", self);
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	NSLog(@"%@ willMoveToParentViewController %@", self, parent);
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	NSLog(@"%@ didMoveToParentViewController %@", self, parent);
+}
 @end

@@ -348,6 +348,7 @@
             [self _loadCenterPanel];
             [self addChildViewController:next];
             [self.centerPanelContainer addSubview:next.view];
+            [next didMoveToParentViewController:self];
         }
     }
 }
@@ -360,6 +361,7 @@
         _leftPanel = leftPanel;
         if (_leftPanel) {
             [self addChildViewController:_leftPanel];
+            [_leftPanel didMoveToParentViewController:self];
             [self _placeButtonForLeftPanel];
         }
         if (self.state == JASidePanelLeftVisible) {
@@ -376,6 +378,7 @@
         _rightPanel = rightPanel;
         if (_rightPanel) {
             [self addChildViewController:_rightPanel];
+            [_rightPanel didMoveToParentViewController:self];
         }
         if (self.state == JASidePanelRightVisible) {
             self.visiblePanel = _rightPanel;

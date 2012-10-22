@@ -34,7 +34,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    CGFloat red = (CGFloat)arc4random() / 0x100000000;
+    CGFloat green = (CGFloat)arc4random() / 0x100000000;
+    CGFloat blue = (CGFloat)arc4random() / 0x100000000;
+    self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
     
     UILabel *label  = [[UILabel alloc] init];
     label.font = [UIFont boldSystemFontOfSize:20.0f];
@@ -43,6 +46,30 @@
     label.center = CGPointMake(floorf(self.view.bounds.size.width/2.0f), floorf((self.view.bounds.size.height - self.navigationController.navigationBar.frame.size.height)/2.0f));
     label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
     [self.view addSubview:label];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	NSLog(@"%@ viewWillAppear", self);
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	NSLog(@"%@ viewDidAppear", self);
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	NSLog(@"%@ viewWillDisappear", self);
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	NSLog(@"%@ viewDidDisappear", self);
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	NSLog(@"%@ willMoveToParentViewController %@", self, parent);
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	NSLog(@"%@ didMoveToParentViewController %@", self, parent);
 }
 
 @end
