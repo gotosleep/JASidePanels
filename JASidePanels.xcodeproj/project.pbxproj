@@ -18,6 +18,7 @@
 		9561AD1B15130F10005889C6 /* JALeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1615130F10005889C6 /* JALeftViewController.m */; };
 		9561AD1C15130F10005889C6 /* JARightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1815130F10005889C6 /* JARightViewController.m */; };
 		9561AD2115130F2A005889C6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1F15130F2A005889C6 /* main.m */; };
+		9568132B16373ACB007B3602 /* JADebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9568132A16373ACB007B3602 /* JADebugViewController.m */; };
 		95BCC45A15F081130009F1DA /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,8 @@
 		9561AD1D15130F2A005889C6 /* JASidePanels-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JASidePanels-Info.plist"; path = "Demo/JASidePanels-Info.plist"; sourceTree = "<group>"; };
 		9561AD1E15130F2A005889C6 /* JASidePanels-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JASidePanels-Prefix.pch"; path = "Demo/JASidePanels-Prefix.pch"; sourceTree = "<group>"; };
 		9561AD1F15130F2A005889C6 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demo/main.m; sourceTree = "<group>"; };
+		9568132916373ACB007B3602 /* JADebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JADebugViewController.h; path = Demo/JADebugViewController.h; sourceTree = "<group>"; };
+		9568132A16373ACB007B3602 /* JADebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JADebugViewController.m; path = Demo/JADebugViewController.m; sourceTree = "<group>"; };
 		95BCC45815F081130009F1DA /* UIViewController+JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+JASidePanel.h"; path = "Source/UIViewController+JASidePanel.h"; sourceTree = "<group>"; };
 		95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+JASidePanel.m"; path = "Source/UIViewController+JASidePanel.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,6 +128,8 @@
 				9561ACB8151286EE005889C6 /* Supporting Files */,
 				9561AD1115130F10005889C6 /* JAAppDelegate.h */,
 				9561AD1215130F10005889C6 /* JAAppDelegate.m */,
+				9568132916373ACB007B3602 /* JADebugViewController.h */,
+				9568132A16373ACB007B3602 /* JADebugViewController.m */,
 				9561AD1315130F10005889C6 /* JACenterViewController.h */,
 				9561AD1415130F10005889C6 /* JACenterViewController.m */,
 				9561AD1515130F10005889C6 /* JALeftViewController.h */,
@@ -204,6 +209,7 @@
 				9561AD1C15130F10005889C6 /* JARightViewController.m in Sources */,
 				9561AD2115130F2A005889C6 /* main.m in Sources */,
 				95BCC45A15F081130009F1DA /* UIViewController+JASidePanel.m in Sources */,
+				9568132B16373ACB007B3602 /* JADebugViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

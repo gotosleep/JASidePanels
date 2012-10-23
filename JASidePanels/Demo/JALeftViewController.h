@@ -24,9 +24,9 @@
  */
 
 
-#import <UIKit/UIKit.h>
+#import "JADebugViewController.h"
 
-@interface JALeftViewController : UIViewController
+@interface JALeftViewController : JADebugViewController
 
 @property (nonatomic, weak, readonly) UILabel *label;
 @property (nonatomic, weak, readonly) UIButton *hide;

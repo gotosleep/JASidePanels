@@ -31,8 +31,6 @@
 
 @interface JARightViewController ()
 
-@property (nonatomic, weak) UILabel *label;
-
 @end
 
 @implementation JARightViewController
@@ -53,27 +51,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"%@ viewWillAppear", self);
+    [super viewWillAppear:animated];
     self.label.center = CGPointMake(floorf((self.view.bounds.size.width - self.sidePanelController.rightVisibleWidth) + self.sidePanelController.rightVisibleWidth/2.0f), floorf(self.view.bounds.size.height/2.0f));
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	NSLog(@"%@ viewDidAppear", self);
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	NSLog(@"%@ viewWillDisappear", self);
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-	NSLog(@"%@ viewDidDisappear", self);
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	NSLog(@"%@ willMoveToParentViewController %@", self, parent);
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	NSLog(@"%@ didMoveToParentViewController %@", self, parent);
-}
 @end

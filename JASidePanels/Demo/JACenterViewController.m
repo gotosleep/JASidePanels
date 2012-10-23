@@ -48,28 +48,4 @@
     [self.view addSubview:label];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	NSLog(@"%@ viewWillAppear", self);
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	NSLog(@"%@ viewDidAppear", self);
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	NSLog(@"%@ viewWillDisappear", self);
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-	NSLog(@"%@ viewDidDisappear", self);
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	NSLog(@"%@ willMoveToParentViewController %@", self, parent);
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-	NSLog(@"%@ didMoveToParentViewController %@", self, parent);
-}
-
 @end
