@@ -168,14 +168,6 @@ static char ja_kvoContext;
     [self.view bringSubviewToFront:self.centerPanelContainer];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.tapView = nil;
-    self.centerPanelContainer = nil;
-    self.leftPanelContainer = nil;
-    self.rightPanelContainer = nil;
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     // ensure correct view dimensions
@@ -183,6 +175,16 @@ static char ja_kvoContext;
     [self _layoutSidePanels];
     self.centerPanelContainer.frame = [self _adjustCenterFrame];
     [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
+}
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    self.tapView = nil;
+    self.centerPanelContainer = nil;
+    self.leftPanelContainer = nil;
+    self.rightPanelContainer = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -195,6 +197,8 @@ static char ja_kvoContext;
     }
 }
 
+#else
+
 - (BOOL)shouldAutorotate {
     __strong UIViewController *visiblePanel = self.visiblePanel;
 
@@ -204,6 +208,9 @@ static char ja_kvoContext;
         return YES;
     }
 }
+
+
+#endif
 
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
