@@ -195,6 +195,16 @@ static char ja_kvoContext;
     }
 }
 
+- (BOOL)shouldAutorotate {
+    __strong UIViewController *visiblePanel = self.visiblePanel;
+
+    if (self.shouldDelegateAutorotateToVisiblePanel && [visiblePanel respondsToSelector:@selector(shouldAutorotate)]) {
+        return [visiblePanel shouldAutorotate];
+    } else {
+        return YES;
+    }
+}
+
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
     [self _layoutSideContainers:YES duration:duration];
