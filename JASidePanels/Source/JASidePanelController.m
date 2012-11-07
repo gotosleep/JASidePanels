@@ -24,8 +24,9 @@
  */
 
 #import <QuartzCore/QuartzCore.h>
-
 #import "JASidePanelController.h"
+
+static char ja_kvoContext;
 
 @interface JASidePanelController() {
     CGRect _centerPanelRestingFrame;		
@@ -314,8 +315,8 @@
         [_centerPanel removeObserver:self forKeyPath:@"view"];
         [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
         _centerPanel = centerPanel;
-        [_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:nil];
-        [_centerPanel addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionInitial context:nil];
+        [_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:&ja_kvoContext];
+        [_centerPanel addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionInitial context:&ja_kvoContext];
         if (self.state == JASidePanelCenterVisible) {
             self.visiblePanel = _centerPanel;
         }
@@ -842,14 +843,18 @@
 
 #pragma mark - Key Value Observing
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(__unused NSDictionary *)change context:(__unused void *)context {
-    if ([keyPath isEqualToString:@"view"]) {
-        if (self.centerPanel.isViewLoaded && self.recognizesPanGesture) {
-            [self _addPanGestureToView:self.centerPanel.view];
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(__unused NSDictionary *)change context:(void *)context {
+    if (context == &ja_kvoContext) {
+        if ([keyPath isEqualToString:@"view"]) {
+            if (self.centerPanel.isViewLoaded && self.recognizesPanGesture) {
+                [self _addPanGestureToView:self.centerPanel.view];
+            }
+        } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
+            // view controllers have changed, need to replace the button
+            [self _placeButtonForLeftPanel];
         }
-    } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
-        // view controllers have changed, need to replace the button
-        [self _placeButtonForLeftPanel];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
