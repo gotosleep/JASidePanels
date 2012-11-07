@@ -186,8 +186,10 @@ static char ja_kvoContext;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    __strong UIViewController *visiblePanel = self.visiblePanel;
+
     if (self.shouldDelegateAutorotateToVisiblePanel) {
-        return [self.visiblePanel shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+        return [visiblePanel shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
     } else {
         return YES;
     }
