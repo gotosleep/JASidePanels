@@ -192,7 +192,7 @@
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
     [self _layoutSideContainers:YES duration:duration];
     [self _layoutSidePanels];
@@ -331,7 +331,7 @@
             CGFloat x = (previousState == JASidePanelLeftVisible) ? self.view.bounds.size.width : -self.view.bounds.size.width;
             _centerPanelRestingFrame.origin.x = x;
             self.centerPanelContainer.frame = _centerPanelRestingFrame;
-        } completion:^(BOOL finished) {
+        } completion:^(__unused BOOL finished) {
             [self _swapCenter:previous with:_centerPanel];
             [self _showCenterPanel:YES bounce:NO];
         }];
@@ -526,7 +526,7 @@
     [view addGestureRecognizer:tapGesture];	
 }
 
-- (void)_centerPanelTapped:(UIGestureRecognizer *)gesture {
+- (void)_centerPanelTapped:(__unused UIGestureRecognizer *)gesture {
     [self _showCenterPanel:YES bounce:NO];
 }
 
@@ -668,7 +668,7 @@
                 CGRect bounceFrame = _centerPanelRestingFrame;
                 bounceFrame.origin.x += bounceDistance;
                 self.centerPanelContainer.frame = bounceFrame;
-            } completion:^(BOOL finished2) {
+            } completion:^(__unused BOOL finished2) {
                 [UIView animateWithDuration:self.bounceDuration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
                     self.centerPanelContainer.frame = _centerPanelRestingFrame;				
                 } completion:completion];
@@ -779,7 +779,7 @@
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+        [self _animateCenterPanel:shouldBounce completion:^(__unused BOOL finished) {
             self.leftPanelContainer.hidden = YES;
             self.rightPanelContainer.hidden = YES;
             [self _unloadPanels];
@@ -842,7 +842,7 @@
 
 #pragma mark - Key Value Observing
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(__unused NSDictionary *)change context:(__unused void *)context {
     if ([keyPath isEqualToString:@"view"]) {
         if (self.centerPanel.isViewLoaded && self.recognizesPanGesture) {
             [self _addPanGestureToView:self.centerPanel.view];
@@ -876,7 +876,7 @@
     [self _showCenterPanel:animated bounce:NO];
 }
 
-- (void)toggleLeftPanel:(id)sender {
+- (void)toggleLeftPanel:(__unused id)sender {
     if (self.state == JASidePanelLeftVisible) {
         [self _showCenterPanel:YES bounce:NO];
     } else if (self.state == JASidePanelCenterVisible) {
@@ -884,7 +884,7 @@
     }
 }
 
-- (void)toggleRightPanel:(id)sender {
+- (void)toggleRightPanel:(__unused id)sender {
     if (self.state == JASidePanelRightVisible) {
         [self _showCenterPanel:YES bounce:NO];
     } else if (self.state == JASidePanelCenterVisible) {
@@ -908,7 +908,7 @@
                 if (self.shouldResizeLeftPanel || self.shouldResizeRightPanel) {
                     [self _layoutSidePanels];
                 }
-            } completion:^(BOOL finished) {
+            } completion:^(__unused BOOL finished) {
                 // need to double check in case the user tapped really fast
                 if (_centerPanelHidden) {
                     [self _hideCenterPanel];
