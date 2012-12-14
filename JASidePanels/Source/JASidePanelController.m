@@ -177,6 +177,10 @@ static char ja_kvoContext;
     [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [self _adjustCenterFrame]; //Account for possible rotation while view appearing
+}
+
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 
 - (void)viewDidUnload {
