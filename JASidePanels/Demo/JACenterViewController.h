@@ -24,8 +24,8 @@
  */
 
 
-#import <UIKit/UIKit.h>
+#import "JADebugViewController.h"
 
-@interface JACenterViewController : UIViewController
+@interface JACenterViewController : JADebugViewController
 
 @end

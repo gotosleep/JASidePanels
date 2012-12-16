@@ -24,8 +24,9 @@
  */
 
 #import <QuartzCore/QuartzCore.h>
-
 #import "JASidePanelController.h"
+
+static char ja_kvoContext;
 
 @interface JASidePanelController() {
     CGRect _centerPanelRestingFrame;		
@@ -167,14 +168,6 @@
     [self.view bringSubviewToFront:self.centerPanelContainer];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.tapView = nil;
-    self.centerPanelContainer = nil;
-    self.leftPanelContainer = nil;
-    self.rightPanelContainer = nil;
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     // ensure correct view dimensions
@@ -184,15 +177,42 @@
     [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
 }
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    self.tapView = nil;
+    self.centerPanelContainer = nil;
+    self.leftPanelContainer = nil;
+    self.rightPanelContainer = nil;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    __strong UIViewController *visiblePanel = self.visiblePanel;
+
     if (self.shouldDelegateAutorotateToVisiblePanel) {
-        return [self.visiblePanel shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+        return [visiblePanel shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
     } else {
         return YES;
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+#else
+
+- (BOOL)shouldAutorotate {
+    __strong UIViewController *visiblePanel = self.visiblePanel;
+
+    if (self.shouldDelegateAutorotateToVisiblePanel && [visiblePanel respondsToSelector:@selector(shouldAutorotate)]) {
+        return [visiblePanel shouldAutorotate];
+    } else {
+        return YES;
+    }
+}
+
+
+#endif
+
+- (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
     [self _layoutSideContainers:YES duration:duration];
     [self _layoutSidePanels];
@@ -314,8 +334,8 @@
         [_centerPanel removeObserver:self forKeyPath:@"view"];
         [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
         _centerPanel = centerPanel;
-        [_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:nil];
-        [_centerPanel addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionInitial context:nil];
+        [_centerPanel addObserver:self forKeyPath:@"viewControllers" options:0 context:&ja_kvoContext];
+        [_centerPanel addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionInitial context:&ja_kvoContext];
         if (self.state == JASidePanelCenterVisible) {
             self.visiblePanel = _centerPanel;
         }
@@ -331,7 +351,7 @@
             CGFloat x = (previousState == JASidePanelLeftVisible) ? self.view.bounds.size.width : -self.view.bounds.size.width;
             _centerPanelRestingFrame.origin.x = x;
             self.centerPanelContainer.frame = _centerPanelRestingFrame;
-        } completion:^(BOOL finished) {
+        } completion:^(__unused BOOL finished) {
             [self _swapCenter:previous with:_centerPanel];
             [self _showCenterPanel:YES bounce:NO];
         }];
@@ -348,6 +368,7 @@
             [self _loadCenterPanel];
             [self addChildViewController:next];
             [self.centerPanelContainer addSubview:next.view];
+            [next didMoveToParentViewController:self];
         }
     }
 }
@@ -360,6 +381,7 @@
         _leftPanel = leftPanel;
         if (_leftPanel) {
             [self addChildViewController:_leftPanel];
+            [_leftPanel didMoveToParentViewController:self];
             [self _placeButtonForLeftPanel];
         }
         if (self.state == JASidePanelLeftVisible) {
@@ -376,6 +398,7 @@
         _rightPanel = rightPanel;
         if (_rightPanel) {
             [self addChildViewController:_rightPanel];
+            [_rightPanel didMoveToParentViewController:self];
         }
         if (self.state == JASidePanelRightVisible) {
             self.visiblePanel = _rightPanel;
@@ -523,7 +546,7 @@
     [view addGestureRecognizer:tapGesture];	
 }
 
-- (void)_centerPanelTapped:(UIGestureRecognizer *)gesture {
+- (void)_centerPanelTapped:(__unused UIGestureRecognizer *)gesture {
     [self _showCenterPanel:YES bounce:NO];
 }
 
@@ -665,7 +688,7 @@
                 CGRect bounceFrame = _centerPanelRestingFrame;
                 bounceFrame.origin.x += bounceDistance;
                 self.centerPanelContainer.frame = bounceFrame;
-            } completion:^(BOOL finished2) {
+            } completion:^(__unused BOOL finished2) {
                 [UIView animateWithDuration:self.bounceDuration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
                     self.centerPanelContainer.frame = _centerPanelRestingFrame;				
                 } completion:completion];
@@ -776,7 +799,7 @@
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+        [self _animateCenterPanel:shouldBounce completion:^(__unused BOOL finished) {
             self.leftPanelContainer.hidden = YES;
             self.rightPanelContainer.hidden = YES;
             [self _unloadPanels];
@@ -839,14 +862,18 @@
 
 #pragma mark - Key Value Observing
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"view"]) {
-        if (self.centerPanel.isViewLoaded && self.recognizesPanGesture) {
-            [self _addPanGestureToView:self.centerPanel.view];
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(__unused NSDictionary *)change context:(void *)context {
+    if (context == &ja_kvoContext) {
+        if ([keyPath isEqualToString:@"view"]) {
+            if (self.centerPanel.isViewLoaded && self.recognizesPanGesture) {
+                [self _addPanGestureToView:self.centerPanel.view];
+            }
+        } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
+            // view controllers have changed, need to replace the button
+            [self _placeButtonForLeftPanel];
         }
-    } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
-        // view controllers have changed, need to replace the button
-        [self _placeButtonForLeftPanel];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
@@ -873,7 +900,7 @@
     [self _showCenterPanel:animated bounce:NO];
 }
 
-- (void)toggleLeftPanel:(id)sender {
+- (void)toggleLeftPanel:(__unused id)sender {
     if (self.state == JASidePanelLeftVisible) {
         [self _showCenterPanel:YES bounce:NO];
     } else if (self.state == JASidePanelCenterVisible) {
@@ -881,7 +908,7 @@
     }
 }
 
-- (void)toggleRightPanel:(id)sender {
+- (void)toggleRightPanel:(__unused id)sender {
     if (self.state == JASidePanelRightVisible) {
         [self _showCenterPanel:YES bounce:NO];
     } else if (self.state == JASidePanelCenterVisible) {
@@ -905,7 +932,7 @@
                 if (self.shouldResizeLeftPanel || self.shouldResizeRightPanel) {
                     [self _layoutSidePanels];
                 }
-            } completion:^(BOOL finished) {
+            } completion:^(__unused BOOL finished) {
                 // need to double check in case the user tapped really fast
                 if (_centerPanelHidden) {
                     [self _hideCenterPanel];
