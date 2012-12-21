@@ -178,6 +178,7 @@ static char ja_kvoContext;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     [self _adjustCenterFrame]; //Account for possible rotation while view appearing
 }
 
