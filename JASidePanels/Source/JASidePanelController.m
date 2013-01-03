@@ -208,9 +208,16 @@ static char ja_kvoContext;
         return YES;
     }
 }
-
-
 #endif
+
+- (BOOL)shouldAutorotate {
+    
+    [_centerPanel shouldAutorotate];
+    
+    return YES;
+}
+
+
 
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
