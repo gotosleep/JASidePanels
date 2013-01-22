@@ -562,7 +562,9 @@ static char ja_kvoContext;
     if (self.state == JASidePanelCenterVisible) {
         if ((position > 0.0f && !self.leftPanel) || (position < 0.0f && !self.rightPanel)) {
             return 0.0f;
-        }
+        } else if (!self.allowLeftOverpan && position > self.leftVisibleWidth) {
+			return self.leftVisibleWidth;
+		}
     } else if (self.state == JASidePanelRightVisible && !self.allowRightOverpan) {
         if ((position + _centerPanelRestingFrame.size.width) < (self.rightPanelContainer.frame.size.width - self.rightVisibleWidth)) {
             return 0.0f;
