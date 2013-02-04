@@ -930,6 +930,12 @@ static char ja_kvoContext;
         _centerPanelHidden = centerPanelHidden;
         duration = animated ? duration : 0.0f;
         if (centerPanelHidden) {
+			CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+			animation.fromValue = [NSNumber numberWithFloat:0.75];
+			animation.toValue = [NSNumber numberWithFloat:0];
+			animation.duration = duration;
+			[self.centerPanelContainer.layer addAnimation:animation forKey:@"shadowOpacity"];
+			self.centerPanelContainer.layer.shadowOpacity = 0.0;
             [UIView animateWithDuration:duration animations:^{
                 CGRect frame = self.centerPanelContainer.frame;
                 frame.origin.x = self.state == JASidePanelLeftVisible ? self.centerPanelContainer.frame.size.width : -self.centerPanelContainer.frame.size.width;
@@ -944,6 +950,12 @@ static char ja_kvoContext;
                 }
             }];
         } else {
+			CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+			animation.fromValue = [NSNumber numberWithFloat:0];
+			animation.toValue = [NSNumber numberWithFloat:0.75];
+			animation.duration = duration;
+			[self.centerPanelContainer.layer addAnimation:animation forKey:@"shadowOpacity"];
+			self.centerPanelContainer.layer.shadowOpacity = 0.75;
             [self _unhideCenterPanel];
             [UIView animateWithDuration:duration animations:^{
                 if (self.state == JASidePanelLeftVisible) {
