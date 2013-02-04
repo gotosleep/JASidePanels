@@ -888,6 +888,18 @@ static char ja_kvoContext;
     return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
 }
 
+- (void)showLeftPanel:(BOOL)animated {
+    [self showLeftPanelAnimated:animated];
+}
+
+- (void)showRightPanel:(BOOL)animated {
+    [self showRightPanelAnimated:animated];
+}
+
+- (void)showCenterPanel:(BOOL)animated {
+    [self showCenterPanelAnimated:animated];
+}
+
 - (void)showLeftPanelAnimated:(BOOL)animated {
     [self _showLeftPanel:animated bounce:NO];
 }
