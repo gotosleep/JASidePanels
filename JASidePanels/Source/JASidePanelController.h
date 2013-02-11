@@ -148,6 +148,10 @@ typedef enum _JASidePanelState {
 @property (nonatomic, assign) BOOL allowRightOverpan; // defaults to YES
 @property (nonatomic, assign) BOOL allowLeftOverpan;  // defaults to YES
 
+// Determines whether or not the left or right panel can be swiped into view. Use if only way to view a panel is with a button
+@property (nonatomic, assign) BOOL allowLeftSwipe;  // defaults to YES
+@property (nonatomic, assign) BOOL allowRightSwipe; // defaults to YES
+
 // Containers for the panels.
 @property (nonatomic, strong, readonly) UIView *leftPanelContainer;
 @property (nonatomic, strong, readonly) UIView *rightPanelContainer;
