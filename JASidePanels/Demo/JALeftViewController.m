@@ -54,12 +54,12 @@
     label.backgroundColor = [UIColor clearColor];
 	label.text = @"Left Panel";
 	[label sizeToFit];
-	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self.view addSubview:label];
     self.label = label;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(20.0f, 20.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 70.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Hide Center" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_hideTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -76,7 +76,7 @@
     self.show = button;
     
     button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(20.0f, 70.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 120.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Remove Right Panel" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_removeRightPanelTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -93,7 +93,7 @@
     self.addRightPanel = button;
     
     button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(20.0f, 245.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 170.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [button setTitle:@"Change Center Panel" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_changeCenterPanelTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -103,7 +103,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), floorf(self.view.bounds.size.height/2.0f));
+    self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), 25.0f);
 }
 
 #pragma mark - Button Actions
@@ -133,7 +133,7 @@
 }
 
 - (void)_changeCenterPanelTapped:(id)sender {
-    self.sidePanelController.centerPanel = [[JACenterViewController alloc] init];
+    self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
 }
 
 @end
