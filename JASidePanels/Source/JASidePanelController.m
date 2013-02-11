@@ -905,14 +905,26 @@ static char ja_kvoContext;
 }
 
 - (void)showLeftPanel:(BOOL)animated {
-    [self _showLeftPanel:animated bounce:NO];
+    [self showLeftPanelAnimated:animated];
 }
 
 - (void)showRightPanel:(BOOL)animated {
-    [self _showRightPanel:animated bounce:NO];
+    [self showRightPanelAnimated:animated];
 }
 
 - (void)showCenterPanel:(BOOL)animated {
+    [self showCenterPanelAnimated:animated];
+}
+
+- (void)showLeftPanelAnimated:(BOOL)animated {
+    [self _showLeftPanel:animated bounce:NO];
+}
+
+- (void)showRightPanelAnimated:(BOOL)animated {
+    [self _showRightPanel:animated bounce:NO];
+}
+
+- (void)showCenterPanelAnimated:(BOOL)animated {
     // make sure center panel isn't hidden
     if (_centerPanelHidden) {
         _centerPanelHidden = NO;
@@ -963,9 +975,9 @@ static char ja_kvoContext;
             [self _unhideCenterPanel];
             [UIView animateWithDuration:duration animations:^{
                 if (self.state == JASidePanelLeftVisible) {
-                    [self showLeftPanel:NO];
+                    [self showLeftPanelAnimated:NO];
                 } else {
-                    [self showRightPanel:NO];
+                    [self showRightPanelAnimated:NO];
                 }
                 if (self.shouldResizeLeftPanel || self.shouldResizeRightPanel) {
                     [self _layoutSidePanels];
