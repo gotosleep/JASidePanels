@@ -93,7 +93,7 @@ A UIViewController+JASidePanel category is included in the project. Usage is opt
 - (void)viewDidLoad {
     [super viewDidLoad];
     // sweet, I can access my parent JASidePanelController as a property!
-    [self.sidePanelController showCenterPanel:YES];
+    [self.sidePanelController showCenterPanelAnimated:YES];
 }
 
 @end

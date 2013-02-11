@@ -46,9 +46,14 @@ typedef enum _JASidePanelState {
 @property (nonatomic, strong) UIViewController *rightPanel;  // optional
 
 // show the panels
-- (void)showLeftPanel:(BOOL)animated;
-- (void)showRightPanel:(BOOL)animated;
-- (void)showCenterPanel:(BOOL)animated;
+- (void)showLeftPanel:(BOOL)animated __attribute__((deprecated("Use -showLeftPanelAnimated: instead")));
+- (void)showRightPanel:(BOOL)animated __attribute__((deprecated("Use -showRightPanelAnimated: instead")));
+- (void)showCenterPanel:(BOOL)animated __attribute__((deprecated("Use -showCenterPanelAnimated: instead")));
+
+// show the panels
+- (void)showLeftPanelAnimated:(BOOL)animated;
+- (void)showRightPanelAnimated:(BOOL)animated;
+- (void)showCenterPanelAnimated:(BOOL)animated;
 
 // toggle them opened/closed
 - (void)toggleLeftPanel:(id)sender;
