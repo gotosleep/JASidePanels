@@ -563,10 +563,12 @@ static char ja_kvoContext;
         if ((position > 0.0f && !self.leftPanel) || (position < 0.0f && !self.rightPanel)) {
             return 0.0f;
         } else if (!self.allowLeftOverpan && position > self.leftVisibleWidth) {
-			return self.leftVisibleWidth;
-		}
+            return self.leftVisibleWidth;
+        } else if (!self.allowRightOverpan && position < -self.rightVisibleWidth) {
+            return -self.rightVisibleWidth;
+        }
     } else if (self.state == JASidePanelRightVisible && !self.allowRightOverpan) {
-        if ((position + _centerPanelRestingFrame.size.width) < (self.rightPanelContainer.frame.size.width - self.rightVisibleWidth)) {
+        if (position < -self.rightVisibleWidth) {
             return 0.0f;
         } else if (position > self.rightPanelContainer.frame.origin.x) {
             return self.rightPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x;
@@ -575,7 +577,7 @@ static char ja_kvoContext;
         if (position > self.leftVisibleWidth) {
             return 0.0f;
         } else if (position < self.leftPanelContainer.frame.origin.x) {
-            return  self.leftPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x;
+            return self.leftPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x;
         }
     }
     return movement;
