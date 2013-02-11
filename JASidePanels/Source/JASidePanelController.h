@@ -46,9 +46,14 @@ typedef enum _JASidePanelState {
 @property (nonatomic, strong) UIViewController *rightPanel;  // optional
 
 // show the panels
-- (void)showLeftPanel:(BOOL)animated;
-- (void)showRightPanel:(BOOL)animated;
-- (void)showCenterPanel:(BOOL)animated;
+- (void)showLeftPanel:(BOOL)animated __attribute__((deprecated("Use -showLeftPanelAnimated: instead")));
+- (void)showRightPanel:(BOOL)animated __attribute__((deprecated("Use -showRightPanelAnimated: instead")));
+- (void)showCenterPanel:(BOOL)animated __attribute__((deprecated("Use -showCenterPanelAnimated: instead")));
+
+// show the panels
+- (void)showLeftPanelAnimated:(BOOL)animated;
+- (void)showRightPanelAnimated:(BOOL)animated;
+- (void)showCenterPanelAnimated:(BOOL)animated;
 
 // toggle them opened/closed
 - (void)toggleLeftPanel:(id)sender;
@@ -149,6 +154,10 @@ typedef enum _JASidePanelState {
 // Determines whether or not the center panel can be panned beyound the the visible area of the side panels
 @property (nonatomic, assign) BOOL allowRightOverpan; // defaults to YES
 @property (nonatomic, assign) BOOL allowLeftOverpan;  // defaults to YES
+
+// Determines whether or not the left or right panel can be swiped into view. Use if only way to view a panel is with a button
+@property (nonatomic, assign) BOOL allowLeftSwipe;  // defaults to YES
+@property (nonatomic, assign) BOOL allowRightSwipe; // defaults to YES
 
 // Containers for the panels.
 @property (nonatomic, strong, readonly) UIView *leftPanelContainer;
