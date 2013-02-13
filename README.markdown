@@ -46,11 +46,11 @@ Example 1: Code
 Example 2: Storyboards
 ---
 
-1. Create a subclass of `JASidePanelController`. In this example we call it `mySidePanelController`.
-2. In the Storyboard designate the root view's owner as `mySidePanelController`.
-3. Make sure to `#import "JASidePanelController.h"` in `mySidePanelController.h`.
-4. Add more views to your Storyboard, and give them identifiers "leftViewController", "centerViewController" and "rightViewController". Note that in the new XCode the identifier is called "Storyboard ID" and can be found in the Identity inspector (in older versions the identifier is found in the Attributes inspector).
-5. Add a method `awakeFromNib` to `mySidePanelController.m` with the following code:
+1. Create a subclass of `JASidePanelController`. In this example we call it `MySidePanelController`.
+2. In the Storyboard designate the root view's owner as `MySidePanelController`.
+3. Make sure to `#import "JASidePanelController.h"` in `MySidePanelController.h`.
+4. Add more view controllers to your Storyboard, and give them identifiers "leftViewController", "centerViewController" and "rightViewController". Note that in the new XCode the identifier is called "Storyboard ID" and can be found in the Identity inspector (in older versions the identifier is found in the Attributes inspector).
+5. Add a method `awakeFromNib` to `MySidePanelController.m` with the following code:
 
 ```  objc
 
