@@ -107,8 +107,10 @@ static char ja_kvoContext;
 #pragma mark - NSObject
 
 - (void)dealloc {
-    [_centerPanel removeObserver:self forKeyPath:@"view"];
-    [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
+    if (_centerPanel) {
+        [_centerPanel removeObserver:self forKeyPath:@"view"];
+        [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
+    }
 }
 
 //Support creating from Storyboard
