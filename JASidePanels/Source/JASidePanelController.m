@@ -405,6 +405,7 @@ static char ja_kvoContext;
         [_rightPanel.view removeFromSuperview];
         [_rightPanel removeFromParentViewController];
         _rightPanel = rightPanel;
+        [self _placeButtonForRightPanel];
         if (_rightPanel) {
             [self addChildViewController:_rightPanel];
             [_rightPanel didMoveToParentViewController:self];
@@ -442,6 +443,21 @@ static char ja_kvoContext;
     }	
     else if (buttonController.navigationItem.leftBarButtonItem) {
         buttonController.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (void)_placeButtonForRightPanel {
+    UIViewController *buttonController = [self _findButtonController];
+    if (!buttonController) {
+        return;
+    }
+    if (self.rightPanel) {
+        if (!buttonController.navigationItem.rightBarButtonItem) {
+            buttonController.navigationItem.rightBarButtonItem = [self rightButtonForCenterPanel];
+        }
+    }
+    else if (buttonController.navigationItem.rightBarButtonItem) {
+        buttonController.navigationItem.rightBarButtonItem = nil;
     }
 }
 
@@ -639,6 +655,7 @@ static char ja_kvoContext;
 
 - (void)_loadCenterPanel {
     [self _placeButtonForLeftPanel];
+    [self _placeButtonForRightPanel];
     
     _centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _centerPanel.view.frame = self.centerPanelContainer.bounds;
@@ -905,6 +922,7 @@ static char ja_kvoContext;
         } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
             // view controllers have changed, need to replace the button
             [self _placeButtonForLeftPanel];
+            [self _placeButtonForRightPanel];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -915,6 +933,10 @@ static char ja_kvoContext;
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
     return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+}
+
+- (UIBarButtonItem *)rightButtonForCenterPanel {
+    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleRightPanel:)];
 }
 
 - (void)showLeftPanel:(BOOL)animated {
