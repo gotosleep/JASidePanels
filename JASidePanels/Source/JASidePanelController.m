@@ -388,10 +388,10 @@ static char ja_kvoContext;
         [_leftPanel.view removeFromSuperview];
         [_leftPanel removeFromParentViewController];
         _leftPanel = leftPanel;
+        [self _placeButtonForLeftPanel];
         if (_leftPanel) {
             [self addChildViewController:_leftPanel];
             [_leftPanel didMoveToParentViewController:self];
-            [self _placeButtonForLeftPanel];
         }
         if (self.state == JASidePanelLeftVisible) {
             self.visiblePanel = _leftPanel;
@@ -440,6 +440,9 @@ static char ja_kvoContext;
             buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
         }
     }	
+    else if (buttonController.navigationItem.leftBarButtonItem) {
+        buttonController.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Gesture Recognizer Delegate
