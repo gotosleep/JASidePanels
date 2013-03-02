@@ -390,10 +390,10 @@ static char ja_kvoContext;
         [_leftPanel.view removeFromSuperview];
         [_leftPanel removeFromParentViewController];
         _leftPanel = leftPanel;
+        [self _placeButtonForLeftPanel];
         if (_leftPanel) {
             [self addChildViewController:_leftPanel];
             [_leftPanel didMoveToParentViewController:self];
-            [self _placeButtonForLeftPanel];
         }
         if (self.state == JASidePanelLeftVisible) {
             self.visiblePanel = _leftPanel;
@@ -407,6 +407,7 @@ static char ja_kvoContext;
         [_rightPanel.view removeFromSuperview];
         [_rightPanel removeFromParentViewController];
         _rightPanel = rightPanel;
+        [self _placeButtonForRightPanel];
         if (_rightPanel) {
             [self addChildViewController:_rightPanel];
             [_rightPanel didMoveToParentViewController:self];
@@ -419,19 +420,47 @@ static char ja_kvoContext;
 
 #pragma mark - Panel Buttons
 
+- (UIViewController*)_findButtonController {
+    UIViewController *buttonController = self.centerPanel;
+    if (![buttonController isKindOfClass:[UINavigationController class]]) {
+        return nil;
+    }
+    
+    UINavigationController *nav = (UINavigationController *)buttonController;
+    if ([nav.viewControllers count] > 0) {
+        buttonController = [nav.viewControllers objectAtIndex:0];
+    }
+    return buttonController;
+}
+
 - (void)_placeButtonForLeftPanel {
+    UIViewController *buttonController = [self _findButtonController];
+    if (!buttonController) {
+        return;
+    }
     if (self.leftPanel) {
-        UIViewController *buttonController = self.centerPanel;
-        if ([buttonController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *nav = (UINavigationController *)buttonController;
-            if ([nav.viewControllers count] > 0) {
-                buttonController = [nav.viewControllers objectAtIndex:0];
-            }
-        }
         if (!buttonController.navigationItem.leftBarButtonItem) {   
             buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
         }
     }	
+    else if (buttonController.navigationItem.leftBarButtonItem) {
+        buttonController.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (void)_placeButtonForRightPanel {
+    UIViewController *buttonController = [self _findButtonController];
+    if (!buttonController) {
+        return;
+    }
+    if (self.rightPanel) {
+        if (!buttonController.navigationItem.rightBarButtonItem) {
+            buttonController.navigationItem.rightBarButtonItem = [self rightButtonForCenterPanel];
+        }
+    }
+    else if (buttonController.navigationItem.rightBarButtonItem) {
+        buttonController.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Gesture Recognizer Delegate
@@ -632,6 +661,7 @@ static char ja_kvoContext;
 
 - (void)_loadCenterPanel {
     [self _placeButtonForLeftPanel];
+    [self _placeButtonForRightPanel];
     
     _centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _centerPanel.view.frame = self.centerPanelContainer.bounds;
@@ -898,6 +928,7 @@ static char ja_kvoContext;
         } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
             // view controllers have changed, need to replace the button
             [self _placeButtonForLeftPanel];
+            [self _placeButtonForRightPanel];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -908,6 +939,10 @@ static char ja_kvoContext;
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
     return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+}
+
+- (UIBarButtonItem *)rightButtonForCenterPanel {
+    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleRightPanel:)];
 }
 
 - (void)showLeftPanel:(BOOL)animated {
