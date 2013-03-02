@@ -471,6 +471,10 @@ static char ja_kvoContext;
 }
 
 - (void)_handlePan:(UIGestureRecognizer *)sender {
+	if (!_recognizesPanGesture) {
+		return;
+	}
+	
     if ([sender isKindOfClass:[UIPanGestureRecognizer class]]) {
         UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)sender;
         
