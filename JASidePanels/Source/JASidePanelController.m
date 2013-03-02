@@ -188,7 +188,7 @@ static char ja_kvoContext;
     [self _adjustCenterFrame]; //Account for possible rotation while view appearing
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+#if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 
 - (void)viewDidUnload {
     [super viewDidUnload];
