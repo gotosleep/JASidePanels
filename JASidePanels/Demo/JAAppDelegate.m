@@ -45,11 +45,16 @@
 	self.viewController.leftPanel = [[JALeftViewController alloc] init];
 	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
 	self.viewController.rightPanel = [[JARightViewController alloc] init];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedLeftDidShowNotification:) name:JASidePanelLeftDidShowNotification object:nil];
 	
 	self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;
 }
 
+- (void)receivedLeftDidShowNotification:(NSNotification*)notification {
+    NSLog(@"left did show notification");
+}
 
 @end
