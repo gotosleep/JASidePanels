@@ -141,6 +141,7 @@ static char ja_kvoContext;
     self.allowLeftOverpan = YES;
     self.allowRightOverpan = YES;
     self.bounceOnSidePanelOpen = YES;
+    self.bounceOnSidePanelClose = NO;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
@@ -358,9 +359,11 @@ static char ja_kvoContext;
         JASidePanelState previousState = self.state;
         self.state = JASidePanelCenterVisible;
         [UIView animateWithDuration:0.2f animations:^{
-            // first move the centerPanel offscreen
-            CGFloat x = (previousState == JASidePanelLeftVisible) ? self.view.bounds.size.width : -self.view.bounds.size.width;
-            _centerPanelRestingFrame.origin.x = x;
+            if (self.bounceOnSidePanelClose) {
+                // first move the centerPanel offscreen
+                CGFloat x = (previousState == JASidePanelLeftVisible) ? self.view.bounds.size.width : -self.view.bounds.size.width;
+                _centerPanelRestingFrame.origin.x = x;
+            }
             self.centerPanelContainer.frame = _centerPanelRestingFrame;
         } completion:^(__unused BOOL finished) {
             [self _swapCenter:previous with:_centerPanel];
