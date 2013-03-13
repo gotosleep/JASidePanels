@@ -131,8 +131,10 @@ static char ja_kvoContext;
 #pragma mark - NSObject
 
 - (void)dealloc {
-    [_centerPanel removeObserver:self forKeyPath:@"view"];
-    [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
+    if (_centerPanel) {
+        [_centerPanel removeObserver:self forKeyPath:@"view"];
+        [_centerPanel removeObserver:self forKeyPath:@"viewControllers"];
+    }
 }
 
 //Support creating from Storyboard
@@ -210,7 +212,7 @@ static char ja_kvoContext;
     [self _adjustCenterFrame]; //Account for possible rotation while view appearing
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+#if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 
 - (void)viewDidUnload {
     [super viewDidUnload];
@@ -509,6 +511,10 @@ static char ja_kvoContext;
 }
 
 - (void)_handlePan:(UIGestureRecognizer *)sender {
+	if (!_recognizesPanGesture) {
+		return;
+	}
+	
     if ([sender isKindOfClass:[UIPanGestureRecognizer class]]) {
         UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)sender;
         
