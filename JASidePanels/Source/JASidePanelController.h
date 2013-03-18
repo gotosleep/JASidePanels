@@ -119,6 +119,9 @@ typedef enum _JASidePanelState {
 // Determines whether showing panels can be controlled through pan gestures, or only through buttons
 @property (nonatomic) BOOL recognizesPanGesture; // default is YES
 
+// An array or Class objects to which the pan open gesture is limitied, no limits if not given
+@property (nonatomic, strong) NSArray *panViewClasses; // default is nil
+
 #pragma mark - Menu Buttons
 
 // Gives you an image to use for your menu button. The image is three stacked white lines, similar to Path 2.0 or Facebook's menu button.
