@@ -82,8 +82,8 @@ static char ja_kvoContext;
 
 #pragma mark - Icon
 
-+ (UIImage *)defaultImage {
-	static UIImage *defaultImage = nil;
++ (UIImage *)defaultLeftBarButtonImage {
+	static UIImage *defaultLeftBarButtonImage = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);
@@ -98,12 +98,36 @@ static char ja_kvoContext;
 		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  20, 2)] fill];
 		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 20, 2)] fill];   
 		
-		defaultImage = UIGraphicsGetImageFromCurrentImageContext();
+		defaultLeftBarButtonImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 
 	});
-    return defaultImage;
+    return defaultLeftBarButtonImage;
 }
+
++ (UIImage *)defaultRightBarButtonImage {
+	static UIImage *defaultRightBarButtonImage = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		UIGraphicsBeginImageContextWithOptions(CGSizeMake(20.f, 13.f), NO, 0.0f);
+		
+		[[UIColor blackColor] setFill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 20, 1)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 5, 20, 1)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 10, 20, 1)] fill];
+		
+		[[UIColor whiteColor] setFill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 1, 20, 2)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 6,  20, 2)] fill];
+		[[UIBezierPath bezierPathWithRect:CGRectMake(0, 11, 20, 2)] fill];
+		
+		defaultRightBarButtonImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+        
+	});
+    return defaultRightBarButtonImage;
+}
+
 
 #pragma mark - NSObject
 
@@ -415,6 +439,7 @@ static char ja_kvoContext;
         if (_rightPanel) {
             [self addChildViewController:_rightPanel];
             [_rightPanel didMoveToParentViewController:self];
+            [self _placeButtonForRightPanel];
         }
         if (self.state == JASidePanelRightVisible) {
             self.visiblePanel = _rightPanel;
@@ -437,6 +462,21 @@ static char ja_kvoContext;
             buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
         }
     }	
+}
+
+- (void)_placeButtonForRightPanel {
+    if (self.rightPanel) {
+        UIViewController *buttonController = self.centerPanel;
+        if ([buttonController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nav = (UINavigationController *)buttonController;
+            if ([nav.viewControllers count] > 0) {
+                buttonController = [nav.viewControllers objectAtIndex:0];
+            }
+        }
+        if (!buttonController.navigationItem.rightBarButtonItem) {
+            buttonController.navigationItem.rightBarButtonItem = [self rightButtonForCenterPanel];
+        }
+    }
 }
 
 #pragma mark - Gesture Recognizer Delegate
@@ -637,7 +677,7 @@ static char ja_kvoContext;
 
 - (void)_loadCenterPanel {
     [self _placeButtonForLeftPanel];
-    
+    [self _placeButtonForRightPanel];
     _centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _centerPanel.view.frame = self.centerPanelContainer.bounds;
     [self stylePanel:_centerPanel.view];
@@ -903,6 +943,7 @@ static char ja_kvoContext;
         } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
             // view controllers have changed, need to replace the button
             [self _placeButtonForLeftPanel];
+            [self _placeButtonForRightPanel];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -912,7 +953,11 @@ static char ja_kvoContext;
 #pragma mark - Public Methods
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
-    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultLeftBarButtonImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+}
+
+- (UIBarButtonItem *)rightButtonForCenterPanel {
+    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultRightBarButtonImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleRightPanel:)];
 }
 
 - (void)showLeftPanel:(BOOL)animated {
@@ -969,6 +1014,12 @@ static char ja_kvoContext;
         _centerPanelHidden = centerPanelHidden;
         duration = animated ? duration : 0.0f;
         if (centerPanelHidden) {
+			CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+			animation.fromValue = [NSNumber numberWithFloat:0.75];
+			animation.toValue = [NSNumber numberWithFloat:0];
+			animation.duration = duration;
+			[self.centerPanelContainer.layer addAnimation:animation forKey:@"shadowOpacity"];
+			self.centerPanelContainer.layer.shadowOpacity = 0.0;
             [UIView animateWithDuration:duration animations:^{
                 CGRect frame = self.centerPanelContainer.frame;
                 frame.origin.x = self.state == JASidePanelLeftVisible ? self.centerPanelContainer.frame.size.width : -self.centerPanelContainer.frame.size.width;
@@ -983,6 +1034,12 @@ static char ja_kvoContext;
                 }
             }];
         } else {
+			CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+			animation.fromValue = [NSNumber numberWithFloat:0];
+			animation.toValue = [NSNumber numberWithFloat:0.75];
+			animation.duration = duration;
+			[self.centerPanelContainer.layer addAnimation:animation forKey:@"shadowOpacity"];
+			self.centerPanelContainer.layer.shadowOpacity = 0.75;
             [self _unhideCenterPanel];
             [UIView animateWithDuration:duration animations:^{
                 if (self.state == JASidePanelLeftVisible) {
