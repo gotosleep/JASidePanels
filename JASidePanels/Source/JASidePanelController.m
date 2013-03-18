@@ -73,6 +73,7 @@ static char ja_kvoContext;
 @synthesize allowRightOverpan = _allowRightOverpan;
 @synthesize bounceOnSidePanelOpen = _bounceOnSidePanelOpen;
 @synthesize bounceOnSidePanelClose = _bounceOnSidePanelClose;
+@synthesize bounceOnCenterPanelChange = _bounceOnCenterPanelChange;
 @synthesize visiblePanel = _visiblePanel;
 @synthesize shouldDelegateAutorotateToVisiblePanel = _shouldDelegateAutorotateToVisiblePanel;
 @synthesize centerPanelHidden = _centerPanelHidden;
@@ -142,6 +143,7 @@ static char ja_kvoContext;
     self.allowRightOverpan = YES;
     self.bounceOnSidePanelOpen = YES;
     self.bounceOnSidePanelClose = NO;
+    self.bounceOnCenterPanelChange = YES;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
@@ -359,7 +361,7 @@ static char ja_kvoContext;
         JASidePanelState previousState = self.state;
         self.state = JASidePanelCenterVisible;
         [UIView animateWithDuration:0.2f animations:^{
-            if (self.bounceOnSidePanelClose) {
+            if (self.bounceOnCenterPanelChange) {
                 // first move the centerPanel offscreen
                 CGFloat x = (previousState == JASidePanelLeftVisible) ? self.view.bounds.size.width : -self.view.bounds.size.width;
                 _centerPanelRestingFrame.origin.x = x;
