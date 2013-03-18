@@ -485,6 +485,10 @@ static char ja_kvoContext;
         CGPoint translate = [pan translationInView:self.centerPanelContainer];
         CGRect frame = _centerPanelRestingFrame;
         frame.origin.x += [self _correctMovement:translate.x];
+        if ((frame.origin.x < 0.0f && !self.rightPanel) ||
+            (frame.origin.x > 0.0f && !self.leftPanel)) {
+            frame.origin.x = 0.0f;
+        }
         self.centerPanelContainer.frame = frame;
         
         // if center panel has focus, make sure correct side panel is revealed
