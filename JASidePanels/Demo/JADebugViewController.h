@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JASidePanelController.h"
 
-@interface JADebugViewController : UIViewController
+@interface JADebugViewController : UIViewController <JASidePanel>
 
 @end
