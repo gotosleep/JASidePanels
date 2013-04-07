@@ -360,18 +360,25 @@ static char ja_kvoContext;
         // update the state immediately to prevent user interaction on the side panels while animating
         JASidePanelState previousState = self.state;
         self.state = JASidePanelCenterVisible;
-        [UIView animateWithDuration:0.2f animations:^{
-            if (self.bounceOnCenterPanelChange) {
-                // first move the centerPanel offscreen
-                CGFloat x = (previousState == JASidePanelLeftVisible) ? self.view.bounds.size.width : -self.view.bounds.size.width;
-                _centerPanelRestingFrame.origin.x = x;
-            }
-            self.centerPanelContainer.frame = _centerPanelRestingFrame;
-        } completion:^(__unused BOOL finished) {
-            [self _swapCenter:previous with:_centerPanel];
+		
+		// Only push view outside its boundries when view controllers actually change.
+		if (centerPanel == previous) {
+			[self _swapCenter:previous with:_centerPanel];
             [self _showCenterPanel:YES bounce:NO];
-        }];
-    }
+		} else {
+			[UIView animateWithDuration:0.2f animations:^{
+				if (self.bounceOnCenterPanelChange) {
+					// first move the centerPanel offscreen
+					CGFloat x = (previousState == JASidePanelLeftVisible) ? self.view.bounds.size.width : -self.view.bounds.size.width;
+					_centerPanelRestingFrame.origin.x = x;
+				}
+				self.centerPanelContainer.frame = _centerPanelRestingFrame;
+			} completion:^(__unused BOOL finished) {
+				[self _swapCenter:previous with:_centerPanel];
+				[self _showCenterPanel:YES bounce:NO];
+			}];
+		}
+	}
 }
 
 - (void)_swapCenter:(UIViewController *)previous with:(UIViewController *)next {
