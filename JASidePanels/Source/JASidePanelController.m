@@ -211,7 +211,7 @@ static char ja_kvoContext;
     }
 }
 
-#else
+#endif
 
 - (BOOL)shouldAutorotate {
     __strong UIViewController *visiblePanel = self.visiblePanel;
@@ -222,9 +222,6 @@ static char ja_kvoContext;
         return YES;
     }
 }
-
-
-#endif
 
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
