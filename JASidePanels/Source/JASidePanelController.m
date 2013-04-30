@@ -340,6 +340,10 @@ static char ja_kvoContext;
 #pragma mark - Panels
 
 - (void)setCenterPanel:(UIViewController *)centerPanel {
+    [self setCenterPanel:centerPanel completion:nil];
+}
+
+- (void)setCenterPanel:(UIViewController *)centerPanel completion:(void (^)(BOOL finished))completion {
     UIViewController *previous = _centerPanel;
     if (centerPanel != _centerPanel) {
         [_centerPanel removeObserver:self forKeyPath:@"view"];
@@ -365,8 +369,8 @@ static char ja_kvoContext;
             }
             self.centerPanelContainer.frame = _centerPanelRestingFrame;
         } completion:^(__unused BOOL finished) {
-            [self _swapCenter:previous previousState:previousState with:_centerPanel];
-            [self _showCenterPanel:YES bounce:NO];
+            [self _swapCenter:previous with:_centerPanel];
+            [self _showCenterPanel:YES bounce:NO completion:completion];
         }];
     }
 }
@@ -844,6 +848,10 @@ static char ja_kvoContext;
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    [self _showCenterPanel:animated bounce:shouldBounce completion:nil];
+}
+
+- (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
     self.state = JASidePanelCenterVisible;
     
     [self _adjustCenterFrame];
@@ -853,6 +861,9 @@ static char ja_kvoContext;
             self.leftPanelContainer.hidden = YES;
             self.rightPanelContainer.hidden = YES;
             [self _unloadPanels];
+            if (completion) {
+                completion(finished);
+            }
         }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
