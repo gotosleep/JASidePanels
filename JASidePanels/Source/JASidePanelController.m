@@ -441,9 +441,6 @@ static char ja_kvoContext;
             buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
         }
     }	
-    else if (buttonController.navigationItem.leftBarButtonItem) {
-        buttonController.navigationItem.leftBarButtonItem = nil;
-    }
 }
 
 - (void)_placeButtonForRightPanel {
@@ -455,9 +452,6 @@ static char ja_kvoContext;
         if (!buttonController.navigationItem.rightBarButtonItem) {
             buttonController.navigationItem.rightBarButtonItem = [self rightButtonForCenterPanel];
         }
-    }
-    else if (buttonController.navigationItem.rightBarButtonItem) {
-        buttonController.navigationItem.rightBarButtonItem = nil;
     }
 }
 
