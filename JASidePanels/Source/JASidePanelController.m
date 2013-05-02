@@ -189,6 +189,8 @@ static char ja_kvoContext;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self _adjustCenterFrame]; //Account for possible rotation while view appearing
+    [self _layoutSideContainers:NO duration:0.0f];
+
 }
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
