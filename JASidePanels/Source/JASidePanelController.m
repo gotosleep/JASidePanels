@@ -79,6 +79,8 @@ static char ja_kvoContext;
 @synthesize centerPanelHidden = _centerPanelHidden;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
+@synthesize allowLeftToggle = _allowLeftToggle;
+@synthesize allowRightToggle = _allowRightToggle;
 
 #pragma mark - Icon
 
@@ -147,6 +149,8 @@ static char ja_kvoContext;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
+    self.allowLeftToggle = YES;
+    self.allowRightToggle = YES;
 }
 
 #pragma mark - UIViewController
@@ -966,6 +970,9 @@ static char ja_kvoContext;
 }
 
 - (void)toggleLeftPanel:(__unused id)sender {
+    if (!self.allowLeftToggle) {
+        return;
+    }
     if (self.state == JASidePanelLeftVisible) {
         [self _showCenterPanel:YES bounce:NO];
     } else if (self.state == JASidePanelCenterVisible) {
@@ -974,6 +981,9 @@ static char ja_kvoContext;
 }
 
 - (void)toggleRightPanel:(__unused id)sender {
+    if (!self.allowLeftToggle) {
+        return;
+    }
     if (self.state == JASidePanelRightVisible) {
         [self _showCenterPanel:YES bounce:NO];
     } else if (self.state == JASidePanelCenterVisible) {
