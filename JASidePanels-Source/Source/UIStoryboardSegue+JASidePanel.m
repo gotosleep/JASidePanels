@@ -1,6 +1,5 @@
 //
 //  UIStoryboardSegue+JASidePanel.m
-//  iBowen
 //
 //  Created by Brian McIntyre on 2013-05-11.
 //

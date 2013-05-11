@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F054D783173EFFE2000722A7 /* MySidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = F054D782173EFFE2000722A7 /* MySidePanelController.m */; };
+		F054D786173F00A8000722A7 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F054D785173F00A8000722A7 /* MenuViewController.m */; };
+		F054D789173F0326000722A7 /* MenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F054D788173F0326000722A7 /* MenuCell.m */; };
 		F07D0C69173EE9BE006832F0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F07D0C68173EE9BE006832F0 /* UIKit.framework */; };
 		F07D0C6B173EE9BE006832F0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F07D0C6A173EE9BE006832F0 /* Foundation.framework */; };
 		F07D0C6D173EE9BE006832F0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F07D0C6C173EE9BE006832F0 /* CoreGraphics.framework */; };
@@ -18,7 +21,6 @@
 		F07D0C7F173EE9BE006832F0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F07D0C7E173EE9BE006832F0 /* Default-568h@2x.png */; };
 		F07D0C82173EE9BE006832F0 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07D0C80173EE9BE006832F0 /* MainStoryboard_iPhone.storyboard */; };
 		F07D0C85173EE9BE006832F0 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07D0C83173EE9BE006832F0 /* MainStoryboard_iPad.storyboard */; };
-		F07D0C88173EE9BE006832F0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F07D0C87173EE9BE006832F0 /* ViewController.m */; };
 		F07D0CE0173EEB8C006832F0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F07D0CDF173EEB8C006832F0 /* QuartzCore.framework */; };
 		F0E04390173EEDAA00D4DFA3 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0438B173EEDAA00D4DFA3 /* JASidePanelController.m */; };
 		F0E04391173EEDAA00D4DFA3 /* UIStoryboardSegue+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0438D173EEDAA00D4DFA3 /* UIStoryboardSegue+JASidePanel.m */; };
@@ -26,6 +28,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F054D781173EFFE2000722A7 /* MySidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySidePanelController.h; sourceTree = "<group>"; };
+		F054D782173EFFE2000722A7 /* MySidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySidePanelController.m; sourceTree = "<group>"; };
+		F054D784173F00A8000722A7 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		F054D785173F00A8000722A7 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		F054D787173F0326000722A7 /* MenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuCell.h; sourceTree = "<group>"; };
+		F054D788173F0326000722A7 /* MenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuCell.m; sourceTree = "<group>"; };
 		F07D0C65173EE9BE006832F0 /* JASidePanels-Storyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JASidePanels-Storyboard.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F07D0C68173EE9BE006832F0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F07D0C6A173EE9BE006832F0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -41,8 +49,6 @@
 		F07D0C7E173EE9BE006832F0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F07D0C81173EE9BE006832F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		F07D0C84173EE9BE006832F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		F07D0C86173EE9BE006832F0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F07D0C87173EE9BE006832F0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		F07D0CDF173EEB8C006832F0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F0E04389173EEDAA00D4DFA3 /* JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanel.h; sourceTree = "<group>"; };
 		F0E0438A173EEDAA00D4DFA3 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
@@ -100,12 +106,16 @@
 		F07D0C6E173EE9BE006832F0 /* JASidePanels-Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				F054D787173F0326000722A7 /* MenuCell.h */,
+				F054D788173F0326000722A7 /* MenuCell.m */,
+				F054D784173F00A8000722A7 /* MenuViewController.h */,
+				F054D785173F00A8000722A7 /* MenuViewController.m */,
+				F054D781173EFFE2000722A7 /* MySidePanelController.h */,
+				F054D782173EFFE2000722A7 /* MySidePanelController.m */,
 				F07D0C77173EE9BE006832F0 /* AppDelegate.h */,
 				F07D0C78173EE9BE006832F0 /* AppDelegate.m */,
 				F07D0C80173EE9BE006832F0 /* MainStoryboard_iPhone.storyboard */,
 				F07D0C83173EE9BE006832F0 /* MainStoryboard_iPad.storyboard */,
-				F07D0C86173EE9BE006832F0 /* ViewController.h */,
-				F07D0C87173EE9BE006832F0 /* ViewController.m */,
 				F07D0C6F173EE9BE006832F0 /* Supporting Files */,
 			);
 			name = "JASidePanels-Storyboard";
@@ -210,10 +220,12 @@
 			files = (
 				F07D0C75173EE9BE006832F0 /* main.m in Sources */,
 				F07D0C79173EE9BE006832F0 /* AppDelegate.m in Sources */,
-				F07D0C88173EE9BE006832F0 /* ViewController.m in Sources */,
 				F0E04390173EEDAA00D4DFA3 /* JASidePanelController.m in Sources */,
 				F0E04391173EEDAA00D4DFA3 /* UIStoryboardSegue+JASidePanel.m in Sources */,
 				F0E04392173EEDAA00D4DFA3 /* UIViewController+JASidePanel.m in Sources */,
+				F054D783173EFFE2000722A7 /* MySidePanelController.m in Sources */,
+				F054D786173F00A8000722A7 /* MenuViewController.m in Sources */,
+				F054D789173F0326000722A7 /* MenuCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
