@@ -576,7 +576,7 @@ static char ja_kvoContext;
 }
 
 - (void)_centerPanelTapped:(__unused UIGestureRecognizer *)gesture {
-    [self _showCenterPanel:YES bounce:NO];
+    [self _showCenterPanel:YES bounce:YES];
 }
 
 #pragma mark - Internal Methods
@@ -975,9 +975,9 @@ static char ja_kvoContext;
 
 - (void)toggleLeftPanel:(__unused id)sender {
     if (self.state == JASidePanelLeftVisible) {
-        [self _showCenterPanel:YES bounce:NO];
+        [self _showCenterPanel:YES bounce:YES];
     } else if (self.state == JASidePanelCenterVisible) {
-        [self _showLeftPanel:YES bounce:NO];
+        [self _showLeftPanel:YES bounce:YES];
     }
 }
 
