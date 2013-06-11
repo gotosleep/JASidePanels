@@ -66,7 +66,14 @@ typedef enum _JASidePanelState {
 
 //animation
 
-@property (nonatomic) BOOL animation; // set animation when slide panels
+// set animation when slide panels
+@property (nonatomic) BOOL animation;
+
+// the mininum % of side panel size
+@property (nonatomic) CGFloat minimumAnimationPercentage;
+
+// the maximum % of side panel size
+@property (nonatomic) CGFloat maximumAnimationPercentage;
 
 // style
 @property (nonatomic) JASidePanelStyle style; // default is JASidePanelSingleActive
@@ -96,12 +103,6 @@ typedef enum _JASidePanelState {
 - (void)stylePanel:(UIView *)panel;
 
 #pragma mark - Animation
-
-// the mininum % of side panel size
-@property (nonatomic) CGFloat animationMin;
-
-// the maximum % of side panel size
-@property (nonatomic) CGFloat animationMax;
 
 // the minimum % of total screen width the centerPanel.view must move for panGesture to succeed
 @property (nonatomic) CGFloat minimumMovePercentage;

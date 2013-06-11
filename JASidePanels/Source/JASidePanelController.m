@@ -49,8 +49,8 @@ static char ja_kvoContext;
 
 @implementation JASidePanelController
 
-@synthesize animationMax = _animationMax;
-@synthesize animationMin = _animationMin;
+@synthesize maximumAnimationPercentage = _animationMax;
+@synthesize minimumAnimationPercentage = _animationMin;
 @synthesize animation = _animation;
 @synthesize leftPanelContainer = _leftPanelContainer;
 @synthesize rightPanelContainer = _rightPanelContainer;
@@ -154,8 +154,8 @@ static char ja_kvoContext;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
-    self.animationMin = 0.9f;
-    self.animationMax = 1.0f;
+    self.minimumAnimationPercentage = 0.9f;
+    self.maximumAnimationPercentage = 1.0f;
 }
 
 #pragma mark - UIViewController
@@ -187,8 +187,8 @@ static char ja_kvoContext;
     
     
     // set dafeult value
-    self.animationMax = self.animationMax;
-    self.animationMin = self.animationMin;
+    self.maximumAnimationPercentage = self.maximumAnimationPercentage;
+    self.minimumAnimationPercentage = self.minimumAnimationPercentage;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -200,7 +200,7 @@ static char ja_kvoContext;
     [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
     
     if (self.animation) {
-        CGAffineTransform tr = CGAffineTransformScale(self.view.transform, self.animationMin, self.animationMin);
+        CGAffineTransform tr = CGAffineTransformScale(self.view.transform, self.minimumAnimationPercentage, self.minimumAnimationPercentage);
         self.leftPanelContainer.transform = tr;
         self.rightPanelContainer.transform = tr;
     }
@@ -513,13 +513,13 @@ static char ja_kvoContext;
         self.centerPanelContainer.frame = frame;
         
         if (self.animation) {
-            CGFloat sL = self.animationMin + ((self.animationMax - self.animationMin) / [self leftVisibleWidth]) * frame.origin.x;
-            CGFloat sR = self.animationMin + ((self.animationMax - self.animationMin) / [self rightVisibleWidth]) * frame.origin.x * (-1);
+            CGFloat sL = self.minimumAnimationPercentage + ((self.maximumAnimationPercentage - self.minimumAnimationPercentage) / [self leftVisibleWidth]) * frame.origin.x;
+            CGFloat sR = self.minimumAnimationPercentage + ((self.maximumAnimationPercentage - self.minimumAnimationPercentage) / [self rightVisibleWidth]) * frame.origin.x * (-1);
             
-            if (sL >= self.animationMax) sL = self.animationMax;
-            if (sL <= self.animationMin) sL = self.animationMin;
-            if (sR >= self.animationMax) sR = self.animationMax;
-            if (sR <= self.animationMin) sR = self.animationMin;
+            if (sL >= self.maximumAnimationPercentage) sL = self.maximumAnimationPercentage;
+            if (sL <= self.minimumAnimationPercentage) sL = self.minimumAnimationPercentage;
+            if (sR >= self.maximumAnimationPercentage) sR = self.maximumAnimationPercentage;
+            if (sR <= self.minimumAnimationPercentage) sR = self.minimumAnimationPercentage;
             
             CGAffineTransform trL = CGAffineTransformScale(self.view.transform, sL, sL);
             CGAffineTransform trR = CGAffineTransformScale(self.view.transform, sR, sR);
@@ -760,16 +760,16 @@ static char ja_kvoContext;
     if (self.animation) {
         CGFloat toL, toR;
         if (bounceDistance > 0) {
-            toL = self.animationMin;
-            toR = self.animationMax;
+            toL = self.minimumAnimationPercentage;
+            toR = self.maximumAnimationPercentage;
             if ((frame.origin.x * -1) >= [self rightVisibleWidth]) {
-                toL = self.animationMax;
+                toL = self.maximumAnimationPercentage;
             }
         } else {
-            toL = self.animationMax;
-            toR = self.animationMin;
+            toL = self.maximumAnimationPercentage;
+            toR = self.minimumAnimationPercentage;
             if (frame.origin.x >= [self leftVisibleWidth]) {
-                toR = self.animationMax;
+                toR = self.maximumAnimationPercentage;
             } 
         }
         toTransformL = CGAffineTransformScale(self.view.transform, toR, toR);
