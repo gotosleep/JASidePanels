@@ -26,8 +26,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 
-#define kAnimationMin 0.9
-#define kAnimationMax 1.0
+#define kMinimumAnimationPercentage 0.9
+#define kMaximumAnimationPercentage 1.0
 
 static char ja_kvoContext;
 
@@ -49,8 +49,8 @@ static char ja_kvoContext;
 
 @implementation JASidePanelController
 
-@synthesize maximumAnimationPercentage = _animationMax;
-@synthesize minimumAnimationPercentage = _animationMin;
+@synthesize maximumAnimationPercentage = _maximumAnimationPercentage;
+@synthesize minimumAnimationPercentage = _minimumAnimationPercentage;
 @synthesize animation = _animation;
 @synthesize leftPanelContainer = _leftPanelContainer;
 @synthesize rightPanelContainer = _rightPanelContainer;
@@ -187,8 +187,8 @@ static char ja_kvoContext;
     
     
     // set dafeult value
-    self.maximumAnimationPercentage = self.maximumAnimationPercentage;
-    self.minimumAnimationPercentage = self.minimumAnimationPercentage;
+    self.maximumAnimationPercentage = kMaximumAnimationPercentage;
+    self.minimumAnimationPercentage = kMinimumAnimationPercentage;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
