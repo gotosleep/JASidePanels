@@ -26,6 +26,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 
+#define kAnimationMin 0.9
+#define kAnimationMax 1.0
+
 static char ja_kvoContext;
 
 @interface JASidePanelController() {
@@ -46,6 +49,9 @@ static char ja_kvoContext;
 
 @implementation JASidePanelController
 
+@synthesize animationMax = _animationMax;
+@synthesize animationMin = _animationMin;
+@synthesize animation = _animation;
 @synthesize leftPanelContainer = _leftPanelContainer;
 @synthesize rightPanelContainer = _rightPanelContainer;
 @synthesize centerPanelContainer = _centerPanelContainer;
@@ -79,6 +85,7 @@ static char ja_kvoContext;
 @synthesize centerPanelHidden = _centerPanelHidden;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
+
 
 #pragma mark - Icon
 
@@ -147,6 +154,8 @@ static char ja_kvoContext;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
+    self.animationMin = 0.9f;
+    self.animationMax = 1.0f;
 }
 
 #pragma mark - UIViewController
@@ -175,6 +184,11 @@ static char ja_kvoContext;
     
     [self _swapCenter:nil previousState:0 with:_centerPanel];
     [self.view bringSubviewToFront:self.centerPanelContainer];
+    
+    
+    // set dafeult value
+    self.animationMax = self.animationMax;
+    self.animationMin = self.animationMin;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -184,6 +198,12 @@ static char ja_kvoContext;
     [self _layoutSidePanels];
     self.centerPanelContainer.frame = [self _adjustCenterFrame];
     [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
+    
+    if (self.animation) {
+        CGAffineTransform tr = CGAffineTransformScale(self.view.transform, self.animationMin, self.animationMin);
+        self.leftPanelContainer.transform = tr;
+        self.rightPanelContainer.transform = tr;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -492,6 +512,20 @@ static char ja_kvoContext;
         frame.origin.x += [self _correctMovement:translate.x];
         self.centerPanelContainer.frame = frame;
         
+        if (self.animation) {
+            CGFloat sL = self.animationMin + ((self.animationMax - self.animationMin) / [self leftVisibleWidth]) * frame.origin.x;
+            CGFloat sR = self.animationMin + ((self.animationMax - self.animationMin) / [self rightVisibleWidth]) * frame.origin.x * (-1);
+            
+            if (sL >= self.animationMax) sL = self.animationMax;
+            if (sL <= self.animationMin) sL = self.animationMin;
+            if (sR >= self.animationMax) sR = self.animationMax;
+            if (sR <= self.animationMin) sR = self.animationMin;
+            
+            CGAffineTransform trL = CGAffineTransformScale(self.view.transform, sL, sL);
+            CGAffineTransform trR = CGAffineTransformScale(self.view.transform, sR, sR);
+            self.leftPanelContainer.transform = trL;
+            self.rightPanelContainer.transform = trR;
+        }
         // if center panel has focus, make sure correct side panel is revealed
         if (self.state == JASidePanelCenterVisible) {
             if (frame.origin.x > 0.0f) {
@@ -536,6 +570,7 @@ static char ja_kvoContext;
 }
 
 - (void)_undoPan {
+    
     switch (self.state) {
         case JASidePanelCenterVisible: {
             [self _showCenterPanel:YES bounce:NO];
@@ -712,15 +747,40 @@ static char ja_kvoContext;
 }
 
 - (void)_animateCenterPanel:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
-    CGFloat bounceDistance = (_centerPanelRestingFrame.origin.x - self.centerPanelContainer.frame.origin.x) * self.bouncePercentage;
     
+    CGFloat bounceDistance = (_centerPanelRestingFrame.origin.x - self.centerPanelContainer.frame.origin.x) * self.bouncePercentage;
     // looks bad if we bounce when the center panel grows
     if (_centerPanelRestingFrame.size.width > self.centerPanelContainer.frame.size.width) {
         shouldBounce = NO;
     }
     
     CGFloat duration = [self _calculatedDuration];
+    CGRect frame = _centerPanelRestingFrame;
+    CGAffineTransform toTransformL, toTransformR;
+    if (self.animation) {
+        CGFloat toL, toR;
+        if (bounceDistance > 0) {
+            toL = self.animationMin;
+            toR = self.animationMax;
+            if ((frame.origin.x * -1) >= [self rightVisibleWidth]) {
+                toL = self.animationMax;
+            }
+        } else {
+            toL = self.animationMax;
+            toR = self.animationMin;
+            if (frame.origin.x >= [self leftVisibleWidth]) {
+                toR = self.animationMax;
+            } 
+        }
+        toTransformL = CGAffineTransformScale(self.view.transform, toR, toR);
+        toTransformR = CGAffineTransformScale(self.view.transform, toL, toL);
+    }
+     
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear|UIViewAnimationOptionLayoutSubviews animations:^{
+        if (self.animation) {
+            self.leftPanelContainer.transform = toTransformL;
+            self.rightPanelContainer.transform = toTransformR;
+        }
         self.centerPanelContainer.frame = _centerPanelRestingFrame;
         [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
         if (self.style == JASidePanelMultipleActive) {
@@ -750,6 +810,7 @@ static char ja_kvoContext;
             completion(finished);
         }
     }];
+     
 }
 
 #pragma mark - Panel Sizing

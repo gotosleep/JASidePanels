@@ -45,6 +45,10 @@
 	self.viewController.leftPanel = [[JALeftViewController alloc] init];
 	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
 	self.viewController.rightPanel = [[JARightViewController alloc] init];
+    self.viewController.animation = YES;
+    self.viewController.animationMin = 0.5;
+    self.viewController.leftGapPercentage = 0.5;
+
 	
 	self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
