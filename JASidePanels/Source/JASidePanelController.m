@@ -804,6 +804,10 @@ static char ja_kvoContext;
 #pragma mark - Showing Panels
 
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    if (self.analyticsDelegate) {
+        [self.analyticsDelegate trackMenuOpen];
+    }
+    
     self.state = JASidePanelLeftVisible;
     [self _loadLeftPanel];
     
@@ -852,6 +856,10 @@ static char ja_kvoContext;
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
+    if (self.analyticsDelegate) {
+        [self.analyticsDelegate trackMenuClose];
+    }
+    
     self.state = JASidePanelCenterVisible;
     
     [self _adjustCenterFrame];

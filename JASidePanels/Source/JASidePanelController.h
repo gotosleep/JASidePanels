@@ -36,7 +36,16 @@ typedef enum _JASidePanelState {
     JASidePanelRightVisible
 } JASidePanelState;
 
+@protocol JASidePanelAnalyticsDelegate <NSObject>
+
+- (void)trackMenuOpen;
+- (void)trackMenuClose;
+
+@end
+
 @interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
+
+@property (nonatomic, weak) id<JASidePanelAnalyticsDelegate> analyticsDelegate;
 
 #pragma mark - Usage
 
