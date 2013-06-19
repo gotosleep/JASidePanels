@@ -370,7 +370,7 @@ static char ja_kvoContext;
             self.centerPanelContainer.frame = _centerPanelRestingFrame;
         } completion:^(__unused BOOL finished) {
             [self _swapCenter:previous previousState:previousState with:_centerPanel];
-            [self _showCenterPanel:YES bounce:NO completion:completion];
+            [self _showCenterPanel:YES bounce:YES completion:completion];
         }];
     }
 }
