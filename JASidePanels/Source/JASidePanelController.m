@@ -804,9 +804,6 @@ static char ja_kvoContext;
 #pragma mark - Showing Panels
 
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
-    if (self.analyticsDelegate) {
-        [self.analyticsDelegate trackMenuOpen];
-    }
     
     self.state = JASidePanelLeftVisible;
     [self _loadLeftPanel];
@@ -814,12 +811,19 @@ static char ja_kvoContext;
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:nil];
+        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+            if (self.analyticsDelegate) {
+                [self.analyticsDelegate trackMenuOpen];
+            }
+        }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
         if (self.style == JASidePanelMultipleActive) {
             [self _layoutSideContainers:NO duration:0.0f];
+        }
+        if (self.analyticsDelegate) {
+            [self.analyticsDelegate trackMenuOpen];
         }
     }
     
@@ -856,9 +860,6 @@ static char ja_kvoContext;
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
-    if (self.analyticsDelegate) {
-        [self.analyticsDelegate trackMenuClose];
-    }
     
     self.state = JASidePanelCenterVisible;
     
@@ -872,6 +873,9 @@ static char ja_kvoContext;
             if (completion) {
                 completion(finished);
             }
+            if (self.analyticsDelegate) {
+                [self.analyticsDelegate trackMenuClose];
+            }
         }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
@@ -882,6 +886,9 @@ static char ja_kvoContext;
         self.leftPanelContainer.hidden = YES;
         self.rightPanelContainer.hidden = YES;
         [self _unloadPanels];
+        if (self.analyticsDelegate) {
+            [self.analyticsDelegate trackMenuClose];
+        }
     }
     
     self.tapView = nil;
