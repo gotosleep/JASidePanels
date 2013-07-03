@@ -36,7 +36,16 @@ typedef enum _JASidePanelState {
     JASidePanelRightVisible
 } JASidePanelState;
 
+@protocol JASidePanelAnalyticsDelegate <NSObject>
+
+- (void)trackMenuOpen;
+- (void)trackMenuClose;
+
+@end
+
 @interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
+
+@property (nonatomic, weak) id<JASidePanelAnalyticsDelegate> analyticsDelegate;
 
 #pragma mark - Usage
 
@@ -61,6 +70,9 @@ typedef enum _JASidePanelState {
 
 // Calling this while the left or right panel is visible causes the center panel to be completely hidden
 - (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval) duration;
+
+// Alternative way to set the center panel with a completion block that is called after the center panel is set and shown
+- (void)setCenterPanel:(UIViewController *)centerPanel completion:(void (^)(BOOL finished))completion;
 
 #pragma mark - Look & Feel
 
