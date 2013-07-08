@@ -79,6 +79,7 @@ static char ja_kvoContext;
 @synthesize centerPanelHidden = _centerPanelHidden;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
+@synthesize pushesSidePanels = _pushesSidePanels;
 
 #pragma mark - Icon
 
@@ -315,6 +316,9 @@ static char ja_kvoContext;
         // right panel container
         rightFrame.size.width = self.rightVisibleWidth;
         rightFrame.origin.x = self.centerPanelContainer.frame.origin.x + self.centerPanelContainer.frame.size.width;
+    } else if (self.pushesSidePanels && !self.centerPanelHidden) {
+        leftFrame.origin.x = self.centerPanelContainer.frame.origin.x - self.leftVisibleWidth;
+        rightFrame.origin.x = self.centerPanelContainer.frame.origin.x + self.centerPanelContainer.frame.size.width;
     }
     self.leftPanelContainer.frame = leftFrame;
     self.rightPanelContainer.frame = rightFrame;
@@ -326,7 +330,9 @@ static char ja_kvoContext;
     if (self.rightPanel.isViewLoaded) {
         CGRect frame = self.rightPanelContainer.bounds;
         if (self.shouldResizeRightPanel) {
-            frame.origin.x = self.rightPanelContainer.bounds.size.width - self.rightVisibleWidth;
+            if (!self.pushesSidePanels) {
+                frame.origin.x = self.rightPanelContainer.bounds.size.width - self.rightVisibleWidth;
+            }
             frame.size.width = self.rightVisibleWidth;
         }
         self.rightPanel.view.frame = frame;
@@ -489,7 +495,12 @@ static char ja_kvoContext;
         
         CGPoint translate = [pan translationInView:self.centerPanelContainer];
         CGRect frame = _centerPanelRestingFrame;
-        frame.origin.x += [self _correctMovement:translate.x];
+        frame.origin.x += roundf([self _correctMovement:translate.x]);
+        
+        if (self.style == JASidePanelMultipleActive) {
+            frame.size.width = self.view.bounds.size.width - frame.origin.x;
+        }
+        
         self.centerPanelContainer.frame = frame;
         
         // if center panel has focus, make sure correct side panel is revealed
@@ -499,6 +510,11 @@ static char ja_kvoContext;
             } else if(frame.origin.x < 0.0f) {
                 [self _loadRightPanel];
             }
+        }
+        
+        // adjust side panel locations, if needed
+        if (self.style == JASidePanelMultipleActive || self.pushesSidePanels) {
+            [self _layoutSideContainers:NO duration:0];
         }
         
         if (sender.state == UIGestureRecognizerStateEnded) {
@@ -599,6 +615,8 @@ static char ja_kvoContext;
     } else if (self.state == JASidePanelLeftVisible  && !self.allowLeftOverpan) {
         if (position > self.leftVisibleWidth) {
             return 0.0f;
+        } else if ((self.style == JASidePanelMultipleActive || self.pushesSidePanels) && position < 0.0f) {
+            return -_centerPanelRestingFrame.origin.x;
         } else if (position < self.leftPanelContainer.frame.origin.x) {
             return self.leftPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x;
         }
@@ -723,7 +741,7 @@ static char ja_kvoContext;
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear|UIViewAnimationOptionLayoutSubviews animations:^{
         self.centerPanelContainer.frame = _centerPanelRestingFrame;
         [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
-        if (self.style == JASidePanelMultipleActive) {
+        if (self.style == JASidePanelMultipleActive || self.pushesSidePanels) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
     } completion:^(BOOL finished) {
@@ -813,7 +831,7 @@ static char ja_kvoContext;
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
-        if (self.style == JASidePanelMultipleActive) {
+        if (self.style == JASidePanelMultipleActive || self.pushesSidePanels) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
     }
@@ -835,7 +853,7 @@ static char ja_kvoContext;
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
-        if (self.style == JASidePanelMultipleActive) {
+        if (self.style == JASidePanelMultipleActive || self.pushesSidePanels) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
     }
@@ -860,7 +878,7 @@ static char ja_kvoContext;
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
-        if (self.style == JASidePanelMultipleActive) {
+        if (self.style == JASidePanelMultipleActive || self.pushesSidePanels) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
         self.leftPanelContainer.hidden = YES;
@@ -994,6 +1012,7 @@ static char ja_kvoContext;
                 CGRect frame = self.centerPanelContainer.frame;
                 frame.origin.x = self.state == JASidePanelLeftVisible ? self.centerPanelContainer.frame.size.width : -self.centerPanelContainer.frame.size.width;
                 self.centerPanelContainer.frame = frame;
+                [self _layoutSideContainers:NO duration:0];
                 if (self.shouldResizeLeftPanel || self.shouldResizeRightPanel) {
                     [self _layoutSidePanels];
                 }
