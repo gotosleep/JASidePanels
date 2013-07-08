@@ -227,6 +227,12 @@ static char ja_kvoContext;
 
 #endif
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    __strong UIViewController *visiblePanel = self.visiblePanel;
+    return [visiblePanel supportedInterfaceOrientations];
+}
+
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
     [self _layoutSideContainers:YES duration:duration];
