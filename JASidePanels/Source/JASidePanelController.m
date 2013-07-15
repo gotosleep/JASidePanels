@@ -140,6 +140,8 @@ static char ja_kvoContext;
     self.bouncePercentage = 0.075f;
     self.panningLimitedToTopViewController = YES;
     self.recognizesPanGesture = YES;
+    self.recognizesLeftViewPanGesture = NO;
+    self.recognizesRightViewPanGesture = NO;
     self.allowLeftOverpan = YES;
     self.allowRightOverpan = YES;
     self.bounceOnSidePanelOpen = YES;
@@ -448,7 +450,7 @@ static char ja_kvoContext;
 #pragma mark - Gesture Recognizer Delegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if (gestureRecognizer.view == self.tapView) {
+    if (gestureRecognizer.view == self.tapView || gestureRecognizer.view == self.rightPanel.view || gestureRecognizer.view == self.leftPanel.view) {
         return YES;
     } else if (self.panningLimitedToTopViewController && ![self _isOnTopLevelViewController:self.centerPanel]) {
         return NO;
@@ -691,6 +693,10 @@ static char ja_kvoContext;
             _leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_leftPanel.view];
             [self.leftPanelContainer addSubview:_leftPanel.view];
+            
+            if (self.recognizesLeftViewPanGesture) {
+                [self _addPanGestureToView:self.leftPanel.view];
+            }
         }
         
         self.leftPanelContainer.hidden = NO;
@@ -706,6 +712,10 @@ static char ja_kvoContext;
             _rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_rightPanel.view];
             [self.rightPanelContainer addSubview:_rightPanel.view];
+            
+            if (self.recognizesRightViewPanGesture) {
+                [self _addPanGestureToView:self.rightPanel.view];
+            }
         }
         
         self.rightPanelContainer.hidden = NO;
