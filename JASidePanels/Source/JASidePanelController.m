@@ -401,6 +401,8 @@ static char ja_kvoContext;
 
 - (void)setLeftPanel:(UIViewController *)leftPanel {
     if (leftPanel != _leftPanel) {
+        [self.leftPanelFadingView removeFromSuperview];
+        self.leftPanelFadingView = nil;
         [_leftPanel willMoveToParentViewController:nil];
         [_leftPanel.view removeFromSuperview];
         [_leftPanel removeFromParentViewController];
@@ -418,6 +420,8 @@ static char ja_kvoContext;
 
 - (void)setRightPanel:(UIViewController *)rightPanel {
     if (rightPanel != _rightPanel) {
+        [self.rightPanelFadingView removeFromSuperview];
+        self.rightPanelFadingView = nil;
         [_rightPanel willMoveToParentViewController:nil];
         [_rightPanel.view removeFromSuperview];
         [_rightPanel removeFromParentViewController];
@@ -692,10 +696,8 @@ static char ja_kvoContext;
             [self stylePanel:_leftPanel.view];
             [self.leftPanelContainer addSubview:_leftPanel.view];
 
-            if (self.shouldFadeOutLeftPanel) {
-                if (!self.leftPanelFadingView) {
-                    self.leftPanelFadingView = [[UIView alloc] initWithFrame:self.leftPanel.view.frame];
-                }
+            if (self.shouldFadeOutLeftPanel && !self.leftPanelFadingView) {
+                self.leftPanelFadingView = [[UIView alloc] initWithFrame:self.leftPanel.view.frame];
                 self.leftPanelFadingView.alpha = 1;
                 self.leftPanelFadingView.backgroundColor = [UIColor blackColor];
                 [self.leftPanel.view addSubview:self.leftPanelFadingView];
@@ -716,10 +718,8 @@ static char ja_kvoContext;
             [self stylePanel:_rightPanel.view];
             [self.rightPanelContainer addSubview:_rightPanel.view];
 
-            if (self.shouldFadeOutRightPanel) {
-                if (!self.rightPanelFadingView) {
-                    self.rightPanelFadingView = [[UIView alloc] initWithFrame:self.rightPanel.view.frame];
-                }
+            if (self.shouldFadeOutRightPanel && !self.rightPanelFadingView) {
+                self.rightPanelFadingView = [[UIView alloc] initWithFrame:self.rightPanel.view.frame];
                 self.rightPanelFadingView.alpha = 1;
                 self.rightPanelFadingView.backgroundColor = [UIColor blackColor];
                 [self.rightPanel.view addSubview:self.rightPanelFadingView];
