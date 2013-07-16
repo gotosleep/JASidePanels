@@ -172,6 +172,10 @@ typedef enum _JASidePanelState {
 @property (nonatomic, assign) BOOL allowLeftSwipe;  // defaults to YES
 @property (nonatomic, assign) BOOL allowRightSwipe; // defaults to YES
 
+// Determines if the left or right panel should fade in and out as the user slides the center panel
+@property (nonatomic, assign) BOOL shouldFadeOutLeftPanel;  // defaults to NO
+@property (nonatomic, assign) BOOL shouldFadeOutRightPanel; // defaults to NO
+
 // Containers for the panels.
 @property (nonatomic, strong, readonly) UIView *leftPanelContainer;
 @property (nonatomic, strong, readonly) UIView *rightPanelContainer;

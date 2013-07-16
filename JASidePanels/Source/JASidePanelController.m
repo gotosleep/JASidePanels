@@ -42,6 +42,9 @@ static char ja_kvoContext;
 @property (nonatomic, strong) UIView *rightPanelContainer;
 @property (nonatomic, strong) UIView *centerPanelContainer;
 
+// View use to fade out an in the left and right panel view
+@property(nonatomic, strong) UIView *leftPanelFadingView;
+@property(nonatomic, strong) UIView *rightPanelFadingView;
 @end
 
 @implementation JASidePanelController
@@ -49,6 +52,8 @@ static char ja_kvoContext;
 @synthesize leftPanelContainer = _leftPanelContainer;
 @synthesize rightPanelContainer = _rightPanelContainer;
 @synthesize centerPanelContainer = _centerPanelContainer;
+@synthesize leftPanelFadingView = _leftPanelFadingView;
+@synthesize rightPanelFadingView = _rightPanelFadingView;
 @synthesize tapView = _tapView;
 @synthesize style = _style;
 @synthesize state = _state;
@@ -79,6 +84,8 @@ static char ja_kvoContext;
 @synthesize centerPanelHidden = _centerPanelHidden;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
+@synthesize shouldFadeOutLeftPanel = _shouldFadeOutLeftPanel;
+@synthesize shouldFadeOutRightPanel = _shouldFadeOutRightPanel;
 
 #pragma mark - Icon
 
@@ -147,6 +154,8 @@ static char ja_kvoContext;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
+    self.shouldFadeOutLeftPanel = NO;
+    self.shouldFadeOutRightPanel = NO;
 }
 
 #pragma mark - UIViewController
@@ -392,6 +401,8 @@ static char ja_kvoContext;
 
 - (void)setLeftPanel:(UIViewController *)leftPanel {
     if (leftPanel != _leftPanel) {
+        [self.leftPanelFadingView removeFromSuperview];
+        self.leftPanelFadingView = nil;
         [_leftPanel willMoveToParentViewController:nil];
         [_leftPanel.view removeFromSuperview];
         [_leftPanel removeFromParentViewController];
@@ -409,6 +420,8 @@ static char ja_kvoContext;
 
 - (void)setRightPanel:(UIViewController *)rightPanel {
     if (rightPanel != _rightPanel) {
+        [self.rightPanelFadingView removeFromSuperview];
+        self.rightPanelFadingView = nil;
         [_rightPanel willMoveToParentViewController:nil];
         [_rightPanel.view removeFromSuperview];
         [_rightPanel removeFromParentViewController];
@@ -473,14 +486,14 @@ static char ja_kvoContext;
     panGesture.delegate = self;
     panGesture.maximumNumberOfTouches = 1;
     panGesture.minimumNumberOfTouches = 1;
-    [view addGestureRecognizer:panGesture];	
+    [view addGestureRecognizer:panGesture];
 }
 
 - (void)_handlePan:(UIGestureRecognizer *)sender {
 	if (!_recognizesPanGesture) {
 		return;
 	}
-	
+
     if ([sender isKindOfClass:[UIPanGestureRecognizer class]]) {
         UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)sender;
         
@@ -492,7 +505,15 @@ static char ja_kvoContext;
         CGRect frame = _centerPanelRestingFrame;
         frame.origin.x += [self _correctMovement:translate.x];
         self.centerPanelContainer.frame = frame;
-        
+
+        // Update the fading panel alpha
+        if (self.shouldFadeOutLeftPanel){
+            self.leftPanelFadingView.alpha = (self.leftVisibleWidth - frame.origin.x)/self.leftVisibleWidth;
+        }
+        if (self.shouldFadeOutRightPanel){
+            self.rightPanelFadingView.alpha = (self.rightVisibleWidth - self.rightPanel.view.frame.origin.x + frame.origin.x)/self.rightVisibleWidth;
+        }
+
         // if center panel has focus, make sure correct side panel is revealed
         if (self.state == JASidePanelCenterVisible) {
             if (frame.origin.x > 0.0f) {
@@ -503,7 +524,7 @@ static char ja_kvoContext;
         }
         
         if (sender.state == UIGestureRecognizerStateEnded) {
-            CGFloat deltaX =  frame.origin.x - _locationBeforePan.x;			
+            CGFloat deltaX =  frame.origin.x - _locationBeforePan.x;
             if ([self _validateThreshold:deltaX]) {
                 [self _completePan:deltaX];
             } else {
@@ -674,8 +695,15 @@ static char ja_kvoContext;
             _leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_leftPanel.view];
             [self.leftPanelContainer addSubview:_leftPanel.view];
+
+            if (self.shouldFadeOutLeftPanel && !self.leftPanelFadingView) {
+                self.leftPanelFadingView = [[UIView alloc] initWithFrame:self.leftPanel.view.frame];
+                self.leftPanelFadingView.alpha = 1;
+                self.leftPanelFadingView.backgroundColor = [UIColor blackColor];
+                [self.leftPanel.view addSubview:self.leftPanelFadingView];
+            }
         }
-        
+
         self.leftPanelContainer.hidden = NO;
     }
 }
@@ -683,12 +711,19 @@ static char ja_kvoContext;
 - (void)_loadRightPanel {
     self.leftPanelContainer.hidden = YES;
     if (self.rightPanelContainer.hidden && self.rightPanel) {
-        
+
         if (!_rightPanel.view.superview) {
             [self _layoutSidePanels];
             _rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_rightPanel.view];
             [self.rightPanelContainer addSubview:_rightPanel.view];
+
+            if (self.shouldFadeOutRightPanel && !self.rightPanelFadingView) {
+                self.rightPanelFadingView = [[UIView alloc] initWithFrame:self.rightPanel.view.frame];
+                self.rightPanelFadingView.alpha = 1;
+                self.rightPanelFadingView.backgroundColor = [UIColor blackColor];
+                [self.rightPanel.view addSubview:self.rightPanelFadingView];
+            }
         }
         
         self.rightPanelContainer.hidden = NO;
@@ -727,6 +762,22 @@ static char ja_kvoContext;
         if (self.style == JASidePanelMultipleActive) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
+        // Fade in/out animation
+        switch (self.state) {
+            case JASidePanelCenterVisible: {
+                self.leftPanelFadingView.alpha = 1;
+                self.rightPanelFadingView.alpha = 1;
+                break;
+            }
+            case JASidePanelLeftVisible: {
+                self.leftPanelFadingView.alpha = 0;
+                break;
+            }
+            case JASidePanelRightVisible: {
+                self.rightPanelFadingView.alpha = 0;
+                break;
+            }
+        }
     } completion:^(BOOL finished) {
         if (shouldBounce) {
             // make sure correct panel is displayed under the bounce
@@ -761,7 +812,7 @@ static char ja_kvoContext;
         case JASidePanelCenterVisible: {
             frame.origin.x = 0.0f;
             if (self.style == JASidePanelMultipleActive) {
-                frame.size.width = self.view.bounds.size.width;	
+                frame.size.width = self.view.bounds.size.width;
             }
             break;
 		}
