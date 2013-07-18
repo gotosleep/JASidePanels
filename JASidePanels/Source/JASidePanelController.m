@@ -28,6 +28,8 @@
 
 static char ja_kvoContext;
 
+const CGFloat JAGradientImageHeight = 300.0;
+
 @interface JASidePanelController() {
     CGRect _centerPanelRestingFrame;		
     CGPoint _locationBeforePan;
@@ -45,6 +47,8 @@ static char ja_kvoContext;
 // View use to fade out an in the left and right panel view
 @property(nonatomic, strong) UIView *leftPanelFadingView;
 @property(nonatomic, strong) UIView *rightPanelFadingView;
+@property(nonatomic, strong) UIButton *leftCustomButton;
+@property(nonatomic, strong) UIImageView *leftCustomButtonGradientImageView;
 @end
 
 @implementation JASidePanelController
@@ -86,6 +90,11 @@ static char ja_kvoContext;
 @synthesize allowRightSwipe = _allowRightSwipe;
 @synthesize shouldFadeOutLeftPanel = _shouldFadeOutLeftPanel;
 @synthesize shouldFadeOutRightPanel = _shouldFadeOutRightPanel;
+@synthesize shouldAnimateLeftButtonGradientBackground = _shouldAnimateLeftButtonGradientBackground;
+@synthesize leftCustomButtonGradientBackgroundLeftColour = _leftCustomButtonGradientBackgroundLeftColour;
+@synthesize leftCustomButtonGradientBackgroundRightColour = _leftCustomButtonGradientBackgroundRightColour;
+@synthesize leftCustomButton = _leftCustomButton;
+@synthesize leftCustomButtonGradientImageView = _leftCustomButtonGradientImageView;
 
 #pragma mark - Icon
 
@@ -156,6 +165,9 @@ static char ja_kvoContext;
     self.allowLeftSwipe = YES;
     self.shouldFadeOutLeftPanel = NO;
     self.shouldFadeOutRightPanel = NO;
+    self.shouldAnimateLeftButtonGradientBackground = NO;
+    self.leftCustomButtonGradientBackgroundLeftColour = [UIColor clearColor];
+    self.leftCustomButtonGradientBackgroundRightColour = [UIColor clearColor];
 }
 
 #pragma mark - UIViewController
@@ -447,7 +459,7 @@ static char ja_kvoContext;
                 buttonController = [nav.viewControllers objectAtIndex:0];
             }
         }
-        if (!buttonController.navigationItem.leftBarButtonItem) {   
+        if (!buttonController.navigationItem.leftBarButtonItem) {
             buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
         }
     }	
@@ -512,6 +524,11 @@ static char ja_kvoContext;
         }
         if (self.shouldFadeOutRightPanel){
             self.rightPanelFadingView.alpha = (self.rightVisibleWidth - self.rightPanel.view.frame.origin.x + frame.origin.x)/self.rightVisibleWidth;
+        }
+
+        if (self.shouldAnimateLeftButtonGradientBackground) {
+            CGFloat centerPanelTranslationDelta = (self.leftVisibleWidth - frame.origin.x)/self.leftVisibleWidth;
+            [self _updateLeftCustomButtonBackgroundGradientYPosition:centerPanelTranslationDelta];
         }
 
         // if center panel has focus, make sure correct side panel is revealed
@@ -767,10 +784,16 @@ static char ja_kvoContext;
             case JASidePanelCenterVisible: {
                 self.leftPanelFadingView.alpha = 1;
                 self.rightPanelFadingView.alpha = 1;
+                if (self.shouldAnimateLeftButtonGradientBackground) {
+                    [self _updateLeftCustomButtonBackgroundGradientYPosition:1];
+                }
                 break;
             }
             case JASidePanelLeftVisible: {
                 self.leftPanelFadingView.alpha = 0;
+                if (self.shouldAnimateLeftButtonGradientBackground) {
+                    [self _updateLeftCustomButtonBackgroundGradientYPosition:0];
+                }
                 break;
             }
             case JASidePanelRightVisible: {
@@ -1006,8 +1029,50 @@ static char ja_kvoContext;
 
 #pragma mark - Public Methods
 
+- (UIButton *)leftCustomButtonForCenterPanel {
+
+// Uncomment to test left button background gradient code.
+//    UIButton*leftButton = [[UIButton alloc] initWithFrame:CGRectMake(-7,0, 44, 44)];
+//    [leftButton addTarget:self action:@selector(toggleLeftPanel:) forControlEvents:UIControlEventTouchUpInside];
+//    return leftButton;
+
+    return nil;
+}
+
+
 - (UIBarButtonItem *)leftButtonForCenterPanel {
-    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+
+    self.leftCustomButton = [self leftCustomButtonForCenterPanel];
+
+    if (self.leftCustomButton && self.shouldAnimateLeftButtonGradientBackground) {
+        // Create the left button gradient background
+        UIImage *gradientImage = [self drawVerticalGradientImageWithSize:CGSizeMake(self.leftCustomButton.frame.size.width, JAGradientImageHeight)
+                topColor:self.leftCustomButtonGradientBackgroundRightColour
+                bottomColor:self.leftCustomButtonGradientBackgroundLeftColour];
+        self.leftCustomButtonGradientImageView = [[UIImageView alloc] initWithImage:gradientImage];
+        [self _updateLeftCustomButtonBackgroundGradientYPosition:1];
+        // Add it to it's own subview so that we can offset the gradient and make sure the gradient does not bleed outside the nav bar.
+        UIView *gradientSubView = [[UIView alloc] initWithFrame:self.leftCustomButton.frame];
+        gradientSubView.clipsToBounds = YES;
+        [gradientSubView addSubview:self.leftCustomButtonGradientImageView];
+
+        // create the bar button item sub view
+        UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.leftCustomButton.frame.size.width, self.leftCustomButton.frame.size.height)];
+        [subView addSubview:gradientSubView];
+        [subView addSubview:self.leftCustomButton];
+
+        // Create the bar button item
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:subView];
+        return barButtonItem;
+    }
+    else {
+        if (self.leftCustomButton) {
+            return [[UIBarButtonItem alloc] initWithCustomView:self.leftCustomButton];
+        }
+        else {
+            return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+        }
+    }
 }
 
 - (void)showLeftPanel:(BOOL)animated {
@@ -1092,5 +1157,56 @@ static char ja_kvoContext;
         }
     }
 }
+
+
+#pragma mark - Private Methods
+
+- (UIImage *)drawVerticalGradientImageWithSize:(CGSize)size topColor:(UIColor *)topColor bottomColor:(UIColor *)bottomColor {
+
+    CGFloat scale = 1.0;
+    UIImage *gradientImage = [[UIImage alloc] init];
+
+    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, size.width, size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    CGRect rect = CGRectMake(0, 0, 0, size.height);
+
+    // Create gradient
+    NSArray *colors = [NSArray arrayWithObjects:(id) bottomColor.CGColor, (id) topColor.CGColor, nil];
+    CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+    CGGradientRef gradient = CGGradientCreateWithColors(space, (__bridge CFArrayRef) colors, NULL);
+
+    // Apply gradient
+    CGContextClipToMask(context, rect, gradientImage.CGImage);
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(0, size.height), 0);
+    gradientImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    UIGraphicsEndImageContext();
+    CGGradientRelease(gradient);
+    CGColorSpaceRelease(space);
+
+    return gradientImage;
+}
+
+- (void)_updateLeftCustomButtonBackgroundGradientYPosition:(CGFloat)centerPanelTranslationDelta {
+
+    // Calculate the new y position of the gradient view
+    if (centerPanelTranslationDelta < 0) {
+            centerPanelTranslationDelta = 0;
+    }
+    if (centerPanelTranslationDelta > 1) {
+            centerPanelTranslationDelta = 1;
+    }
+
+    // Update frame position
+    CGRect leftCustomButtonGradientImageViewFrame = self.leftCustomButtonGradientImageView.frame;
+    CGFloat gradientImageYPosition = centerPanelTranslationDelta*(self.leftCustomButtonGradientImageView.frame.size.height - self.leftCustomButton.frame.size.width);
+    leftCustomButtonGradientImageViewFrame.origin.y = -gradientImageYPosition;
+    self.leftCustomButtonGradientImageView.frame = leftCustomButtonGradientImageViewFrame;
+}
+
 
 @end

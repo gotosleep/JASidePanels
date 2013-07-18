@@ -139,8 +139,16 @@ typedef enum _JASidePanelState {
 // Gives you an image to use for your menu button. The image is three stacked white lines, similar to Path 2.0 or Facebook's menu button.
 + (UIImage *)defaultImage;
 
-// Default button to place in gestureViewControllers top viewController. Override in sublcass to change look of default button
-- (UIBarButtonItem *)leftButtonForCenterPanel;
+// Override in subclass if you want to change look of default button
+- (UIButton *)leftCustomButtonForCenterPanel;
+- (UIBarButtonItem *)leftButtonForCenterPanel __attribute__((deprecated("Use -leftCustomButtonForCenterPanel: instead")));
+// Allows you to set a background to the left home button that will change gradient color as the reveal panel
+// move on the screen.
+// Note: This feature will only work with a custom button. ie. you need to overload leftCustomButtonForCenterPanel and provide
+//       your own transparent button....sorry :(
+@property(nonatomic, assign) BOOL shouldAnimateLeftButtonGradientBackground; // default is NO
+@property(nonatomic, strong) UIColor *leftCustomButtonGradientBackgroundLeftColour; // defaults is clear
+@property(nonatomic, strong) UIColor *leftCustomButtonGradientBackgroundRightColour; // defaults is clear
 
 #pragma mark - Nuts & Bolts
 
