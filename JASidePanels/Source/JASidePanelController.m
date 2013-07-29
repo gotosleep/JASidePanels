@@ -28,7 +28,7 @@
 
 static char ja_kvoContext;
 
-const CGFloat JAGradientImageHeight = 300.0;
+const CGFloat JAGradientWidthMultiplier = 1.5;
 
 @interface JASidePanelController() {
     CGRect _centerPanelRestingFrame;		
@@ -1046,7 +1046,7 @@ const CGFloat JAGradientImageHeight = 300.0;
 
     if (self.leftCustomButton && self.shouldAnimateLeftButtonGradientBackground) {
         // Create the left button gradient background
-        UIImage *gradientImage = [self drawVerticalGradientImageWithSize:CGSizeMake(self.leftCustomButton.frame.size.width, JAGradientImageHeight)
+        UIImage *gradientImage = [self drawVerticalGradientImageWithSize:CGSizeMake(self.leftCustomButton.frame.size.width, self.leftVisibleWidth * JAGradientWidthMultiplier)
                 topColor:self.leftCustomButtonGradientBackgroundRightColour
                 bottomColor:self.leftCustomButtonGradientBackgroundLeftColour];
         self.leftCustomButtonGradientImageView = [[UIImageView alloc] initWithImage:gradientImage];
