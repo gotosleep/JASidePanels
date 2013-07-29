@@ -19,13 +19,22 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+- (void)setGradientView:(UIView *)gradientView {
+    if (gradientView == _gradientView) {
+        return;
+    }
+    [_gradientView removeFromSuperview];
+    _gradientView = gradientView;
+    [self addSubview:gradientView];
 }
-*/
+
+- (void)setLeftCustomButton:(UIButton *)leftCustomButton {
+    if (leftCustomButton == _leftCustomButton) {
+        return;
+    }
+    [_leftCustomButton removeFromSuperview];
+    _leftCustomButton = leftCustomButton;
+    [self addSubview:leftCustomButton];
+}
 
 @end

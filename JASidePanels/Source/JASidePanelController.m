@@ -25,6 +25,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
+#import "JABarButtonView.h"
 
 static char ja_kvoContext;
 
@@ -1057,10 +1058,10 @@ const CGFloat JAGradientWidthMultiplier = 1.5;
         [gradientSubView addSubview:self.leftCustomButtonGradientImageView];
 
         // create the bar button item sub view
-        UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.leftCustomButton.frame.size.width, self.leftCustomButton.frame.size.height)];
-        [subView addSubview:gradientSubView];
-        [subView addSubview:self.leftCustomButton];
-
+        JABarButtonView *subView = [[JABarButtonView alloc] initWithFrame:CGRectMake(0, 0, self.leftCustomButton.frame.size.width, self.leftCustomButton.frame.size.height)];
+        subView.gradientView = gradientSubView;
+        subView.leftCustomButton = self.leftCustomButton;
+        
         // Create the bar button item
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:subView];
         return barButtonItem;

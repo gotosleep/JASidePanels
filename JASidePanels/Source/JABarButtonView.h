@@ -10,4 +10,7 @@
 
 @interface JABarButtonView : UIView
 
+@property (strong, nonatomic) UIView *gradientView;
+@property (strong, nonatomic) UIButton *leftCustomButton;
+
 @end
