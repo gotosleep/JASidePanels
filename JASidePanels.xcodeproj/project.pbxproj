@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F33CEF217A700EB001193E1 /* JABarButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33CEF117A700EB001193E1 /* JABarButtonView.m */; };
 		5C49572716C555F700250332 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C49572616C555F700250332 /* Default-568h@2x.png */; };
 		95322A731517AEF40069C8D7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95322A701517AEEB0069C8D7 /* QuartzCore.framework */; };
 		9561ACB2151286EE005889C6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9561ACB1151286EE005889C6 /* UIKit.framework */; };
@@ -24,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F33CEF017A700EB001193E1 /* JABarButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JABarButtonView.h; path = Source/JABarButtonView.h; sourceTree = "<group>"; };
+		4F33CEF117A700EB001193E1 /* JABarButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JABarButtonView.m; path = Source/JABarButtonView.m; sourceTree = "<group>"; };
 		5C49572616C555F700250332 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		95322A701517AEEB0069C8D7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9561ACAD151286EE005889C6 /* JASidePanels.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JASidePanels.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +124,8 @@
 				9561AD0E15130EE2005889C6 /* JASidePanelController.m */,
 				95BCC45815F081130009F1DA /* UIViewController+JASidePanel.h */,
 				95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */,
+				4F33CEF017A700EB001193E1 /* JABarButtonView.h */,
+				4F33CEF117A700EB001193E1 /* JABarButtonView.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -214,6 +219,7 @@
 				9561AD2115130F2A005889C6 /* main.m in Sources */,
 				95BCC45A15F081130009F1DA /* UIViewController+JASidePanel.m in Sources */,
 				9568132B16373ACB007B3602 /* JADebugViewController.m in Sources */,
+				4F33CEF217A700EB001193E1 /* JABarButtonView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
