@@ -21,7 +21,23 @@
 		9561AD2115130F2A005889C6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1F15130F2A005889C6 /* main.m */; };
 		9568132B16373ACB007B3602 /* JADebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9568132A16373ACB007B3602 /* JADebugViewController.m */; };
 		95BCC45A15F081130009F1DA /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */; };
+		B539BA1417B093D4005E3B2E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9561ACB3151286EE005889C6 /* Foundation.framework */; };
+		B539BA1917B093D4005E3B2E /* JASidePanelsFramework.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B539BA1817B093D4005E3B2E /* JASidePanelsFramework.h */; };
+		B539BA1B17B093D5005E3B2E /* JASidePanelsFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = B539BA1A17B093D4005E3B2E /* JASidePanelsFramework.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B539BA1117B093D4005E3B2E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				B539BA1917B093D4005E3B2E /* JASidePanelsFramework.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5C49572616C555F700250332 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -48,6 +64,10 @@
 		9568132A16373ACB007B3602 /* JADebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JADebugViewController.m; path = Demo/JADebugViewController.m; sourceTree = "<group>"; };
 		95BCC45815F081130009F1DA /* UIViewController+JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+JASidePanel.h"; path = "Source/UIViewController+JASidePanel.h"; sourceTree = "<group>"; };
 		95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+JASidePanel.m"; path = "Source/UIViewController+JASidePanel.m"; sourceTree = "<group>"; };
+		B539BA1317B093D4005E3B2E /* libJASidePanelsFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJASidePanelsFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B539BA1717B093D4005E3B2E /* JASidePanelsFramework-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JASidePanelsFramework-Prefix.pch"; sourceTree = "<group>"; };
+		B539BA1817B093D4005E3B2E /* JASidePanelsFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JASidePanelsFramework.h; sourceTree = "<group>"; };
+		B539BA1A17B093D4005E3B2E /* JASidePanelsFramework.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JASidePanelsFramework.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +82,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B539BA1017B093D4005E3B2E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B539BA1417B093D4005E3B2E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -70,6 +98,7 @@
 			children = (
 				5C49572616C555F700250332 /* Default-568h@2x.png */,
 				9561ACB7151286EE005889C6 /* JASidePanels */,
+				B539BA1517B093D4005E3B2E /* JASidePanelsFramework */,
 				9561ACB0151286EE005889C6 /* Frameworks */,
 				9561ACAE151286EE005889C6 /* Products */,
 			);
@@ -79,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				9561ACAD151286EE005889C6 /* JASidePanels.app */,
+				B539BA1317B093D4005E3B2E /* libJASidePanelsFramework.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,6 +173,24 @@
 			name = Demo;
 			sourceTree = "<group>";
 		};
+		B539BA1517B093D4005E3B2E /* JASidePanelsFramework */ = {
+			isa = PBXGroup;
+			children = (
+				B539BA1817B093D4005E3B2E /* JASidePanelsFramework.h */,
+				B539BA1A17B093D4005E3B2E /* JASidePanelsFramework.m */,
+				B539BA1617B093D4005E3B2E /* Supporting Files */,
+			);
+			path = JASidePanelsFramework;
+			sourceTree = "<group>";
+		};
+		B539BA1617B093D4005E3B2E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B539BA1717B093D4005E3B2E /* JASidePanelsFramework-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -162,6 +210,23 @@
 			productName = JASidePanels;
 			productReference = 9561ACAD151286EE005889C6 /* JASidePanels.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B539BA1217B093D4005E3B2E /* JASidePanelsFramework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B539BA1C17B093D5005E3B2E /* Build configuration list for PBXNativeTarget "JASidePanelsFramework" */;
+			buildPhases = (
+				B539BA0F17B093D4005E3B2E /* Sources */,
+				B539BA1017B093D4005E3B2E /* Frameworks */,
+				B539BA1117B093D4005E3B2E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JASidePanelsFramework;
+			productName = JASidePanelsFramework;
+			productReference = B539BA1317B093D4005E3B2E /* libJASidePanelsFramework.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -185,6 +250,7 @@
 			projectRoot = "";
 			targets = (
 				9561ACAC151286EE005889C6 /* JASidePanels */,
+				B539BA1217B093D4005E3B2E /* JASidePanelsFramework */,
 			);
 		};
 /* End PBXProject section */
@@ -214,6 +280,14 @@
 				9561AD2115130F2A005889C6 /* main.m in Sources */,
 				95BCC45A15F081130009F1DA /* UIViewController+JASidePanel.m in Sources */,
 				9568132B16373ACB007B3602 /* JADebugViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B539BA0F17B093D4005E3B2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B539BA1B17B093D5005E3B2E /* JASidePanelsFramework.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +384,39 @@
 			};
 			name = Release;
 		};
+		B539BA1D17B093D5005E3B2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				DSTROOT = /tmp/JASidePanelsFramework.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JASidePanelsFramework/JASidePanelsFramework-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		B539BA1E17B093D5005E3B2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				DSTROOT = /tmp/JASidePanelsFramework.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JASidePanelsFramework/JASidePanelsFramework-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -330,6 +437,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		B539BA1C17B093D5005E3B2E /* Build configuration list for PBXNativeTarget "JASidePanelsFramework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B539BA1D17B093D5005E3B2E /* Debug */,
+				B539BA1E17B093D5005E3B2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
