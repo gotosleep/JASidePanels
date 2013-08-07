@@ -75,6 +75,8 @@ Alternatively, you can setup a git submodule and reference the files in your Xco
 
 Make sure to include the QuartzCore framework in your target.
 
+You can also add : pod 'JASidePanels' to your Podfile.
+
 UIViewController+JASidePanel Category
 ---
 
