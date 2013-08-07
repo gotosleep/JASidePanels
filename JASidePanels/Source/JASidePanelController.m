@@ -691,6 +691,8 @@ static char ja_kvoContext;
             _leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_leftPanel.view];
             [self.leftPanelContainer addSubview:_leftPanel.view];
+        } else {
+            [self.leftPanel viewDidAppear:YES];
         }
         
         self.leftPanelContainer.hidden = NO;
@@ -706,6 +708,8 @@ static char ja_kvoContext;
             _rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_rightPanel.view];
             [self.rightPanelContainer addSubview:_rightPanel.view];
+        } else {
+            [self.leftPanel viewDidAppear:YES];
         }
         
         self.rightPanelContainer.hidden = NO;
