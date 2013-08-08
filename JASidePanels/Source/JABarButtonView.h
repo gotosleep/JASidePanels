@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) UIView *gradientView;
 @property (strong, nonatomic) UIButton *leftCustomButton;
+@property (strong, nonatomic) UIButton *rightCustomButton;
 
 @end

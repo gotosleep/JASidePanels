@@ -8,6 +8,8 @@
 
 #import "JABarButtonView.h"
 
+static const CGFloat NavigationBarDefaultButtonPadding = 7.0;
+
 @implementation JABarButtonView
 
 - (id)initWithFrame:(CGRect)frame
@@ -35,6 +37,32 @@
     [_leftCustomButton removeFromSuperview];
     _leftCustomButton = leftCustomButton;
     [self addSubview:leftCustomButton];
+    
+    [self updateFrameToFitAllButtons];
+}
+
+- (void)setRightCustomButton:(UIButton *)rightCustomButton {
+    if (rightCustomButton == _rightCustomButton) {
+        return;
+    }
+    [_rightCustomButton removeFromSuperview];
+    _rightCustomButton = rightCustomButton;
+    [self addSubview:rightCustomButton];
+    
+    [self updateFrameToFitAllButtons];
+}
+
+- (void)updateFrameToFitAllButtons{
+    //Update the frame of the button view to fit both left and right objects
+    CGFloat width = 0.0;
+    if(self.leftCustomButton && self.rightCustomButton){
+        width = (self.leftCustomButton.frame.origin.x + self.leftCustomButton.frame.size.width) + (self.rightCustomButton.frame.origin.x + self.rightCustomButton.frame.size.width) + NavigationBarDefaultButtonPadding;
+    }else if(self.leftCustomButton && !self.rightCustomButton){
+        width = (self.leftCustomButton.frame.origin.x + self.leftCustomButton.frame.size.width);
+    }else if(!self.leftCustomButton && self.rightCustomButton){
+        width = (self.rightCustomButton.frame.origin.x + self.rightCustomButton.frame.size.width);
+    }
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, width, self.frame.size.height);
 }
 
 @end
