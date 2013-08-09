@@ -67,6 +67,9 @@ typedef enum _JASidePanelState {
 // style
 @property (nonatomic) JASidePanelStyle style; // default is JASidePanelSingleActive
 
+// push side panels instead of overlapping them
+@property (nonatomic, assign) BOOL pushesSidePanels;
+
 // size the left panel based on % of total screen width
 @property (nonatomic) CGFloat leftGapPercentage; 
 
