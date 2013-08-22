@@ -24,14 +24,35 @@
  */
 
 
-#import <UIKit/UIKit.h>
+#import "JARightViewController.h"
+#import <JASidePanels/JASidePanelController.h>
 
-@class JASidePanelController;
+#import <JASidePanels/UIViewController+JASidePanel.h>
 
-@interface JAAppDelegate : UIResponder <UIApplicationDelegate>
+@interface JARightViewController ()
 
-@property (strong, nonatomic) UIWindow *window;
+@end
 
-@property (strong, nonatomic) JASidePanelController *viewController;
+@implementation JARightViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+	self.view.backgroundColor = [UIColor redColor];
+    self.label.text = @"Right Panel";
+    [self.label sizeToFit];
+    self.hide.frame = CGRectMake(self.view.bounds.size.width - 220.0f, 70.0f, 200.0f, 40.0f);
+    self.hide.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+    self.show.frame = self.hide.frame;
+    self.show.autoresizingMask = self.hide.autoresizingMask;
+    
+    self.removeRightPanel.hidden = YES;
+    self.addRightPanel.hidden = YES;
+    self.changeCenterPanel.hidden = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.label.center = CGPointMake(floorf((self.view.bounds.size.width - self.sidePanelController.rightVisibleWidth) + self.sidePanelController.rightVisibleWidth/2.0f), 25.0f);
+}
 
 @end

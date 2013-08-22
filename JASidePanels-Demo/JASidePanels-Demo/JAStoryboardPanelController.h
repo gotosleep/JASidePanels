@@ -6,7 +6,7 @@
 //
 //
 
-#import "JASidePanelController.h"
+#import <JASidePanels/JASidePanelController.h>
 
 @interface JAStoryboardPanelController : JASidePanelController
 

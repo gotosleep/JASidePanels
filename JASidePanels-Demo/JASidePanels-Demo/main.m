@@ -1,9 +1,9 @@
 //
 //  main.m
-//  JASidePanel-Storyboard
+//  JASidePanels-Demo
 //
-//  Created by Andrey Yastrebov on 21.08.13.
-//
+//  Created by Andrey Yastrebov on 22.08.13.
+//  Copyright (c) 2013 AgileFusion. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

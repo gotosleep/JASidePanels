@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'JASidePanelsLib' target in the 'JASidePanelsLib' project
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif

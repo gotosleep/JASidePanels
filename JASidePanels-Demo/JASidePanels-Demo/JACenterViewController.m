@@ -23,33 +23,28 @@
  SOFTWARE.
  */
 
-
-#import "JAAppDelegate.h"
-
-#import "JASidePanelController.h"
 #import "JACenterViewController.h"
-#import "JALeftViewController.h"
-#import "JARightViewController.h"
 
-@implementation JAAppDelegate
+@interface JACenterViewController ()
 
-@synthesize window = _window;
-@synthesize viewController = _viewController;
+@end
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
-	self.viewController = [[JASidePanelController alloc] init];
-    self.viewController.shouldDelegateAutorotateToVisiblePanel = NO;
-    
-	self.viewController.leftPanel = [[JALeftViewController alloc] init];
-	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
-	self.viewController.rightPanel = [[JARightViewController alloc] init];
-	
-	self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
-    return YES;
+@implementation JACenterViewController
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        self.title = @"Center Panel";
+    }
+    return self;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    CGFloat red = (CGFloat)arc4random() / 0x100000000;
+    CGFloat green = (CGFloat)arc4random() / 0x100000000;
+    CGFloat blue = (CGFloat)arc4random() / 0x100000000;
+    self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
+}
 
 @end
