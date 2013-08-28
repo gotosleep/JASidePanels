@@ -25,9 +25,9 @@
 
 
 #import "JALeftViewController.h"
-#import "JASidePanelController.h"
+#import <JASidePanels/JASidePanelController.h>
 
-#import "UIViewController+JASidePanel.h"
+#import <JASidePanels/UIViewController+JASidePanel.h>
 #import "JARightViewController.h"
 #import "JACenterViewController.h"
 

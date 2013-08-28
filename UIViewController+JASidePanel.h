@@ -23,33 +23,18 @@
  SOFTWARE.
  */
 
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-#import "JAAppDelegate.h"
+@class JASidePanelController;
 
-#import "JASidePanelController.h"
-#import "JACenterViewController.h"
-#import "JALeftViewController.h"
-#import "JARightViewController.h"
+/* This optional category provides a convenience method for finding the current
+ side panel controller that your view controller belongs to. It is similar to the
+ Apple provided "navigationController" and "tabBarController" methods.
+ */
+@interface UIViewController (JASidePanel)
 
-@implementation JAAppDelegate
-
-@synthesize window = _window;
-@synthesize viewController = _viewController;
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
-	self.viewController = [[JASidePanelController alloc] init];
-    self.viewController.shouldDelegateAutorotateToVisiblePanel = NO;
-    
-	self.viewController.leftPanel = [[JALeftViewController alloc] init];
-	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
-	self.viewController.rightPanel = [[JARightViewController alloc] init];
-	
-	self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
-    return YES;
-}
-
+// The nearest ancestor in the view controller hierarchy that is a side panel controller.
+@property (nonatomic, weak, readonly) JASidePanelController *sidePanelController;
 
 @end

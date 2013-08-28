@@ -36,7 +36,16 @@ typedef enum _JASidePanelState {
     JASidePanelRightVisible
 } JASidePanelState;
 
-@interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
+@protocol JASidePanel
+
+@optional
+- (void)willBecomeActiveAsPanelAnimated:(BOOL)animated withBounce:(BOOL)withBounce;
+- (void)didBecomeActiveAsPanelAnimated:(BOOL)animated withBounce:(BOOL)withBounce;
+- (void)willResignActiveAsPanelAnimated:(BOOL)animated withBounce:(BOOL)withBounce;
+- (void)didResignActiveAsPanelAnimated:(BOOL)animated withBounce:(BOOL)withBounce;
+@end
+
+@interface JASidePanelController : UIViewController <UIGestureRecognizerDelegate>
 
 #pragma mark - Usage
 
@@ -61,6 +70,9 @@ typedef enum _JASidePanelState {
 
 // Calling this while the left or right panel is visible causes the center panel to be completely hidden
 - (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval) duration;
+
+// Alternative way to set the center panel with a completion block that is called after the center panel is set and shown
+- (void)setCenterPanel:(UIViewController *)centerPanel completion:(void (^)(BOOL finished))completion;
 
 #pragma mark - Look & Feel
 
@@ -132,6 +144,9 @@ typedef enum _JASidePanelState {
 
 // Default button to place in gestureViewControllers top viewController. Override in sublcass to change look of default button
 - (UIBarButtonItem *)leftButtonForCenterPanel;
+
+// Default button to place in gestureViewControllers top viewController. Override in sublcass to change look of default button
+- (UIBarButtonItem *)rightButtonForCenterPanel;
 
 #pragma mark - Nuts & Bolts
 

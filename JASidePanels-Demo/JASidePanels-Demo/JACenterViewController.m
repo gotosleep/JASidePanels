@@ -23,17 +23,28 @@
  SOFTWARE.
  */
 
-#import <Foundation/Foundation.h>
+#import "JACenterViewController.h"
 
-@class JASidePanelController;
+@interface JACenterViewController ()
 
-/* This optional category provides a convenience method for finding the current
- side panel controller that your view controller belongs to. It is similar to the
- Apple provided "navigationController" and "tabBarController" methods.
- */
-@interface UIViewController (JASidePanel)
+@end
 
-// The nearest ancestor in the view controller hierarchy that is a side panel controller.
-@property (nonatomic, weak, readonly) JASidePanelController *sidePanelController;
+@implementation JACenterViewController
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        self.title = @"Center Panel";
+    }
+    return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    CGFloat red = (CGFloat)arc4random() / 0x100000000;
+    CGFloat green = (CGFloat)arc4random() / 0x100000000;
+    CGFloat blue = (CGFloat)arc4random() / 0x100000000;
+    self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
+}
 
 @end

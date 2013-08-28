@@ -190,6 +190,7 @@ static char ja_kvoContext;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self _adjustCenterFrame]; //Account for possible rotation while view appearing
+    [self _layoutSideContainers:NO duration:0.0f];
 }
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
@@ -212,7 +213,7 @@ static char ja_kvoContext;
     }
 }
 
-#else
+#endif
 
 - (BOOL)shouldAutorotate {
     __strong UIViewController *visiblePanel = self.visiblePanel;
@@ -224,8 +225,11 @@ static char ja_kvoContext;
     }
 }
 
-
-#endif
+- (NSUInteger)supportedInterfaceOrientations
+{
+    __strong UIViewController *visiblePanel = self.visiblePanel;
+    return [visiblePanel supportedInterfaceOrientations];
+}
 
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
@@ -349,6 +353,10 @@ static char ja_kvoContext;
 #pragma mark - Panels
 
 - (void)setCenterPanel:(UIViewController *)centerPanel {
+    [self setCenterPanel:centerPanel completion:nil];
+}
+
+- (void)setCenterPanel:(UIViewController *)centerPanel completion:(void (^)(BOOL finished))completion {
     UIViewController *previous = _centerPanel;
     if (centerPanel != _centerPanel) {
         [_centerPanel removeObserver:self forKeyPath:@"view"];
@@ -375,7 +383,7 @@ static char ja_kvoContext;
             self.centerPanelContainer.frame = _centerPanelRestingFrame;
         } completion:^(__unused BOOL finished) {
             [self _swapCenter:previous previousState:previousState with:_centerPanel];
-            [self _showCenterPanel:YES bounce:NO];
+            [self _showCenterPanel:YES bounce:NO completion:completion];
         }];
     }
 }
@@ -401,10 +409,10 @@ static char ja_kvoContext;
         [_leftPanel.view removeFromSuperview];
         [_leftPanel removeFromParentViewController];
         _leftPanel = leftPanel;
+        [self _placeButtonForLeftPanel];
         if (_leftPanel) {
             [self addChildViewController:_leftPanel];
             [_leftPanel didMoveToParentViewController:self];
-            [self _placeButtonForLeftPanel];
         }
         if (self.state == JASidePanelLeftVisible) {
             self.visiblePanel = _leftPanel;
@@ -418,6 +426,7 @@ static char ja_kvoContext;
         [_rightPanel.view removeFromSuperview];
         [_rightPanel removeFromParentViewController];
         _rightPanel = rightPanel;
+        [self _placeButtonForRightPanel];
         if (_rightPanel) {
             [self addChildViewController:_rightPanel];
             [_rightPanel didMoveToParentViewController:self];
@@ -430,19 +439,41 @@ static char ja_kvoContext;
 
 #pragma mark - Panel Buttons
 
+- (UIViewController*)_findButtonController {
+    UIViewController *buttonController = self.centerPanel;
+    if (![buttonController isKindOfClass:[UINavigationController class]]) {
+        return nil;
+    }
+    
+    UINavigationController *nav = (UINavigationController *)buttonController;
+    if ([nav.viewControllers count] > 0) {
+        buttonController = [nav.viewControllers objectAtIndex:0];
+    }
+    return buttonController;
+}
+
 - (void)_placeButtonForLeftPanel {
+    UIViewController *buttonController = [self _findButtonController];
+    if (!buttonController) {
+        return;
+    }
     if (self.leftPanel) {
-        UIViewController *buttonController = self.centerPanel;
-        if ([buttonController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *nav = (UINavigationController *)buttonController;
-            if ([nav.viewControllers count] > 0) {
-                buttonController = [nav.viewControllers objectAtIndex:0];
-            }
-        }
-        if (!buttonController.navigationItem.leftBarButtonItem) {   
+        if (!buttonController.navigationItem.leftBarButtonItem) {
             buttonController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
         }
-    }	
+    }
+}
+
+- (void)_placeButtonForRightPanel {
+    UIViewController *buttonController = [self _findButtonController];
+    if (!buttonController) {
+        return;
+    }
+    if (self.rightPanel) {
+        if (!buttonController.navigationItem.rightBarButtonItem) {
+            buttonController.navigationItem.rightBarButtonItem = [self rightButtonForCenterPanel];
+        }
+    }
 }
 
 #pragma mark - Gesture Recognizer Delegate
@@ -655,6 +686,7 @@ static char ja_kvoContext;
 
 - (void)_loadCenterPanelWithPreviousState:(JASidePanelState)previousState {
     [self _placeButtonForLeftPanel];
+    [self _placeButtonForRightPanel];
     
     // for the multi-active style, it looks better if the new center starts out in it's fullsize and slides in
     if (self.style == JASidePanelMultipleActive) {
@@ -691,6 +723,8 @@ static char ja_kvoContext;
             _leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_leftPanel.view];
             [self.leftPanelContainer addSubview:_leftPanel.view];
+        } else {
+            [self.leftPanel viewDidAppear:YES];
         }
         
         self.leftPanelContainer.hidden = NO;
@@ -706,6 +740,8 @@ static char ja_kvoContext;
             _rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_rightPanel.view];
             [self.rightPanelContainer addSubview:_rightPanel.view];
+        } else {
+            [self.leftPanel viewDidAppear:YES];
         }
         
         self.rightPanelContainer.hidden = NO;
@@ -719,6 +755,22 @@ static char ja_kvoContext;
     if (self.canUnloadRightPanel && self.rightPanel.isViewLoaded) {
         [self.rightPanel.view removeFromSuperview];
     }
+}
+
+- (void)_willSwitchFromPanel:(UIViewController *)fromPanel toPanel:(UIViewController *)toPanel animated:(BOOL)animated withBounce:(BOOL)bounce
+{
+    if (self.style != JASidePanelMultipleActive && [fromPanel respondsToSelector:@selector(willResignActiveAsPanelAnimated:withBounce:)])
+        [(id)fromPanel willResignActiveAsPanelAnimated:animated withBounce:bounce];
+    if ([toPanel respondsToSelector:@selector(willBecomeActiveAsPanelAnimated:withBounce:)])
+        [(id)toPanel willBecomeActiveAsPanelAnimated:animated withBounce:bounce];
+}
+
+- (void)_didSwitchFromPanel:(UIViewController *)fromPanel toPanel:(UIViewController *)toPanel animated:(BOOL)animated withBounce:(BOOL)bounce
+{
+    if ([toPanel respondsToSelector:@selector(didBecomeActiveAsPanelAnimated:withBounce:)])
+        [(id)toPanel didBecomeActiveAsPanelAnimated:animated withBounce:bounce];
+    if (self.style != JASidePanelMultipleActive && [fromPanel respondsToSelector:@selector(didResignActiveAsPanelAnimated:withBounce:)])
+        [(id)fromPanel didResignActiveAsPanelAnimated:animated withBounce:bounce];
 }
 
 #pragma mark - Animation
@@ -738,7 +790,7 @@ static char ja_kvoContext;
     }
     
     CGFloat duration = [self _calculatedDuration];
-    [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear|UIViewAnimationOptionLayoutSubviews animations:^{
+    [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear|UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.centerPanelContainer.frame = _centerPanelRestingFrame;
         [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
         if (self.style == JASidePanelMultipleActive || self.pushesSidePanels) {
@@ -821,13 +873,16 @@ static char ja_kvoContext;
 #pragma mark - Showing Panels
 
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    [self _willSwitchFromPanel:self.centerPanel toPanel:self.leftPanel animated:animated withBounce:shouldBounce];
     self.state = JASidePanelLeftVisible;
     [self _loadLeftPanel];
     
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:nil];
+        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+            [self _didSwitchFromPanel:self.centerPanel toPanel:self.leftPanel animated:animated withBounce:shouldBounce];
+        }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
@@ -843,13 +898,16 @@ static char ja_kvoContext;
 }
 
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    [self _willSwitchFromPanel:self.centerPanel toPanel:self.rightPanel animated:animated withBounce:shouldBounce];
     self.state = JASidePanelRightVisible;
     [self _loadRightPanel];
     
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:nil];
+        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+            [self _didSwitchFromPanel:self.centerPanel toPanel:self.rightPanel animated:animated withBounce:shouldBounce];
+        }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
@@ -865,6 +923,14 @@ static char ja_kvoContext;
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    [self _showCenterPanel:animated bounce:shouldBounce completion:nil];
+}
+
+- (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
+    
+    UIViewController *fromPanel = self.visiblePanel;
+    [self _willSwitchFromPanel:fromPanel toPanel:self.centerPanel animated:animated withBounce:shouldBounce];
+    
     self.state = JASidePanelCenterVisible;
     
     [self _adjustCenterFrame];
@@ -873,16 +939,21 @@ static char ja_kvoContext;
         [self _animateCenterPanel:shouldBounce completion:^(__unused BOOL finished) {
             self.leftPanelContainer.hidden = YES;
             self.rightPanelContainer.hidden = YES;
+            [self _didSwitchFromPanel:fromPanel toPanel:self.centerPanel animated:animated withBounce:shouldBounce];
             [self _unloadPanels];
+            if (completion) {
+                completion(finished);
+            }
         }];
     } else {
-        self.centerPanelContainer.frame = _centerPanelRestingFrame;	
+        self.centerPanelContainer.frame = _centerPanelRestingFrame;
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
-        if (self.style == JASidePanelMultipleActive || self.pushesSidePanels) {
+        if (self.style == JASidePanelMultipleActive) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
         self.leftPanelContainer.hidden = YES;
         self.rightPanelContainer.hidden = YES;
+        [self _didSwitchFromPanel:fromPanel toPanel:self.centerPanel animated:animated withBounce:shouldBounce];
         [self _unloadPanels];
     }
     
@@ -942,6 +1013,7 @@ static char ja_kvoContext;
         } else if ([keyPath isEqualToString:@"viewControllers"] && object == self.centerPanel) {
             // view controllers have changed, need to replace the button
             [self _placeButtonForLeftPanel];
+            [self _placeButtonForRightPanel];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -952,6 +1024,10 @@ static char ja_kvoContext;
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
     return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+}
+
+- (UIBarButtonItem *)rightButtonForCenterPanel {
+    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleRightPanel:)];
 }
 
 - (void)showLeftPanel:(BOOL)animated {
@@ -1008,6 +1084,12 @@ static char ja_kvoContext;
         _centerPanelHidden = centerPanelHidden;
         duration = animated ? duration : 0.0f;
         if (centerPanelHidden) {
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+			animation.fromValue = [NSNumber numberWithFloat:0.75f];
+			animation.toValue = [NSNumber numberWithFloat:0.0f];
+			animation.duration = duration;
+			[self.centerPanelContainer.layer addAnimation:animation forKey:@"shadowOpacity"];
+			self.centerPanelContainer.layer.shadowOpacity = 0.0f;
             [UIView animateWithDuration:duration animations:^{
                 CGRect frame = self.centerPanelContainer.frame;
                 frame.origin.x = self.state == JASidePanelLeftVisible ? self.centerPanelContainer.frame.size.width : -self.centerPanelContainer.frame.size.width;
@@ -1023,6 +1105,12 @@ static char ja_kvoContext;
                 }
             }];
         } else {
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+			animation.fromValue = [NSNumber numberWithFloat:0.0f];
+			animation.toValue = [NSNumber numberWithFloat:0.75f];
+			animation.duration = duration;
+			[self.centerPanelContainer.layer addAnimation:animation forKey:@"shadowOpacity"];
+			self.centerPanelContainer.layer.shadowOpacity = 0.75f;
             [self _unhideCenterPanel];
             [UIView animateWithDuration:duration animations:^{
                 if (self.state == JASidePanelLeftVisible) {

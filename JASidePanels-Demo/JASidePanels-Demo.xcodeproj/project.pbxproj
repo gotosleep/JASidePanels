@@ -1,0 +1,423 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BC09E73F17C6076A00E40006 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC09E73E17C6076A00E40006 /* UIKit.framework */; };
+		BC09E74117C6076A00E40006 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC09E74017C6076A00E40006 /* Foundation.framework */; };
+		BC09E74317C6076A00E40006 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC09E74217C6076A00E40006 /* CoreGraphics.framework */; };
+		BC09E74917C6076A00E40006 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC09E74717C6076A00E40006 /* InfoPlist.strings */; };
+		BC09E74B17C6076A00E40006 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E74A17C6076A00E40006 /* main.m */; };
+		BC09E75117C6076A00E40006 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BC09E75017C6076A00E40006 /* Default.png */; };
+		BC09E75317C6076A00E40006 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC09E75217C6076A00E40006 /* Default@2x.png */; };
+		BC09E75517C6076A00E40006 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC09E75417C6076A00E40006 /* Default-568h@2x.png */; };
+		BC09E75817C6076A00E40006 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC09E75617C6076A00E40006 /* MainStoryboard_iPhone.storyboard */; };
+		BC09E75B17C6076A00E40006 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC09E75917C6076A00E40006 /* MainStoryboard_iPad.storyboard */; };
+		BC09E76F17C608EF00E40006 /* libJASidePanels.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC09E76C17C608E000E40006 /* libJASidePanels.a */; };
+		BC09E77117C608F500E40006 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC09E77017C608F500E40006 /* QuartzCore.framework */; };
+		BC09E77617C60AD500E40006 /* JAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E77317C60AD500E40006 /* JAAppDelegate.m */; };
+		BC09E77717C60AD500E40006 /* JAStoryboardPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E77517C60AD500E40006 /* JAStoryboardPanelController.m */; };
+		BC09E78017C60B1400E40006 /* JACenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E77917C60B1400E40006 /* JACenterViewController.m */; };
+		BC09E78117C60B1400E40006 /* JADebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E77B17C60B1400E40006 /* JADebugViewController.m */; };
+		BC09E78217C60B1400E40006 /* JALeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E77D17C60B1400E40006 /* JALeftViewController.m */; };
+		BC09E78317C60B1400E40006 /* JARightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E77F17C60B1400E40006 /* JARightViewController.m */; };
+		BC09E78817C60C1C00E40006 /* JADetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E78717C60C1C00E40006 /* JADetailViewController.m */; };
+		BCB63CF117CE3B9A00CB4300 /* JASplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB63CF017CE3B9A00CB4300 /* JASplitViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BC09E76B17C608E000E40006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC09E76717C608E000E40006 /* JASidePanels.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC09E71A17C6064700E40006;
+			remoteInfo = JASidePanels;
+		};
+		BC09E76D17C608EA00E40006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC09E76717C608E000E40006 /* JASidePanels.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BC09E71917C6064700E40006;
+			remoteInfo = JASidePanels;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BC09E73B17C6076A00E40006 /* JASidePanels-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JASidePanels-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC09E73E17C6076A00E40006 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BC09E74017C6076A00E40006 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BC09E74217C6076A00E40006 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BC09E74617C6076A00E40006 /* JASidePanels-Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JASidePanels-Demo-Info.plist"; sourceTree = "<group>"; };
+		BC09E74817C6076A00E40006 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BC09E74A17C6076A00E40006 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BC09E74C17C6076A00E40006 /* JASidePanels-Demo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JASidePanels-Demo-Prefix.pch"; sourceTree = "<group>"; };
+		BC09E75017C6076A00E40006 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		BC09E75217C6076A00E40006 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		BC09E75417C6076A00E40006 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BC09E75717C6076A00E40006 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		BC09E75A17C6076A00E40006 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		BC09E76717C608E000E40006 /* JASidePanels.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JASidePanels.xcodeproj; path = ../JASidePanels.xcodeproj; sourceTree = "<group>"; };
+		BC09E77017C608F500E40006 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		BC09E77217C60AD500E40006 /* JAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JAAppDelegate.h; sourceTree = "<group>"; };
+		BC09E77317C60AD500E40006 /* JAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JAAppDelegate.m; sourceTree = "<group>"; };
+		BC09E77417C60AD500E40006 /* JAStoryboardPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JAStoryboardPanelController.h; sourceTree = "<group>"; };
+		BC09E77517C60AD500E40006 /* JAStoryboardPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JAStoryboardPanelController.m; sourceTree = "<group>"; };
+		BC09E77817C60B1400E40006 /* JACenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JACenterViewController.h; sourceTree = "<group>"; };
+		BC09E77917C60B1400E40006 /* JACenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JACenterViewController.m; sourceTree = "<group>"; };
+		BC09E77A17C60B1400E40006 /* JADebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JADebugViewController.h; sourceTree = "<group>"; };
+		BC09E77B17C60B1400E40006 /* JADebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JADebugViewController.m; sourceTree = "<group>"; };
+		BC09E77C17C60B1400E40006 /* JALeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JALeftViewController.h; sourceTree = "<group>"; };
+		BC09E77D17C60B1400E40006 /* JALeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JALeftViewController.m; sourceTree = "<group>"; };
+		BC09E77E17C60B1400E40006 /* JARightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JARightViewController.h; sourceTree = "<group>"; };
+		BC09E77F17C60B1400E40006 /* JARightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JARightViewController.m; sourceTree = "<group>"; };
+		BC09E78617C60C1C00E40006 /* JADetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JADetailViewController.h; sourceTree = "<group>"; };
+		BC09E78717C60C1C00E40006 /* JADetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JADetailViewController.m; sourceTree = "<group>"; };
+		BCB63CEF17CE3B9A00CB4300 /* JASplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASplitViewController.h; sourceTree = "<group>"; };
+		BCB63CF017CE3B9A00CB4300 /* JASplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASplitViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BC09E73817C6076A00E40006 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC09E77117C608F500E40006 /* QuartzCore.framework in Frameworks */,
+				BC09E76F17C608EF00E40006 /* libJASidePanels.a in Frameworks */,
+				BC09E73F17C6076A00E40006 /* UIKit.framework in Frameworks */,
+				BC09E74117C6076A00E40006 /* Foundation.framework in Frameworks */,
+				BC09E74317C6076A00E40006 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BC09E73217C6076A00E40006 = {
+			isa = PBXGroup;
+			children = (
+				BC09E76717C608E000E40006 /* JASidePanels.xcodeproj */,
+				BC09E74417C6076A00E40006 /* JASidePanels-Demo */,
+				BC09E73D17C6076A00E40006 /* Frameworks */,
+				BC09E73C17C6076A00E40006 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BC09E73C17C6076A00E40006 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC09E73B17C6076A00E40006 /* JASidePanels-Demo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BC09E73D17C6076A00E40006 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BC09E77017C608F500E40006 /* QuartzCore.framework */,
+				BC09E73E17C6076A00E40006 /* UIKit.framework */,
+				BC09E74017C6076A00E40006 /* Foundation.framework */,
+				BC09E74217C6076A00E40006 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BC09E74417C6076A00E40006 /* JASidePanels-Demo */ = {
+			isa = PBXGroup;
+			children = (
+				BC09E78617C60C1C00E40006 /* JADetailViewController.h */,
+				BC09E78717C60C1C00E40006 /* JADetailViewController.m */,
+				BC09E77817C60B1400E40006 /* JACenterViewController.h */,
+				BC09E77917C60B1400E40006 /* JACenterViewController.m */,
+				BC09E77A17C60B1400E40006 /* JADebugViewController.h */,
+				BC09E77B17C60B1400E40006 /* JADebugViewController.m */,
+				BC09E77C17C60B1400E40006 /* JALeftViewController.h */,
+				BC09E77D17C60B1400E40006 /* JALeftViewController.m */,
+				BC09E77E17C60B1400E40006 /* JARightViewController.h */,
+				BC09E77F17C60B1400E40006 /* JARightViewController.m */,
+				BC09E77217C60AD500E40006 /* JAAppDelegate.h */,
+				BC09E77317C60AD500E40006 /* JAAppDelegate.m */,
+				BC09E77417C60AD500E40006 /* JAStoryboardPanelController.h */,
+				BC09E77517C60AD500E40006 /* JAStoryboardPanelController.m */,
+				BCB63CEF17CE3B9A00CB4300 /* JASplitViewController.h */,
+				BCB63CF017CE3B9A00CB4300 /* JASplitViewController.m */,
+				BC09E75617C6076A00E40006 /* MainStoryboard_iPhone.storyboard */,
+				BC09E75917C6076A00E40006 /* MainStoryboard_iPad.storyboard */,
+				BC09E74517C6076A00E40006 /* Supporting Files */,
+			);
+			path = "JASidePanels-Demo";
+			sourceTree = "<group>";
+		};
+		BC09E74517C6076A00E40006 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BC09E74617C6076A00E40006 /* JASidePanels-Demo-Info.plist */,
+				BC09E74717C6076A00E40006 /* InfoPlist.strings */,
+				BC09E74A17C6076A00E40006 /* main.m */,
+				BC09E74C17C6076A00E40006 /* JASidePanels-Demo-Prefix.pch */,
+				BC09E75017C6076A00E40006 /* Default.png */,
+				BC09E75217C6076A00E40006 /* Default@2x.png */,
+				BC09E75417C6076A00E40006 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BC09E76817C608E000E40006 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC09E76C17C608E000E40006 /* libJASidePanels.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BC09E73A17C6076A00E40006 /* JASidePanels-Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC09E76417C6076A00E40006 /* Build configuration list for PBXNativeTarget "JASidePanels-Demo" */;
+			buildPhases = (
+				BC09E73717C6076A00E40006 /* Sources */,
+				BC09E73817C6076A00E40006 /* Frameworks */,
+				BC09E73917C6076A00E40006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BC09E76E17C608EA00E40006 /* PBXTargetDependency */,
+			);
+			name = "JASidePanels-Demo";
+			productName = "JASidePanels-Demo";
+			productReference = BC09E73B17C6076A00E40006 /* JASidePanels-Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BC09E73317C6076A00E40006 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = JA;
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = AgileFusion;
+			};
+			buildConfigurationList = BC09E73617C6076A00E40006 /* Build configuration list for PBXProject "JASidePanels-Demo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BC09E73217C6076A00E40006;
+			productRefGroup = BC09E73C17C6076A00E40006 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = BC09E76817C608E000E40006 /* Products */;
+					ProjectRef = BC09E76717C608E000E40006 /* JASidePanels.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				BC09E73A17C6076A00E40006 /* JASidePanels-Demo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		BC09E76C17C608E000E40006 /* libJASidePanels.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libJASidePanels.a;
+			remoteRef = BC09E76B17C608E000E40006 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BC09E73917C6076A00E40006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC09E74917C6076A00E40006 /* InfoPlist.strings in Resources */,
+				BC09E75117C6076A00E40006 /* Default.png in Resources */,
+				BC09E75317C6076A00E40006 /* Default@2x.png in Resources */,
+				BC09E75517C6076A00E40006 /* Default-568h@2x.png in Resources */,
+				BC09E75817C6076A00E40006 /* MainStoryboard_iPhone.storyboard in Resources */,
+				BC09E75B17C6076A00E40006 /* MainStoryboard_iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BC09E73717C6076A00E40006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC09E74B17C6076A00E40006 /* main.m in Sources */,
+				BC09E77617C60AD500E40006 /* JAAppDelegate.m in Sources */,
+				BC09E77717C60AD500E40006 /* JAStoryboardPanelController.m in Sources */,
+				BC09E78017C60B1400E40006 /* JACenterViewController.m in Sources */,
+				BC09E78117C60B1400E40006 /* JADebugViewController.m in Sources */,
+				BC09E78217C60B1400E40006 /* JALeftViewController.m in Sources */,
+				BC09E78317C60B1400E40006 /* JARightViewController.m in Sources */,
+				BC09E78817C60C1C00E40006 /* JADetailViewController.m in Sources */,
+				BCB63CF117CE3B9A00CB4300 /* JASplitViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BC09E76E17C608EA00E40006 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JASidePanels;
+			targetProxy = BC09E76D17C608EA00E40006 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BC09E74717C6076A00E40006 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC09E74817C6076A00E40006 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BC09E75617C6076A00E40006 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC09E75717C6076A00E40006 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		BC09E75917C6076A00E40006 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC09E75A17C6076A00E40006 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BC09E76217C6076A00E40006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BC09E76317C6076A00E40006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BC09E76517C6076A00E40006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JASidePanels-Demo/JASidePanels-Demo-Prefix.pch";
+				INFOPLIST_FILE = "JASidePanels-Demo/JASidePanels-Demo-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BC09E76617C6076A00E40006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JASidePanels-Demo/JASidePanels-Demo-Prefix.pch";
+				INFOPLIST_FILE = "JASidePanels-Demo/JASidePanels-Demo-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BC09E73617C6076A00E40006 /* Build configuration list for PBXProject "JASidePanels-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC09E76217C6076A00E40006 /* Debug */,
+				BC09E76317C6076A00E40006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC09E76417C6076A00E40006 /* Build configuration list for PBXNativeTarget "JASidePanels-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC09E76517C6076A00E40006 /* Debug */,
+				BC09E76617C6076A00E40006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BC09E73317C6076A00E40006 /* Project object */;
+}
