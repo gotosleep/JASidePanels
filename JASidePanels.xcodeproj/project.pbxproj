@@ -273,6 +273,7 @@
 				BC09E72517C6064700E40006 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
