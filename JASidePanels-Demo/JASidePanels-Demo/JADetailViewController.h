@@ -11,4 +11,5 @@
 @interface JADetailViewController : UIViewController <UISplitViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (assign, nonatomic) BOOL hideMaster;
 @end

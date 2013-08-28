@@ -87,7 +87,7 @@
         <!--Split View Controller-->
         <scene sceneID="18">
             <objects>
-                <splitViewController id="5" sceneMemberID="viewController">
+                <splitViewController id="5" customClass="JASplitViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -150,35 +150,6 @@
             <point key="canvasLocation" x="1596" y="-703"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="JACenterViewController" superclassName="JADebugViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JACenterViewController.h"/>
-        </class>
-        <class className="JADebugViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JADebugViewController.h"/>
-        </class>
-        <class className="JADetailViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JADetailViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="detailDescriptionLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="JALeftViewController" superclassName="JADebugViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JALeftViewController.h"/>
-        </class>
-        <class className="JARightViewController" superclassName="JALeftViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JARightViewController.h"/>
-        </class>
-        <class className="JASidePanelController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JASidePanelController.h"/>
-        </class>
-        <class className="JAStoryboardPanelController" superclassName="JASidePanelController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JAStoryboardPanelController.h"/>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

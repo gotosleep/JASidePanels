@@ -14,10 +14,18 @@
 
 @implementation JADetailViewController
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+    {
+        self.hideMaster = YES;
+    }
+    else
+    {
+        self.hideMaster = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -42,9 +50,18 @@
     self.masterPopoverController = nil;
 }
 
-//- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
-//{
-//    return NO;
-//}
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UIInterfaceOrientationIsPortrait(orientation))
+    {
+        self.hideMaster = YES;
+    }
+    else
+    {
+        self.hideMaster = NO;
+    }
+        
+    return self.hideMaster;
+}
 
 @end

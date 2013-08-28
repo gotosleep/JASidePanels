@@ -26,6 +26,7 @@
 		BC09E78217C60B1400E40006 /* JALeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E77D17C60B1400E40006 /* JALeftViewController.m */; };
 		BC09E78317C60B1400E40006 /* JARightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E77F17C60B1400E40006 /* JARightViewController.m */; };
 		BC09E78817C60C1C00E40006 /* JADetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09E78717C60C1C00E40006 /* JADetailViewController.m */; };
+		BCB63CF117CE3B9A00CB4300 /* JASplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB63CF017CE3B9A00CB4300 /* JASplitViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,8 @@
 		BC09E77F17C60B1400E40006 /* JARightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JARightViewController.m; sourceTree = "<group>"; };
 		BC09E78617C60C1C00E40006 /* JADetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JADetailViewController.h; sourceTree = "<group>"; };
 		BC09E78717C60C1C00E40006 /* JADetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JADetailViewController.m; sourceTree = "<group>"; };
+		BCB63CEF17CE3B9A00CB4300 /* JASplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASplitViewController.h; sourceTree = "<group>"; };
+		BCB63CF017CE3B9A00CB4300 /* JASplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASplitViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +142,8 @@
 				BC09E77317C60AD500E40006 /* JAAppDelegate.m */,
 				BC09E77417C60AD500E40006 /* JAStoryboardPanelController.h */,
 				BC09E77517C60AD500E40006 /* JAStoryboardPanelController.m */,
+				BCB63CEF17CE3B9A00CB4300 /* JASplitViewController.h */,
+				BCB63CF017CE3B9A00CB4300 /* JASplitViewController.m */,
 				BC09E75617C6076A00E40006 /* MainStoryboard_iPhone.storyboard */,
 				BC09E75917C6076A00E40006 /* MainStoryboard_iPad.storyboard */,
 				BC09E74517C6076A00E40006 /* Supporting Files */,
@@ -261,6 +266,7 @@
 				BC09E78217C60B1400E40006 /* JALeftViewController.m in Sources */,
 				BC09E78317C60B1400E40006 /* JARightViewController.m in Sources */,
 				BC09E78817C60C1C00E40006 /* JADetailViewController.m in Sources */,
+				BCB63CF117CE3B9A00CB4300 /* JASplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
