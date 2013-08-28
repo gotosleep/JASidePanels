@@ -190,6 +190,7 @@ static char ja_kvoContext;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self _adjustCenterFrame]; //Account for possible rotation while view appearing
+    [self _layoutSideContainers:NO duration:0.0f];
 }
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
@@ -212,7 +213,7 @@ static char ja_kvoContext;
     }
 }
 
-#else
+#endif
 
 - (BOOL)shouldAutorotate {
     __strong UIViewController *visiblePanel = self.visiblePanel;
@@ -224,15 +225,11 @@ static char ja_kvoContext;
     }
 }
 
-
-#endif
-
 - (NSUInteger)supportedInterfaceOrientations
 {
     __strong UIViewController *visiblePanel = self.visiblePanel;
     return [visiblePanel supportedInterfaceOrientations];
 }
-
 
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
@@ -760,6 +757,22 @@ static char ja_kvoContext;
     }
 }
 
+- (void)_willSwitchFromPanel:(UIViewController *)fromPanel toPanel:(UIViewController *)toPanel animated:(BOOL)animated withBounce:(BOOL)bounce
+{
+    if (self.style != JASidePanelMultipleActive && [fromPanel respondsToSelector:@selector(willResignActiveAsPanelAnimated:withBounce:)])
+        [(id)fromPanel willResignActiveAsPanelAnimated:animated withBounce:bounce];
+    if ([toPanel respondsToSelector:@selector(willBecomeActiveAsPanelAnimated:withBounce:)])
+        [(id)toPanel willBecomeActiveAsPanelAnimated:animated withBounce:bounce];
+}
+
+- (void)_didSwitchFromPanel:(UIViewController *)fromPanel toPanel:(UIViewController *)toPanel animated:(BOOL)animated withBounce:(BOOL)bounce
+{
+    if ([toPanel respondsToSelector:@selector(didBecomeActiveAsPanelAnimated:withBounce:)])
+        [(id)toPanel didBecomeActiveAsPanelAnimated:animated withBounce:bounce];
+    if (self.style != JASidePanelMultipleActive && [fromPanel respondsToSelector:@selector(didResignActiveAsPanelAnimated:withBounce:)])
+        [(id)fromPanel didResignActiveAsPanelAnimated:animated withBounce:bounce];
+}
+
 #pragma mark - Animation
 
 - (CGFloat)_calculatedDuration {
@@ -860,13 +873,16 @@ static char ja_kvoContext;
 #pragma mark - Showing Panels
 
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    [self _willSwitchFromPanel:self.centerPanel toPanel:self.leftPanel animated:animated withBounce:shouldBounce];
     self.state = JASidePanelLeftVisible;
     [self _loadLeftPanel];
     
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:nil];
+        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+            [self _didSwitchFromPanel:self.centerPanel toPanel:self.leftPanel animated:animated withBounce:shouldBounce];
+        }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
@@ -882,13 +898,16 @@ static char ja_kvoContext;
 }
 
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    [self _willSwitchFromPanel:self.centerPanel toPanel:self.rightPanel animated:animated withBounce:shouldBounce];
     self.state = JASidePanelRightVisible;
     [self _loadRightPanel];
     
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:nil];
+        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+            [self _didSwitchFromPanel:self.centerPanel toPanel:self.rightPanel animated:animated withBounce:shouldBounce];
+        }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
@@ -909,6 +928,9 @@ static char ja_kvoContext;
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
     
+    UIViewController *fromPanel = self.visiblePanel;
+    [self _willSwitchFromPanel:fromPanel toPanel:self.centerPanel animated:animated withBounce:shouldBounce];
+    
     self.state = JASidePanelCenterVisible;
     
     [self _adjustCenterFrame];
@@ -917,6 +939,7 @@ static char ja_kvoContext;
         [self _animateCenterPanel:shouldBounce completion:^(__unused BOOL finished) {
             self.leftPanelContainer.hidden = YES;
             self.rightPanelContainer.hidden = YES;
+            [self _didSwitchFromPanel:fromPanel toPanel:self.centerPanel animated:animated withBounce:shouldBounce];
             [self _unloadPanels];
             if (completion) {
                 completion(finished);
@@ -930,6 +953,7 @@ static char ja_kvoContext;
         }
         self.leftPanelContainer.hidden = YES;
         self.rightPanelContainer.hidden = YES;
+        [self _didSwitchFromPanel:fromPanel toPanel:self.centerPanel animated:animated withBounce:shouldBounce];
         [self _unloadPanels];
     }
     

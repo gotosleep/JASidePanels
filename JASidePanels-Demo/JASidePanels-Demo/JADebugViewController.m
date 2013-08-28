@@ -44,4 +44,22 @@
     NSLog(@"%@ didMoveToParentViewController %@", self, parent);
 }
 
+#pragma mark - JASidePanel
+
+- (void)willBecomeActiveAsPanelAnimated:(BOOL)animated withBounce:(BOOL)withBounce {
+    NSLog(@"%@ willBecomeActiveAsPanelAnimated:withBounce:", self);
+}
+
+- (void)didBecomeActiveAsPanelAnimated:(BOOL)animated withBounce:(BOOL)withBounce {
+    NSLog(@"%@ didBecomeActiveAsPanelAnimated:withBounce:", self);
+}
+
+- (void)willResignActiveAsPanelAnimated:(BOOL)animated withBounce:(BOOL)withBounce {
+    NSLog(@"%@ willResignActiveAsPanelAnimated:withBounce:", self);
+}
+
+- (void)didResignActiveAsPanelAnimated:(BOOL)animated withBounce:(BOOL)withBounce {
+    NSLog(@"%@ didResignActiveAsPanelAnimated:withBounce:", self);
+}
+
 @end
