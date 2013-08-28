@@ -14,13 +14,20 @@
 
 @implementation JASplitViewController
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder])
+    {
+        _masterViewController = self.viewControllers[0];
+        _detailViewController = self.viewControllers[1];
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.masterViewController = self.viewControllers[0];
-    self.detailViewController = self.viewControllers[1];
-        
     [self.view bringSubviewToFront:self.detailViewController.view];
 }
 
