@@ -1,1 +1,5 @@
 .DS_Store
+JASidePanelsBinding/JASidePanelsBinding/obj
+JASidePanelsBinding/JASidePanelsBinding/bin
+build
+*.a
