@@ -94,6 +94,9 @@ typedef enum _JASidePanelState {
 // by default applies rounded corners to the panel. override in sublcass to change
 - (void)stylePanel:(UIView *)panel;
 
+// This method will be called whenever the sidepanel visible amount change. Subclass this method to react to changes of how much of the center panel / side panels are visible
+- (void)willPanToSidePanelVisiblePercent:(CGFloat)percent duration:(CGFloat)duration;
+
 #pragma mark - Animation
 
 // the minimum % of total screen width the centerPanel.view must move for panGesture to succeed
