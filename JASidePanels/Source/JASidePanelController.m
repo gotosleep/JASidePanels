@@ -123,6 +123,15 @@ static char ja_kvoContext;
     return self;
 }
 
+//Support subclasses from .xib-files
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        [self _baseInit];
+    }
+    return self;
+}
+
 - (id)init {
     if (self = [super init]) {
         [self _baseInit];
