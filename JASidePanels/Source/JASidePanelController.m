@@ -799,6 +799,7 @@ static char ja_kvoContext;
 		}
     }
     _centerPanelRestingFrame = frame;
+    _locationBeforePan = _centerPanelRestingFrame.origin;
     return _centerPanelRestingFrame;
 }
 
