@@ -301,7 +301,12 @@ static char ja_kvoContext;
 - (void)_configureContainers {
     self.leftPanelContainer.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
     self.rightPanelContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-    self.centerPanelContainer.frame =  self.view.bounds;
+    CGRect bounds = self.view.bounds;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        bounds.origin.y = 20.0f;
+        bounds.size.height -= 20.0f;
+    }
+    self.centerPanelContainer.frame =  bounds;
     self.centerPanelContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
@@ -778,6 +783,10 @@ static char ja_kvoContext;
 
 - (CGRect)_adjustCenterFrame {
     CGRect frame = self.view.bounds;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        frame.origin.y = 20.0f;
+        frame.size.height -= 20.0f;
+    }
     switch (self.state) {
         case JASidePanelCenterVisible: {
             frame.origin.x = 0.0f;
