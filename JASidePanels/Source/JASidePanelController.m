@@ -609,6 +609,8 @@ static char ja_kvoContext;
     } else if (self.state == JASidePanelRightVisible && !self.allowRightOverpan) {
         if (position < -self.rightVisibleWidth) {
             return 0.0f;
+        } else if ((self.style == JASidePanelMultipleActive || self.pushesSidePanels) && position > 0.0f) {
+            return -_centerPanelRestingFrame.origin.x;
         } else if (position > self.rightPanelContainer.frame.origin.x) {
             return self.rightPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x;
         }
