@@ -1040,4 +1040,11 @@ static char ja_kvoContext;
     }
 }
 
+-(UIStatusBarStyle)preferredStatusBarStyle {
+	if([_centerPanel isKindOfClass:[UINavigationController class]]) {
+		return [[(UINavigationController*)_centerPanel topViewController] preferredStatusBarStyle];
+	}
+    return [_centerPanel preferredStatusBarStyle];
+}
+
 @end
