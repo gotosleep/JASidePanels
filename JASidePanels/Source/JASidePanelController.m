@@ -228,7 +228,7 @@ static char ja_kvoContext;
 #endif
 
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    self.centerPanelContainer.frame = [self _adjustCenterFrame];	
+    self.centerPanelContainer.frame = [self _adjustCenterFrame];
     [self _layoutSideContainers:YES duration:duration];
     [self _layoutSidePanels];
     [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
@@ -308,6 +308,12 @@ static char ja_kvoContext;
 - (void)_layoutSideContainers:(BOOL)animate duration:(NSTimeInterval)duration {
     CGRect leftFrame = self.view.bounds;
     CGRect rightFrame = self.view.bounds;
+    
+    if (![UIApplication sharedApplication].statusBarHidden) {
+        leftFrame.origin.y = leftFrame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height;
+        rightFrame.origin.y = rightFrame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height;
+    }
+    
     if (self.style == JASidePanelMultipleActive) {
         // left panel container
         leftFrame.size.width = self.leftVisibleWidth;
@@ -776,6 +782,10 @@ static char ja_kvoContext;
 
 - (CGRect)_adjustCenterFrame {
     CGRect frame = self.view.bounds;
+    if (![UIApplication sharedApplication].statusBarHidden) {
+        frame.origin.y = frame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height;
+    }
+    
     switch (self.state) {
         case JASidePanelCenterVisible: {
             frame.origin.x = 0.0f;
