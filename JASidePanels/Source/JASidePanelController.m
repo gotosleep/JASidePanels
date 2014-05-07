@@ -29,7 +29,7 @@
 
 static char ja_kvoContext;
 
-const CGFloat JAGradientWidthMultiplier = 1.5;
+const CGFloat JAGradientWidthMultiplier = 3.0;
 
 @interface JASidePanelController() {
     CGRect _centerPanelRestingFrame;		
