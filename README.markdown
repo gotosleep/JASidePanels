@@ -84,8 +84,6 @@ Key Path: `rightPanelSegueIdentifier`  Type: `String`  Value:  `JARightSidePanel
 Note: leave the Value field empty if you do not need a segue for left, center, or right.
 
 
-```
-
 Usage
 ---
 
