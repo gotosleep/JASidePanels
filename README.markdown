@@ -63,6 +63,27 @@ Example 2: Storyboards
 
 ```
 
+Example 3: Storyboards & Segues
+---
+
+1. Create a subclass of `JASidePanelController`. In this example we call it `MySidePanelController`.
+2. In the Storyboard designate the root view's owner as `MySidePanelController`.
+3. Make sure to `#import "JASidePanelController.h"` in `MySidePanelController.h`.
+4. Add more view controllers to your Storyboard. In this example we call them `MyLeftViewController`, `MyCenterViewController` and `MyRightViewController`.
+5. Ctrl+Drag from your `MySidePanelController` to each of your other view controllers to create a custom segue between each of them.
+6. Make sure the segues style is set to "Custom" and that both the Identifier and Segue Class fields are set to `JALeftSidePanelSegue`, `JACenterSidePanelSegue`, and `JARightSidePanelSegue` respectively. 
+7. Select your `MySidePanelController` and then find the Identity Inspector
+8. In the section called User Defined Runtime Attributes add the following entries:
+
+Key Path: `leftPanelSegueIdentifier`  Type: `String`  Value:  `JALeftSidePanelSegue`
+
+Key Path: `centerPanelSegueIdentifier`  Type: `String`  Value:  `JACenterSidePanelSegue`
+
+Key Path: `rightPanelSegueIdentifier`  Type: `String`  Value:  `JARightSidePanelSegue`
+
+Note: leave the Value field empty if you do not need a segue for left, center, or right.
+
+
 Usage
 ---
 

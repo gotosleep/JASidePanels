@@ -24,6 +24,12 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "UIViewController+JASidePanel.h"
+
+#define kJASidePanelStoryBoardName @"JASidePanelStoryBoardName"
+#define kJASidePanelStoryBoardName_LeftPanel @"JASidePanelStoryBoardName_LeftPanel"
+#define kJASidePanelStoryBoardName_RightPanel @"JASidePanelStoryBoardName_RightPanel"
+#define kJASidePanelStoryBoardName_CenterPanel @"JASidePanelStoryBoardName_CenterPanel"
 
 typedef enum _JASidePanelStyle {
     JASidePanelSingleActive = 0,
@@ -36,14 +42,31 @@ typedef enum _JASidePanelState {
     JASidePanelRightVisible
 } JASidePanelState;
 
+#define kJASidePanelStateDidChangeNotification @"kJASidePanelStateDidChangeNotification"
+
+@interface JALeftSidePanelSegue : UIStoryboardSegue
+@end
+
+@interface JARightSidePanelSegue : UIStoryboardSegue
+@end
+
+
+@interface JACenterSidePanelSegue : UIStoryboardSegue
+@end
+
 @interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
 
 #pragma mark - Usage
 
 // set the panels
-@property (nonatomic, strong) UIViewController *leftPanel;   // optional
-@property (nonatomic, strong) UIViewController *centerPanel; // required
-@property (nonatomic, strong) UIViewController *rightPanel;  // optional
+@property (nonatomic, strong) IBOutlet UIViewController *leftPanel;   // optional
+@property (nonatomic, strong) IBOutlet UIViewController *centerPanel; // required
+@property (nonatomic, strong) IBOutlet UIViewController *rightPanel;  // optional
+
+// set panel segues
+@property (nonatomic, strong) NSString *leftPanelSegueIdentifier;   // optional
+@property (nonatomic, strong) NSString *centerPanelSegueIdentifier; // optional
+@property (nonatomic, strong) NSString *rightPanelSegueIdentifier;  // optional
 
 // show the panels
 - (void)showLeftPanel:(BOOL)animated __attribute__((deprecated("Use -showLeftPanelAnimated: instead")));

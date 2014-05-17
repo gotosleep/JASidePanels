@@ -26,6 +26,53 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 
+
+@implementation JALeftSidePanelSegue
+- (void)perform
+{
+    JASidePanelController* sidePanelController = self.sourceViewController;
+    UIViewController* panel = self.destinationViewController;
+    
+    if([sidePanelController isKindOfClass:[JASidePanelController class]])
+    {
+        CGRect frame = panel.view.frame;
+        sidePanelController.leftFixedWidth = frame.size.width;
+        sidePanelController.style = JASidePanelMultipleActive;
+        [sidePanelController setLeftPanel:panel];
+    }
+}
+@end
+
+@implementation JARightSidePanelSegue
+- (void)perform
+{
+    JASidePanelController* sidePanelController = self.sourceViewController;
+    UIViewController* panel = self.destinationViewController;
+    
+    if([sidePanelController isKindOfClass:[JASidePanelController class]])
+    {
+        CGRect frame = panel.view.frame;
+        sidePanelController.rightFixedWidth = frame.size.width;
+        sidePanelController.style = JASidePanelMultipleActive;
+        [sidePanelController setRightPanel:panel];
+    }
+}
+@end
+
+@implementation JACenterSidePanelSegue
+- (void)perform
+{
+    JASidePanelController* sidePanelController = self.sourceViewController;
+    UIViewController* panel = self.destinationViewController;
+    
+    if([sidePanelController isKindOfClass:[JASidePanelController class]])
+    {
+        sidePanelController.style = JASidePanelMultipleActive;
+        [sidePanelController setCenterPanel:panel];
+    }
+}
+@end
+
 static char ja_kvoContext;
 
 @interface JASidePanelController() {
@@ -176,6 +223,18 @@ static char ja_kvoContext;
     
     [self _swapCenter:nil previousState:0 with:_centerPanel];
     [self.view bringSubviewToFront:self.centerPanelContainer];
+    
+    
+    if(self.storyboard)
+    {
+        if(self.centerPanelSegueIdentifier.length)
+            [self performSegueWithIdentifier:self.centerPanelSegueIdentifier sender:nil];
+        
+        if(self.leftPanelSegueIdentifier.length)
+            [self performSegueWithIdentifier:self.leftPanelSegueIdentifier sender:nil];
+        if(self.rightPanelSegueIdentifier.length)
+            [self performSegueWithIdentifier:self.rightPanelSegueIdentifier sender:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -205,7 +264,7 @@ static char ja_kvoContext;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     __strong UIViewController *visiblePanel = self.visiblePanel;
 
-    if (self.shouldDelegateAutorotateToVisiblePanel) {
+    if (visiblePanel && self.shouldDelegateAutorotateToVisiblePanel) {
         return [visiblePanel shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
     } else {
         return YES;
@@ -262,6 +321,7 @@ static char ja_kvoContext;
                 break;
 			}
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kJASidePanelStateDidChangeNotification object:self];
     }
 }
 
