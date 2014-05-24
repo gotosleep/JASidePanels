@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0656B8CB19312E02009F85B0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0656B8CA19312E02009F85B0 /* Images.xcassets */; };
 		5C49572716C555F700250332 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C49572616C555F700250332 /* Default-568h@2x.png */; };
 		95322A731517AEF40069C8D7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95322A701517AEEB0069C8D7 /* QuartzCore.framework */; };
 		9561ACB2151286EE005889C6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9561ACB1151286EE005889C6 /* UIKit.framework */; };
@@ -24,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0656B8CA19312E02009F85B0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		06DA19A919311ECC00A1B489 /* JASidePanelControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JASidePanelControllerDelegate.h; path = Source/JASidePanelControllerDelegate.h; sourceTree = "<group>"; };
 		5C49572616C555F700250332 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		95322A701517AEEB0069C8D7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9561ACAD151286EE005889C6 /* JASidePanels.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JASidePanels.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +109,7 @@
 		9561ACB8151286EE005889C6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0656B8CA19312E02009F85B0 /* Images.xcassets */,
 				9561AD1D15130F2A005889C6 /* JASidePanels-Info.plist */,
 				9561AD1E15130F2A005889C6 /* JASidePanels-Prefix.pch */,
 				9561AD1F15130F2A005889C6 /* main.m */,
@@ -121,6 +125,7 @@
 				9561AD0E15130EE2005889C6 /* JASidePanelController.m */,
 				95BCC45815F081130009F1DA /* UIViewController+JASidePanel.h */,
 				95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */,
+				06DA19A919311ECC00A1B489 /* JASidePanelControllerDelegate.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -194,6 +199,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0656B8CB19312E02009F85B0 /* Images.xcassets in Resources */,
 				9561ACBC151286EE005889C6 /* InfoPlist.strings in Resources */,
 				5C49572716C555F700250332 /* Default-568h@2x.png in Resources */,
 			);
@@ -289,6 +295,8 @@
 		9561ACCF151286EE005889C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JASidePanels/Demo/JASidePanels-Prefix.pch";
 				INFOPLIST_FILE = "JASidePanels/Demo/JASidePanels-Info.plist";
@@ -301,6 +309,8 @@
 		9561ACD0151286EE005889C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JASidePanels/Demo/JASidePanels-Prefix.pch";
 				INFOPLIST_FILE = "JASidePanels/Demo/JASidePanels-Info.plist";

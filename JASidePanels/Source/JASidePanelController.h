@@ -24,6 +24,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "JASidePanelControllerDelegate.h"
 
 typedef enum _JASidePanelStyle {
     JASidePanelSingleActive = 0,
@@ -37,6 +38,8 @@ typedef enum _JASidePanelState {
 } JASidePanelState;
 
 @interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
+
+@property (nonatomic, strong) id<JASidePanelControllerDelegate> delegate;
 
 #pragma mark - Usage
 

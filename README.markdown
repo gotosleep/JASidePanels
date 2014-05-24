@@ -100,6 +100,28 @@ A UIViewController+JASidePanel category is included in the project. Usage is opt
 
 ```
 
+Delegate Methods
+---
+
+You can optionally use these delegate methods to customize the panels and to be notified about the panel movements.
+
+Setting the border radius on panels.
+``` objective-c
+- (CGFloat)borderRadiusForPanel:(UIView *)panel;
+```
+
+Setting a custom UIBarButton for opening the left panel.
+``` objective-c
+- (UIImage *)imageForLeftButtonForCenterPanel;
+```
+
+Getting notified when the panels move.
+``` objective-c
+- (void)panelController:(JASidePanelController *)panelController willShowLeftPanelAnimated:(BOOL)animated;
+- (void)panelController:(JASidePanelController *)panelController willShowRightPanelAnimated:(BOOL)animated;
+- (void)panelController:(JASidePanelController *)panelController willShowCenterPanelAnimated:(BOOL)animated;
+```
+
 Requirements
 ---
 

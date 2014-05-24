@@ -294,7 +294,14 @@ static char ja_kvoContext;
 }
 
 - (void)stylePanel:(UIView *)panel {
-    panel.layer.cornerRadius = 6.0f;
+
+    CGFloat cornerRadius = 6.0f;
+
+    if ([_delegate respondsToSelector:@selector(borderRadiusForPanel:)]) {
+        cornerRadius = [_delegate borderRadiusForPanel:panel];
+    }
+
+    panel.layer.cornerRadius = cornerRadius;
     panel.clipsToBounds = YES;
 }
 
@@ -823,6 +830,11 @@ static char ja_kvoContext;
 #pragma mark - Showing Panels
 
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+
+    if ([_delegate respondsToSelector:@selector(panelController:willShowLeftPanelAnimated:)]) {
+        [_delegate panelController:self willShowLeftPanelAnimated:animated];
+    }
+
     self.state = JASidePanelLeftVisible;
     [self _loadLeftPanel];
     
@@ -845,6 +857,11 @@ static char ja_kvoContext;
 }
 
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+
+    if ([_delegate respondsToSelector:@selector(panelController:willShowRightPanelAnimated:)]) {
+        [_delegate panelController:self willShowRightPanelAnimated:animated];
+    }
+
     self.state = JASidePanelRightVisible;
     [self _loadRightPanel];
     
@@ -867,6 +884,11 @@ static char ja_kvoContext;
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+
+    if ([_delegate respondsToSelector:@selector(panelController:willShowCenterPanelAnimated:)]) {
+        [_delegate panelController:self willShowCenterPanelAnimated:animated];
+    }
+
     self.state = JASidePanelCenterVisible;
     
     [self _adjustCenterFrame];
@@ -953,7 +975,14 @@ static char ja_kvoContext;
 #pragma mark - Public Methods
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
-    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+
+    UIImage *buttonImage = [[self class] defaultImage];
+
+    if ([_delegate respondsToSelector:@selector(imageForLeftButtonForCenterPanel)]) {
+        buttonImage = [_delegate imageForLeftButtonForCenterPanel];
+    }
+
+    return [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
 }
 
 - (void)showLeftPanel:(BOOL)animated {

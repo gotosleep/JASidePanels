@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>ED7F3891-B509-4CC9-AE57-BB272830921B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>JASidePanels</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2ECBDB9E-3A0A-40C0-A316-99F0EF4055ED</key>
+		<string>https://github.com/eriadam/JASidePanels.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>JASidePanels.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2ECBDB9E-3A0A-40C0-A316-99F0EF4055ED</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/eriadam/JASidePanels.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>2ECBDB9E-3A0A-40C0-A316-99F0EF4055ED</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2ECBDB9E-3A0A-40C0-A316-99F0EF4055ED</string>
+			<key>IDESourceControlWCCName</key>
+			<string>JASidePanels</string>
+		</dict>
+	</array>
+</dict>
+</plist>

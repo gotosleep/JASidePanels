@@ -38,8 +38,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
-	self.viewController = [[JASidePanelController alloc] init];
+
+    JASidePanelController *sidePanelController = [[JASidePanelController alloc] init];
+    sidePanelController.delegate =  self;
+	self.viewController = sidePanelController;
+    
     self.viewController.shouldDelegateAutorotateToVisiblePanel = NO;
     
 	self.viewController.leftPanel = [[JALeftViewController alloc] init];
@@ -50,6 +53,33 @@
     [self.window makeKeyAndVisible];
     return YES;
 }
+
+#pragma mark - JASidePanelControllerDelegate
+
+#pragma mark Customisation
+
+- (CGFloat)borderRadiusForPanel:(UIView *)panel {
+    return 0.0f;
+}
+
+- (UIImage *)imageForLeftButtonForCenterPanel {
+    return [UIImage imageNamed:@"menu-icon"];
+}
+
+#pragma mark Event Notifications
+
+- (void)panelController:(JASidePanelController *)panelController willShowLeftPanelAnimated:(BOOL)animated {
+    NSLog(@"willShowLeftPanelAnimated");
+}
+
+- (void)panelController:(JASidePanelController *)panelController willShowRightPanelAnimated:(BOOL)animated {
+    NSLog(@"willShowRightPanelAnimated");
+}
+
+- (void)panelController:(JASidePanelController *)panelController willShowCenterPanelAnimated:(BOOL)animated {
+    NSLog(@"willShowCenterPanelAnimated");
+}
+
 
 
 @end
