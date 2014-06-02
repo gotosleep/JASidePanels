@@ -80,6 +80,7 @@ static char ja_kvoContext;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
 @synthesize pushesSidePanels = _pushesSidePanels;
+@synthesize roundPanelCorners = _roundPanelCorners;
 
 #pragma mark - Icon
 
@@ -148,6 +149,7 @@ static char ja_kvoContext;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
+    self.roundPanelCorners = YES;
 }
 
 #pragma mark - UIViewController
@@ -681,7 +683,9 @@ static char ja_kvoContext;
     
     _centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _centerPanel.view.frame = self.centerPanelContainer.bounds;
-    [self stylePanel:_centerPanel.view];
+    if (self.roundPanelCorners) {
+        [self stylePanel:_centerPanel.view];
+    }
 }
 
 - (void)_loadLeftPanel {
@@ -691,7 +695,9 @@ static char ja_kvoContext;
         if (!_leftPanel.view.superview) {
             [self _layoutSidePanels];
             _leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            [self stylePanel:_leftPanel.view];
+            if (self.roundPanelCorners) {
+                [self stylePanel:_leftPanel.view];
+            }
             [self.leftPanelContainer addSubview:_leftPanel.view];
         }
         
@@ -706,7 +712,9 @@ static char ja_kvoContext;
         if (!_rightPanel.view.superview) {
             [self _layoutSidePanels];
             _rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            [self stylePanel:_rightPanel.view];
+            if (self.roundPanelCorners) {
+                [self stylePanel:_rightPanel.view];
+            }
             [self.rightPanelContainer addSubview:_rightPanel.view];
         }
         
@@ -904,7 +912,9 @@ static char ja_kvoContext;
     if (!self.centerPanel.view.superview) {
         self.centerPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.centerPanel.view.frame = self.centerPanelContainer.bounds;
-        [self stylePanel:self.centerPanel.view];
+        if (self.roundPanelCorners) {
+            [self stylePanel:self.centerPanel.view];
+        }
         [self.centerPanelContainer addSubview:self.centerPanel.view];
     }
 }

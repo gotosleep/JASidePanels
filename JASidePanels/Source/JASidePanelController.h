@@ -117,6 +117,9 @@ typedef enum _JASidePanelState {
 // while changing the center panel, should we bounce it offscreen?
 @property (nonatomic) BOOL bounceOnCenterPanelChange; // defaults to YES
 
+// use rounded corners on panels
+@property (nonatomic) BOOL roundPanelCorners; // defaults to YES
+
 #pragma mark - Gesture Behavior
 
 // Determines whether the pan gesture is limited to the top ViewController in a UINavigationController/UITabBarController
