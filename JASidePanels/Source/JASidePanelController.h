@@ -147,6 +147,9 @@ typedef enum _JASidePanelState {
 // If set to yes, "shouldAutorotateToInterfaceOrientation:" will be passed to self.visiblePanel instead of handled directly
 @property (nonatomic, assign) BOOL shouldDelegateAutorotateToVisiblePanel; // defaults to YES
 
+// If set to yes, "preferredStatusBarStyle" will be passed to self.visiblePanel instead of handled directly
+@property (nonatomic, assign) BOOL shouldDelegatePreferredStatusBarStyleToVisiblePanel; // defaults to YES
+
 // Determines whether or not the panel's views are removed when not visble. If YES, rightPanel & leftPanel's views are eligible for viewDidUnload
 @property (nonatomic, assign) BOOL canUnloadRightPanel; // defaults to NO
 @property (nonatomic, assign) BOOL canUnloadLeftPanel;  // defaults to NO

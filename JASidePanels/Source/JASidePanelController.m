@@ -76,6 +76,7 @@ static char ja_kvoContext;
 @synthesize bounceOnCenterPanelChange = _bounceOnCenterPanelChange;
 @synthesize visiblePanel = _visiblePanel;
 @synthesize shouldDelegateAutorotateToVisiblePanel = _shouldDelegateAutorotateToVisiblePanel;
+@synthesize shouldDelegatePreferredStatusBarStyleToVisiblePanel = _shouldDelegatePreferredStatusBarStyleToVisiblePanel;
 @synthesize centerPanelHidden = _centerPanelHidden;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
@@ -146,6 +147,7 @@ static char ja_kvoContext;
     self.bounceOnSidePanelClose = NO;
     self.bounceOnCenterPanelChange = YES;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
+    self.shouldDelegatePreferredStatusBarStyleToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
 }
@@ -226,6 +228,16 @@ static char ja_kvoContext;
 
 
 #endif
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    __strong UIViewController *visiblePanel = self.visiblePanel;
+    
+    if (self.shouldDelegatePreferredStatusBarStyleToVisiblePanel && [visiblePanel respondsToSelector:@selector(preferredStatusBarStyle)]) {
+        return [visiblePanel preferredStatusBarStyle];
+    } else {
+        return [UIApplication sharedApplication].statusBarStyle;
+    }
+}
 
 - (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     self.centerPanelContainer.frame = [self _adjustCenterFrame];	
@@ -693,6 +705,8 @@ static char ja_kvoContext;
             _leftPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_leftPanel.view];
             [self.leftPanelContainer addSubview:_leftPanel.view];
+        } else {
+            [self.leftPanel viewDidAppear:YES];
         }
         
         self.leftPanelContainer.hidden = NO;
@@ -708,6 +722,8 @@ static char ja_kvoContext;
             _rightPanel.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self stylePanel:_rightPanel.view];
             [self.rightPanelContainer addSubview:_rightPanel.view];
+        } else {
+            [self.leftPanel viewDidAppear:YES];
         }
         
         self.rightPanelContainer.hidden = NO;
