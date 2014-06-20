@@ -64,6 +64,17 @@ typedef enum _JASidePanelState {
 
 #pragma mark - Look & Feel
 
+//animation
+
+// set animation when slide panels
+@property (nonatomic) BOOL animation;
+
+// the mininum % of side panel size
+@property (nonatomic) CGFloat minimumAnimationPercentage;
+
+// the maximum % of side panel size
+@property (nonatomic) CGFloat maximumAnimationPercentage;
+
 // style
 @property (nonatomic) JASidePanelStyle style; // default is JASidePanelSingleActive
 

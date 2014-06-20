@@ -46,7 +46,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor blueColor];
+	self.view.backgroundColor = [UIColor redColor];
 	
 	UILabel *label  = [[UILabel alloc] init];
     label.font = [UIFont boldSystemFontOfSize:20.0f];

@@ -26,6 +26,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 
+#define kMinimumAnimationPercentage 0.9
+#define kMaximumAnimationPercentage 1.0
+
 static char ja_kvoContext;
 
 @interface JASidePanelController() {
@@ -46,6 +49,9 @@ static char ja_kvoContext;
 
 @implementation JASidePanelController
 
+@synthesize maximumAnimationPercentage = _maximumAnimationPercentage;
+@synthesize minimumAnimationPercentage = _minimumAnimationPercentage;
+@synthesize animation = _animation;
 @synthesize leftPanelContainer = _leftPanelContainer;
 @synthesize rightPanelContainer = _rightPanelContainer;
 @synthesize centerPanelContainer = _centerPanelContainer;
@@ -80,6 +86,7 @@ static char ja_kvoContext;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
 @synthesize pushesSidePanels = _pushesSidePanels;
+
 
 #pragma mark - Icon
 
@@ -148,6 +155,8 @@ static char ja_kvoContext;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
+    self.minimumAnimationPercentage = 0.9f;
+    self.maximumAnimationPercentage = 1.0f;
 }
 
 #pragma mark - UIViewController
@@ -176,6 +185,11 @@ static char ja_kvoContext;
     
     [self _swapCenter:nil previousState:0 with:_centerPanel];
     [self.view bringSubviewToFront:self.centerPanelContainer];
+    
+    
+    // set dafeult value
+    self.maximumAnimationPercentage = kMaximumAnimationPercentage;
+    self.minimumAnimationPercentage = kMinimumAnimationPercentage;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -185,6 +199,12 @@ static char ja_kvoContext;
     [self _layoutSidePanels];
     self.centerPanelContainer.frame = [self _adjustCenterFrame];
     [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
+    
+    if (self.animation) {
+        CGAffineTransform tr = CGAffineTransformScale(self.view.transform, self.minimumAnimationPercentage, self.minimumAnimationPercentage);
+        self.leftPanelContainer.transform = tr;
+        self.rightPanelContainer.transform = tr;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -503,6 +523,20 @@ static char ja_kvoContext;
         
         self.centerPanelContainer.frame = frame;
         
+        if (self.animation) {
+            CGFloat sL = self.minimumAnimationPercentage + ((self.maximumAnimationPercentage - self.minimumAnimationPercentage) / [self leftVisibleWidth]) * frame.origin.x;
+            CGFloat sR = self.minimumAnimationPercentage + ((self.maximumAnimationPercentage - self.minimumAnimationPercentage) / [self rightVisibleWidth]) * frame.origin.x * (-1);
+            
+            if (sL >= self.maximumAnimationPercentage) sL = self.maximumAnimationPercentage;
+            if (sL <= self.minimumAnimationPercentage) sL = self.minimumAnimationPercentage;
+            if (sR >= self.maximumAnimationPercentage) sR = self.maximumAnimationPercentage;
+            if (sR <= self.minimumAnimationPercentage) sR = self.minimumAnimationPercentage;
+            
+            CGAffineTransform trL = CGAffineTransformScale(self.view.transform, sL, sL);
+            CGAffineTransform trR = CGAffineTransformScale(self.view.transform, sR, sR);
+            self.leftPanelContainer.transform = trL;
+            self.rightPanelContainer.transform = trR;
+        }
         // if center panel has focus, make sure correct side panel is revealed
         if (self.state == JASidePanelCenterVisible) {
             if (frame.origin.x > 0.0f) {
@@ -552,6 +586,7 @@ static char ja_kvoContext;
 }
 
 - (void)_undoPan {
+    
     switch (self.state) {
         case JASidePanelCenterVisible: {
             [self _showCenterPanel:YES bounce:NO];
@@ -732,15 +767,40 @@ static char ja_kvoContext;
 }
 
 - (void)_animateCenterPanel:(BOOL)shouldBounce completion:(void (^)(BOOL finished))completion {
-    CGFloat bounceDistance = (_centerPanelRestingFrame.origin.x - self.centerPanelContainer.frame.origin.x) * self.bouncePercentage;
     
+    CGFloat bounceDistance = (_centerPanelRestingFrame.origin.x - self.centerPanelContainer.frame.origin.x) * self.bouncePercentage;
     // looks bad if we bounce when the center panel grows
     if (_centerPanelRestingFrame.size.width > self.centerPanelContainer.frame.size.width) {
         shouldBounce = NO;
     }
     
     CGFloat duration = [self _calculatedDuration];
+    CGRect frame = _centerPanelRestingFrame;
+    CGAffineTransform toTransformL, toTransformR;
+    if (self.animation) {
+        CGFloat toL, toR;
+        if (bounceDistance > 0) {
+            toL = self.minimumAnimationPercentage;
+            toR = self.maximumAnimationPercentage;
+            if ((frame.origin.x * -1) >= [self rightVisibleWidth]) {
+                toL = self.maximumAnimationPercentage;
+            }
+        } else {
+            toL = self.maximumAnimationPercentage;
+            toR = self.minimumAnimationPercentage;
+            if (frame.origin.x >= [self leftVisibleWidth]) {
+                toR = self.maximumAnimationPercentage;
+            } 
+        }
+        toTransformL = CGAffineTransformScale(self.view.transform, toR, toR);
+        toTransformR = CGAffineTransformScale(self.view.transform, toL, toL);
+    }
+     
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear|UIViewAnimationOptionLayoutSubviews animations:^{
+        if (self.animation) {
+            self.leftPanelContainer.transform = toTransformL;
+            self.rightPanelContainer.transform = toTransformR;
+        }
         self.centerPanelContainer.frame = _centerPanelRestingFrame;
         [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
         if (self.style == JASidePanelMultipleActive || self.pushesSidePanels) {
@@ -770,6 +830,7 @@ static char ja_kvoContext;
             completion(finished);
         }
     }];
+     
 }
 
 #pragma mark - Panel Sizing
