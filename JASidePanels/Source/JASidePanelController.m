@@ -1002,10 +1002,14 @@ static char ja_kvoContext;
 }
 
 - (void)setCenterPanelHidden:(BOOL)centerPanelHidden {
-    [self setCenterPanelHidden:centerPanelHidden animated:NO duration:0.0];
+    [self setCenterPanelHidden:centerPanelHidden animated:NO duration:0.0 completion:nil];
 }
 
-- (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval) duration {
+- (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval)duration {
+    [self setCenterPanelHidden:centerPanelHidden animated:animated duration:duration completion:nil];
+}
+
+- (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval)duration completion:(void (^)(BOOL finished))completion {
     if (centerPanelHidden != _centerPanelHidden && self.state != JASidePanelCenterVisible) {
         _centerPanelHidden = centerPanelHidden;
         duration = animated ? duration : 0.0f;
@@ -1018,15 +1022,18 @@ static char ja_kvoContext;
                 if (self.shouldResizeLeftPanel || self.shouldResizeRightPanel) {
                     [self _layoutSidePanels];
                 }
-            } completion:^(__unused BOOL finished) {
+            } completion:^(BOOL finished) {
                 // need to double check in case the user tapped really fast
                 if (_centerPanelHidden) {
                     [self _hideCenterPanel];
                 }
+                
+                if (completion) completion(finished);
             }];
         } else {
             [self _unhideCenterPanel];
-            [UIView animateWithDuration:duration animations:^{
+            [UIView animateWithDuration:duration
+                             animations:^{
                 if (self.state == JASidePanelLeftVisible) {
                     [self showLeftPanelAnimated:NO];
                 } else {
@@ -1035,6 +1042,8 @@ static char ja_kvoContext;
                 if (self.shouldResizeLeftPanel || self.shouldResizeRightPanel) {
                     [self _layoutSidePanels];
                 }
+            } completion:^(BOOL finished) {
+                if (completion) completion(finished);
             }];
         }
     }

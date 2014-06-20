@@ -60,7 +60,9 @@ typedef enum _JASidePanelState {
 - (void)toggleRightPanel:(id)sender;
 
 // Calling this while the left or right panel is visible causes the center panel to be completely hidden
-- (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval) duration;
+- (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval)duration;
+// Same as setCenterPanelHidden:animated:duration but with an optional completion block that is fired upon animation completion
+- (void)setCenterPanelHidden:(BOOL)centerPanelHidden animated:(BOOL)animated duration:(NSTimeInterval)duration completion:(void (^)(BOOL finished))completion;
 
 #pragma mark - Look & Feel
 
