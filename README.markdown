@@ -63,6 +63,8 @@ Example 2: Storyboards
 
 ```
 
+Avoid calling navigation controller methods (`pushViewController:`) on your center view, as it breaks the side panel, instead use `setCenterPanel:` on your sidePanelController object.
+
 Usage
 ---
 
