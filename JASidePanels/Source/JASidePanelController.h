@@ -125,6 +125,12 @@ typedef enum _JASidePanelState {
 // Determines whether showing panels can be controlled through pan gestures, or only through buttons
 @property (nonatomic) BOOL recognizesPanGesture; // default is YES
 
+// Determines whether showing center panel can be controller through pan gestures on the left view. Requires recognizesPanGesture = YES
+@property (nonatomic) BOOL recognizesLeftViewPanGesture; // default is NO
+
+// Determines whether showing center panel can be controller through pan gestures on the right view. Requires recognizesPanGesture = YES
+@property (nonatomic) BOOL recognizesRightViewPanGesture; // default is NO
+
 #pragma mark - Menu Buttons
 
 // Gives you an image to use for your menu button. The image is three stacked white lines, similar to Path 2.0 or Facebook's menu button.
