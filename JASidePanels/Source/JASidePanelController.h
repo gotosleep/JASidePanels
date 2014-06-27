@@ -71,7 +71,7 @@ typedef enum _JASidePanelState {
 @property (nonatomic, assign) BOOL pushesSidePanels;
 
 // size the left panel based on % of total screen width
-@property (nonatomic) CGFloat leftGapPercentage; 
+@property (nonatomic) CGFloat leftGapPercentage;
 
 // size the left panel based on this fixed size. overrides leftGapPercentage
 @property (nonatomic) CGFloat leftFixedWidth;
@@ -124,6 +124,9 @@ typedef enum _JASidePanelState {
 
 // Determines whether showing panels can be controlled through pan gestures, or only through buttons
 @property (nonatomic) BOOL recognizesPanGesture; // default is YES
+
+// Determines whether closing panels can be controlled through tap gestures, or only through buttons
+@property (nonatomic) BOOL recognizesTapGesture; // default is YES
 
 #pragma mark - Menu Buttons
 
