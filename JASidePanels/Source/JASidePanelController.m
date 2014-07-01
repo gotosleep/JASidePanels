@@ -571,6 +571,7 @@ static char ja_kvoContext;
 
 - (void)setTapView:(UIView *)tapView {
     if (tapView != _tapView) {
+        _tapView.gestureRecognizers = nil;
         [_tapView removeFromSuperview];
         _tapView = tapView;
         if (_tapView) {

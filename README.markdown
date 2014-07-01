@@ -105,6 +105,13 @@ Requirements
 
 JASidePanels requires iOS 5.0+ and Xcode 4.3+ The projects uses ARC, but it may be used with non-ARC projects by setting the: ` -fobjc-arc ` compiler flag on ` JASidePanelController.m `. You can set this flag under Target -> Build Phases -> Compile Sources
 
+Xamarin.iOS
+---
+
+To build the Xamarin.iOS DLL assembly, first build the static library by running "make all" in the root directory of the project. Then in the JASidePanelsBinding project either use "xbuild" from the command line or Xamarin Studio to build the assembly, which will be located in ./JASidePanelsBinding/JASidePanelsBinding/bin/Debug or Release. This creates a dll that is compatible with armv7, armv7s, and i386 (simulator).
+
+To use, just add "using JASidePanels;" to your C# class, then create a new side panel controller using "new JASidePanelController()" and add it to your view hierarchy.
+
 Apps
 ---
 JASidePanels is used in the following apps:
