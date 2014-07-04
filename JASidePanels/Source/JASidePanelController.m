@@ -776,6 +776,10 @@ static char ja_kvoContext;
 
 - (CGRect)_adjustCenterFrame {
     CGRect frame = self.view.bounds;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0 && !!self.navigationController) {
+        frame.origin.y -= 20;
+        frame.size.height += 20;
+    }
     switch (self.state) {
         case JASidePanelCenterVisible: {
             frame.origin.x = 0.0f;
