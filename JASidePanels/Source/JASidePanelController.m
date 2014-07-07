@@ -26,6 +26,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 
+#define float_epsilon 0.00001
+#define float_equal(a,b) (fabs((a) - (b)) < float_epsilon)
+
 static char ja_kvoContext;
 
 @interface JASidePanelController() {
@@ -460,7 +463,7 @@ static char ja_kvoContext;
             return NO;
         }
         // determine if left swipe is allowed
-        if (translate.x > 0 && ! self.allowLeftSwipe) {
+        if (translate.x > 0.0f && ! self.allowLeftSwipe) {
             return NO;
         }
         BOOL possible = translate.x != 0 && ((fabsf(translate.y) / fabsf(translate.x)) < 1.0f);
@@ -674,6 +677,7 @@ static char ja_kvoContext;
                 self.centerPanelContainer.frame = frame;
                 break;
             }
+            case JASidePanelCenterVisible:
             default:
                 break;
         }
@@ -727,7 +731,7 @@ static char ja_kvoContext;
 
 - (CGFloat)_calculatedDuration {
     CGFloat remaining = fabsf(self.centerPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x);	
-    CGFloat max = _locationBeforePan.x == _centerPanelRestingFrame.origin.x ? remaining : fabsf(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
+    CGFloat max = float_equal(_locationBeforePan.x, _centerPanelRestingFrame.origin.x) ? remaining : fabsf(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
     return max > 0.0f ? self.maximumAnimationDuration * (remaining / max) : self.maximumAnimationDuration;
 }
 
