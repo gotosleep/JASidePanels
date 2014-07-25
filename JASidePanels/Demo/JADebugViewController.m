@@ -7,6 +7,7 @@
 //
 
 #import "JADebugViewController.h"
+#import "Macro.h"
 
 @interface JADebugViewController ()
 
@@ -16,32 +17,32 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"%@ viewWillAppear", self);
+    JAPrintBaseLog;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"%@ viewDidAppear", self);
+    JAPrintBaseLog;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    NSLog(@"%@ viewWillDisappear", self);
+    JAPrintBaseLog;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    NSLog(@"%@ viewDidDisappear", self);
+    JAPrintBaseLog;
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     [super willMoveToParentViewController:parent];
-    NSLog(@"%@ willMoveToParentViewController %@", self, parent);
+    JAPrintBaseLog;
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
     [super didMoveToParentViewController:parent];
-    NSLog(@"%@ didMoveToParentViewController %@", self, parent);
+    JAPrintBaseLog;
 }
 
 @end

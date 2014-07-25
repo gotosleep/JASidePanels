@@ -24,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3EBC260F171E3E7F008B89D1 /* Macro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Macro.h; sourceTree = "<group>"; };
 		5C49572616C555F700250332 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		95322A701517AEEB0069C8D7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9561ACAD151286EE005889C6 /* JASidePanels.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JASidePanels.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +66,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3EBC260E171E3E6D008B89D1 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				3EBC260F171E3E7F008B89D1 /* Macro.h */,
+			);
+			name = Util;
+			path = Demo/Util;
+			sourceTree = "<group>";
+		};
 		9561ACA2151286EE005889C6 = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +138,7 @@
 		9561AD1015130EFC005889C6 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				3EBC260E171E3E6D008B89D1 /* Util */,
 				9561ACB8151286EE005889C6 /* Supporting Files */,
 				9561AD1115130F10005889C6 /* JAAppDelegate.h */,
 				9561AD1215130F10005889C6 /* JAAppDelegate.m */,
