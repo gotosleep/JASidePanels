@@ -453,6 +453,15 @@ static char ja_kvoContext;
     } else if (self.panningLimitedToTopViewController && ![self _isOnTopLevelViewController:self.centerPanel]) {
         return NO;
     } else if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+		// determine if pan is limited to cetain view classes
+		if (self.panViewClasses) {
+			UIView *view = gestureRecognizer.view;
+			CGPoint loc = [gestureRecognizer locationInView:view];
+			UIView *subview = [view hitTest:loc withEvent:nil];
+			if (![self _isViewOrSuperviewOf:subview ofClasses:self.panViewClasses]) {
+				return NO;
+			}
+		}
         UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)gestureRecognizer;
         CGPoint translate = [pan translationInView:self.centerPanelContainer];
         // determine if right swipe is allowed
@@ -651,6 +660,24 @@ static char ja_kvoContext;
         return [self _isOnTopLevelViewController:tab.selectedViewController];
     }
     return root != nil;
+}
+
+- (BOOL)_isViewOrSuperviewOf:(UIView *)view ofClasses:(NSArray *)classes {
+	for (Class class in classes) {
+		if ([self _isViewOrSuperviewOf:view ofClass:class]) {
+			return YES;
+		}
+	}
+	return NO;
+}
+
+- (BOOL)_isViewOrSuperviewOf:(UIView *)view ofClass:(Class)class {
+	if ([view isKindOfClass:class]) {
+		return YES;
+	} if (view.superview) {
+		return [self _isViewOrSuperviewOf:view.superview ofClass:class];
+	}
+	return NO;
 }
 
 #pragma mark - Loading Panels
