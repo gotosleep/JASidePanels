@@ -502,6 +502,7 @@ static char ja_kvoContext;
         }
         
         self.centerPanelContainer.frame = frame;
+        [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
         
         // if center panel has focus, make sure correct side panel is revealed
         if (self.state == JASidePanelCenterVisible) {
