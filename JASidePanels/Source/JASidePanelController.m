@@ -79,6 +79,7 @@ static char ja_kvoContext;
 @synthesize centerPanelHidden = _centerPanelHidden;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
+@synthesize hasRoundedCorners = _hasRoundedCorners;
 @synthesize pushesSidePanels = _pushesSidePanels;
 
 #pragma mark - Icon
@@ -148,6 +149,7 @@ static char ja_kvoContext;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
+    self.hasRoundedCorners = YES;
 }
 
 #pragma mark - UIViewController
@@ -294,7 +296,7 @@ static char ja_kvoContext;
 }
 
 - (void)stylePanel:(UIView *)panel {
-    panel.layer.cornerRadius = 6.0f;
+    panel.layer.cornerRadius = self.hasRoundedCorners ? 6.0f : 0.0f;
     panel.clipsToBounds = YES;
 }
 
