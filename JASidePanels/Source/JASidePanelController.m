@@ -1040,4 +1040,20 @@ static char ja_kvoContext;
     }
 }
 
+
+-(BOOL)prefersStatusBarHidden{
+    if (self.centerPanel && [self.centerPanel isKindOfClass:[UINavigationController class]]) {
+        UINavigationController* nvc=(UINavigationController*)self.centerPanel;
+        if (nvc.visibleViewController && [nvc.visibleViewController respondsToSelector:@selector(prefersStatusBarHidden)]) {
+            return [nvc.visibleViewController prefersStatusBarHidden];
+        }else{
+            return NO;
+        }
+    }else if (self.centerPanel && [self.centerPanel respondsToSelector:@selector(prefersStatusBarHidden)]) {
+        return [self.centerPanel prefersStatusBarHidden];
+    }else{
+        return NO;
+    }
+}
+
 @end
