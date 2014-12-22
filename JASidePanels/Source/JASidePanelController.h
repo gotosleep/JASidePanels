@@ -94,6 +94,9 @@ typedef enum _JASidePanelState {
 // by default applies rounded corners to the panel. override in sublcass to change
 - (void)stylePanel:(UIView *)panel;
 
+// by default applies rounded animate to the panel. override in sublcass to change
+- (CGFloat)calculatedDuration;
+
 #pragma mark - Animation
 
 // the minimum % of total screen width the centerPanel.view must move for panGesture to succeed
