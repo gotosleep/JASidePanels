@@ -725,7 +725,7 @@ static char ja_kvoContext;
 
 #pragma mark - Animation
 
-- (CGFloat)_calculatedDuration {
+- (CGFloat)calculatedDuration {
     CGFloat remaining = fabsf(self.centerPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x);	
     CGFloat max = _locationBeforePan.x == _centerPanelRestingFrame.origin.x ? remaining : fabsf(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
     return max > 0.0f ? self.maximumAnimationDuration * (remaining / max) : self.maximumAnimationDuration;
@@ -739,7 +739,7 @@ static char ja_kvoContext;
         shouldBounce = NO;
     }
     
-    CGFloat duration = [self _calculatedDuration];
+    CGFloat duration = [self calculatedDuration];
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear|UIViewAnimationOptionLayoutSubviews animations:^{
         self.centerPanelContainer.frame = _centerPanelRestingFrame;
         [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
