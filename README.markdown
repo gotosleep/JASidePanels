@@ -100,6 +100,27 @@ A UIViewController+JASidePanel category is included in the project. Usage is opt
 
 ```
 
+Delegate Methods
+---
+
+You can optionally implement a delegate so that you can be notified about the panel movements:
+
+``` objc
+// import the delegate
+#import "JASidePanelController.h"
+
+// implement the delegate
+@interface JAAppDelegate : UIResponder <UIApplicationDelegate, JASidePanelControllerDelegate>
+
+// listen to events
+- (void)panelController:(JASidePanelController *)panelController willShowLeftPanelAnimated:(BOOL)animated bounce:(BOOL)bounce;
+- (void)panelController:(JASidePanelController *)panelController didShowLeftPanelAnimated:(BOOL)animated bounce:(BOOL)bounce;
+- (void)panelController:(JASidePanelController *)panelController willShowRightPanelAnimated:(BOOL)animated bounce:(BOOL)bounce;
+- (void)panelController:(JASidePanelController *)panelController didShowRightPanelAnimated:(BOOL)animated bounce:(BOOL)bounce;
+- (void)panelController:(JASidePanelController *)panelController willShowCenterPanelAnimated:(BOOL)animated bounce:(BOOL)bounce;
+- (void)panelController:(JASidePanelController *)panelController didShowCenterPanelAnimated:(BOOL)animated bounce:(BOOL)bounce;
+```
+
 Requirements
 ---
 

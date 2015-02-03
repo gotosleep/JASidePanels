@@ -30,6 +30,7 @@
 #import "JACenterViewController.h"
 #import "JALeftViewController.h"
 #import "JARightViewController.h"
+#import "JASidePanelControllerDelegate.h"
 
 @implementation JAAppDelegate
 
@@ -41,6 +42,7 @@
 	
 	self.viewController = [[JASidePanelController alloc] init];
     self.viewController.shouldDelegateAutorotateToVisiblePanel = NO;
+    self.viewController.delegate = self;
     
 	self.viewController.leftPanel = [[JALeftViewController alloc] init];
 	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
@@ -51,5 +53,30 @@
     return YES;
 }
 
+#pragma mark - JASidePanelControllerDelegate
+
+- (void)panelController:(JASidePanelController *)panelController willShowLeftPanelAnimated:(BOOL)animated bounce:(BOOL)bounce {
+    NSLog(@"showing LEFT panel");
+}
+
+- (void)panelController:(JASidePanelController *)panelController didShowLeftPanelAnimated:(BOOL)animated bounce:(BOOL)bounce {
+    NSLog(@"finished showing LEFT panel");
+}
+
+- (void)panelController:(JASidePanelController *)panelController willShowRightPanelAnimated:(BOOL)animated bounce:(BOOL)bounce {
+    NSLog(@"showing RIGHT panel");
+}
+
+- (void)panelController:(JASidePanelController *)panelController didShowRightPanelAnimated:(BOOL)animated bounce:(BOOL)bounce {
+    NSLog(@"finished showing RIGHT panel");
+}
+
+- (void)panelController:(JASidePanelController *)panelController willShowCenterPanelAnimated:(BOOL)animated bounce:(BOOL)bounce {
+    NSLog(@"showing CENTER panel");
+}
+
+- (void)panelController:(JASidePanelController *)panelController didShowCenterPanelAnimated:(BOOL)animated bounce:(BOOL)bounce {
+    NSLog(@"finished showing CENTER panel");
+}
 
 @end
