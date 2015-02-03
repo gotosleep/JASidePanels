@@ -26,10 +26,6 @@
 
 #import "JAAppDelegate.h"
 
-#import "JASidePanelController.h"
-#import "JACenterViewController.h"
-#import "JALeftViewController.h"
-#import "JARightViewController.h"
 
 @implementation JAAppDelegate
 
@@ -37,17 +33,17 @@
 @synthesize viewController = _viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
-	self.viewController = [[JASidePanelController alloc] init];
-    self.viewController.shouldDelegateAutorotateToVisiblePanel = NO;
-    
-	self.viewController.leftPanel = [[JALeftViewController alloc] init];
-	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
-	self.viewController.rightPanel = [[JARightViewController alloc] init];
-	
-	self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//	
+//	self.viewController = [[JASidePanelController alloc] init];
+//    self.viewController.shouldDelegateAutorotateToVisiblePanel = NO;
+//    
+//	self.viewController.leftPanel = [[JALeftViewController alloc] init];
+//	self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
+//	self.viewController.rightPanel = [[JARightViewController alloc] init];
+//	
+//	self.window.rootViewController = self.viewController;
+//    [self.window makeKeyAndVisible];
     return YES;
 }
 

@@ -176,6 +176,24 @@ static char ja_kvoContext;
     
     [self _swapCenter:nil previousState:0 with:_centerPanel];
     [self.view bringSubviewToFront:self.centerPanelContainer];
+    @try {
+        [self performSegueWithIdentifier:@"sw_left" sender:self];
+    }
+    @catch (NSException *exception) {}
+
+    @try {
+        [self performSegueWithIdentifier:@"sw_center" sender:self];
+    }
+    @catch (NSException *exception) {}
+
+    @try {
+        [self performSegueWithIdentifier:@"sw_right" sender:self];
+    }
+    @catch (NSException *exception) {}
+
+    
+    
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -191,6 +209,18 @@ static char ja_kvoContext;
     [super viewDidAppear:animated];
     [self _adjustCenterFrame]; //Account for possible rotation while view appearing
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSLog(@"%@",segue.identifier);
+    if ([segue.identifier isEqualToString:@"sw_left"]) {
+        [self setLeftPanel:segue.destinationViewController];
+    }else if ([segue.identifier isEqualToString:@"sw_center"]) {
+        [self setCenterPanel:segue.destinationViewController];
+    }else if ([segue.identifier isEqualToString:@"sw_right"]) {
+        [self setRightPanel:segue.destinationViewController];
+    }
+}
+
 
 #if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 
@@ -223,7 +253,6 @@ static char ja_kvoContext;
         return YES;
     }
 }
-
 
 #endif
 
@@ -294,8 +323,8 @@ static char ja_kvoContext;
 }
 
 - (void)stylePanel:(UIView *)panel {
-    panel.layer.cornerRadius = 6.0f;
-    panel.clipsToBounds = YES;
+//    panel.layer.cornerRadius = 6.0f;
+//    panel.clipsToBounds = YES;
 }
 
 - (void)_configureContainers {

@@ -7,23 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		414743D31A80D3680071763A /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 414743D21A80D3680071763A /* main.storyboard */; };
+		414743DE1A80D3D40071763A /* JASideBarSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 414743DB1A80D3D40071763A /* JASideBarSegue.m */; };
+		414743DF1A80D3D40071763A /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 414743DD1A80D3D40071763A /* JASidePanelController.m */; };
 		5C49572716C555F700250332 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C49572616C555F700250332 /* Default-568h@2x.png */; };
 		95322A731517AEF40069C8D7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95322A701517AEEB0069C8D7 /* QuartzCore.framework */; };
 		9561ACB2151286EE005889C6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9561ACB1151286EE005889C6 /* UIKit.framework */; };
 		9561ACB4151286EE005889C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9561ACB3151286EE005889C6 /* Foundation.framework */; };
 		9561ACB6151286EE005889C6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9561ACB5151286EE005889C6 /* CoreGraphics.framework */; };
 		9561ACBC151286EE005889C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9561ACBA151286EE005889C6 /* InfoPlist.strings */; };
-		9561AD0F15130EE2005889C6 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD0E15130EE2005889C6 /* JASidePanelController.m */; };
 		9561AD1915130F10005889C6 /* JAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1215130F10005889C6 /* JAAppDelegate.m */; };
-		9561AD1A15130F10005889C6 /* JACenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1415130F10005889C6 /* JACenterViewController.m */; };
-		9561AD1B15130F10005889C6 /* JALeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1615130F10005889C6 /* JALeftViewController.m */; };
-		9561AD1C15130F10005889C6 /* JARightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1815130F10005889C6 /* JARightViewController.m */; };
 		9561AD2115130F2A005889C6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9561AD1F15130F2A005889C6 /* main.m */; };
-		9568132B16373ACB007B3602 /* JADebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9568132A16373ACB007B3602 /* JADebugViewController.m */; };
 		95BCC45A15F081130009F1DA /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		414743D21A80D3680071763A /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = main.storyboard; path = Demo/main.storyboard; sourceTree = "<group>"; };
+		414743DA1A80D3D40071763A /* JASideBarSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JASideBarSegue.h; path = Source/JASideBarSegue.h; sourceTree = "<group>"; };
+		414743DB1A80D3D40071763A /* JASideBarSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JASideBarSegue.m; path = Source/JASideBarSegue.m; sourceTree = "<group>"; };
+		414743DC1A80D3D40071763A /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JASidePanelController.h; path = Source/JASidePanelController.h; sourceTree = "<group>"; };
+		414743DD1A80D3D40071763A /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JASidePanelController.m; path = Source/JASidePanelController.m; sourceTree = "<group>"; };
 		5C49572616C555F700250332 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		95322A701517AEEB0069C8D7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9561ACAD151286EE005889C6 /* JASidePanels.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JASidePanels.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,21 +34,11 @@
 		9561ACB3151286EE005889C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9561ACB5151286EE005889C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9561ACBB151286EE005889C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		9561AD0D15130EE2005889C6 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JASidePanelController.h; path = Source/JASidePanelController.h; sourceTree = "<group>"; };
-		9561AD0E15130EE2005889C6 /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JASidePanelController.m; path = Source/JASidePanelController.m; sourceTree = "<group>"; };
 		9561AD1115130F10005889C6 /* JAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JAAppDelegate.h; path = Demo/JAAppDelegate.h; sourceTree = "<group>"; };
 		9561AD1215130F10005889C6 /* JAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JAAppDelegate.m; path = Demo/JAAppDelegate.m; sourceTree = "<group>"; };
-		9561AD1315130F10005889C6 /* JACenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JACenterViewController.h; path = Demo/JACenterViewController.h; sourceTree = "<group>"; };
-		9561AD1415130F10005889C6 /* JACenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JACenterViewController.m; path = Demo/JACenterViewController.m; sourceTree = "<group>"; };
-		9561AD1515130F10005889C6 /* JALeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JALeftViewController.h; path = Demo/JALeftViewController.h; sourceTree = "<group>"; };
-		9561AD1615130F10005889C6 /* JALeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JALeftViewController.m; path = Demo/JALeftViewController.m; sourceTree = "<group>"; };
-		9561AD1715130F10005889C6 /* JARightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JARightViewController.h; path = Demo/JARightViewController.h; sourceTree = "<group>"; };
-		9561AD1815130F10005889C6 /* JARightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JARightViewController.m; path = Demo/JARightViewController.m; sourceTree = "<group>"; };
 		9561AD1D15130F2A005889C6 /* JASidePanels-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JASidePanels-Info.plist"; path = "Demo/JASidePanels-Info.plist"; sourceTree = "<group>"; };
 		9561AD1E15130F2A005889C6 /* JASidePanels-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JASidePanels-Prefix.pch"; path = "Demo/JASidePanels-Prefix.pch"; sourceTree = "<group>"; };
 		9561AD1F15130F2A005889C6 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Demo/main.m; sourceTree = "<group>"; };
-		9568132916373ACB007B3602 /* JADebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JADebugViewController.h; path = Demo/JADebugViewController.h; sourceTree = "<group>"; };
-		9568132A16373ACB007B3602 /* JADebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JADebugViewController.m; path = Demo/JADebugViewController.m; sourceTree = "<group>"; };
 		95BCC45815F081130009F1DA /* UIViewController+JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+JASidePanel.h"; path = "Source/UIViewController+JASidePanel.h"; sourceTree = "<group>"; };
 		95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+JASidePanel.m"; path = "Source/UIViewController+JASidePanel.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,8 +110,10 @@
 		9561AD0C15130E96005889C6 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				9561AD0D15130EE2005889C6 /* JASidePanelController.h */,
-				9561AD0E15130EE2005889C6 /* JASidePanelController.m */,
+				414743DA1A80D3D40071763A /* JASideBarSegue.h */,
+				414743DB1A80D3D40071763A /* JASideBarSegue.m */,
+				414743DC1A80D3D40071763A /* JASidePanelController.h */,
+				414743DD1A80D3D40071763A /* JASidePanelController.m */,
 				95BCC45815F081130009F1DA /* UIViewController+JASidePanel.h */,
 				95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */,
 			);
@@ -131,14 +126,7 @@
 				9561ACB8151286EE005889C6 /* Supporting Files */,
 				9561AD1115130F10005889C6 /* JAAppDelegate.h */,
 				9561AD1215130F10005889C6 /* JAAppDelegate.m */,
-				9568132916373ACB007B3602 /* JADebugViewController.h */,
-				9568132A16373ACB007B3602 /* JADebugViewController.m */,
-				9561AD1315130F10005889C6 /* JACenterViewController.h */,
-				9561AD1415130F10005889C6 /* JACenterViewController.m */,
-				9561AD1515130F10005889C6 /* JALeftViewController.h */,
-				9561AD1615130F10005889C6 /* JALeftViewController.m */,
-				9561AD1715130F10005889C6 /* JARightViewController.h */,
-				9561AD1815130F10005889C6 /* JARightViewController.m */,
+				414743D21A80D3680071763A /* main.storyboard */,
 			);
 			name = Demo;
 			sourceTree = "<group>";
@@ -195,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9561ACBC151286EE005889C6 /* InfoPlist.strings in Resources */,
+				414743D31A80D3680071763A /* main.storyboard in Resources */,
 				5C49572716C555F700250332 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -206,14 +195,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9561AD0F15130EE2005889C6 /* JASidePanelController.m in Sources */,
 				9561AD1915130F10005889C6 /* JAAppDelegate.m in Sources */,
-				9561AD1A15130F10005889C6 /* JACenterViewController.m in Sources */,
-				9561AD1B15130F10005889C6 /* JALeftViewController.m in Sources */,
-				9561AD1C15130F10005889C6 /* JARightViewController.m in Sources */,
+				414743DE1A80D3D40071763A /* JASideBarSegue.m in Sources */,
+				414743DF1A80D3D40071763A /* JASidePanelController.m in Sources */,
 				9561AD2115130F2A005889C6 /* main.m in Sources */,
 				95BCC45A15F081130009F1DA /* UIViewController+JASidePanel.m in Sources */,
-				9568132B16373ACB007B3602 /* JADebugViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
