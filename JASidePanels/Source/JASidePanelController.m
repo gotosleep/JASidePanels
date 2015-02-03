@@ -823,6 +823,10 @@ static char ja_kvoContext;
 #pragma mark - Showing Panels
 
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    if ([_delegate respondsToSelector:@selector(panelController:willShowLeftPanelAnimated:bounce:)]) {
+        [_delegate panelController:self willShowLeftPanelAnimated:animated bounce:shouldBounce];
+    }
+    
     self.state = JASidePanelLeftVisible;
     [self _loadLeftPanel];
     
@@ -842,9 +846,17 @@ static char ja_kvoContext;
         self.tapView = [[UIView alloc] init];
     }
     [self _toggleScrollsToTopForCenter:NO left:YES right:NO];
+    
+    if ([_delegate respondsToSelector:@selector(panelController:didShowLeftPanelAnimated:bounce:)]) {
+        [_delegate panelController:self didShowLeftPanelAnimated:animated bounce:shouldBounce];
+    }
 }
 
 - (void)_showRightPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    if ([_delegate respondsToSelector:@selector(panelController:willShowRightPanelAnimated:bounce:)]) {
+        [_delegate panelController:self willShowRightPanelAnimated:animated bounce:shouldBounce];
+    }
+    
     self.state = JASidePanelRightVisible;
     [self _loadRightPanel];
     
@@ -864,9 +876,17 @@ static char ja_kvoContext;
         self.tapView = [[UIView alloc] init];
     }
     [self _toggleScrollsToTopForCenter:NO left:NO right:YES];
+    
+    if ([_delegate respondsToSelector:@selector(panelController:didShowRightPanelAnimated:bounce:)]) {
+        [_delegate panelController:self didShowRightPanelAnimated:animated bounce:shouldBounce];
+    }
 }
 
 - (void)_showCenterPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    if ([_delegate respondsToSelector:@selector(panelController:willShowCenterPanelAnimated:bounce:)]) {
+        [_delegate panelController:self willShowCenterPanelAnimated:animated bounce:shouldBounce];
+    }
+    
     self.state = JASidePanelCenterVisible;
     
     [self _adjustCenterFrame];
@@ -890,6 +910,10 @@ static char ja_kvoContext;
     
     self.tapView = nil;
     [self _toggleScrollsToTopForCenter:YES left:NO right:NO];
+    
+    if ([_delegate respondsToSelector:@selector(panelController:didShowCenterPanelAnimated:bounce:)]) {
+        [_delegate panelController:self didShowCenterPanelAnimated:animated bounce:shouldBounce];
+    }
 }
 
 - (void)_hideCenterPanel {

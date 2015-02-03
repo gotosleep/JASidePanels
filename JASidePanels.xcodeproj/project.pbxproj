@@ -24,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		345EA2311A80D7370080F739 /* JASidePanelControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JASidePanelControllerDelegate.h; path = Source/JASidePanelControllerDelegate.h; sourceTree = "<group>"; };
 		5C49572616C555F700250332 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		95322A701517AEEB0069C8D7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9561ACAD151286EE005889C6 /* JASidePanels.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JASidePanels.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +122,7 @@
 				9561AD0E15130EE2005889C6 /* JASidePanelController.m */,
 				95BCC45815F081130009F1DA /* UIViewController+JASidePanel.h */,
 				95BCC45915F081130009F1DA /* UIViewController+JASidePanel.m */,
+				345EA2311A80D7370080F739 /* JASidePanelControllerDelegate.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";

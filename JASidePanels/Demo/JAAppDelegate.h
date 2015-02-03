@@ -26,9 +26,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "JASidePanelControllerDelegate.h"
+
 @class JASidePanelController;
 
-@interface JAAppDelegate : UIResponder <UIApplicationDelegate>
+@interface JAAppDelegate : UIResponder <UIApplicationDelegate, JASidePanelControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
