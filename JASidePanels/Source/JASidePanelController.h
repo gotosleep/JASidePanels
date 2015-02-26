@@ -171,4 +171,6 @@ typedef enum _JASidePanelState {
 @property (nonatomic, strong, readonly) UIView *rightPanelContainer;
 @property (nonatomic, strong, readonly) UIView *centerPanelContainer;
 
+extern NSString* JASidePanelControllerWillShowLeftPanel;
+
 @end

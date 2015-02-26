@@ -82,6 +82,8 @@ static char ja_kvoContext;
 @synthesize pushesSidePanels = _pushesSidePanels;
 @synthesize roundPanelCorners = _roundPanelCorners;
 
+NSString* JASidePanelControllerWillShowLeftPanel = @"JASidePanelControllerWillShowLeftPanel";
+
 #pragma mark - Icon
 
 + (UIImage *)defaultImage {
@@ -831,6 +833,7 @@ static char ja_kvoContext;
 #pragma mark - Showing Panels
 
 - (void)_showLeftPanel:(BOOL)animated bounce:(BOOL)shouldBounce {
+    [[NSNotificationCenter defaultCenter] postNotificationName:JASidePanelControllerWillShowLeftPanel object:nil];
     self.state = JASidePanelLeftVisible;
     [self _loadLeftPanel];
     
