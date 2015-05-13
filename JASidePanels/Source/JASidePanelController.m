@@ -294,7 +294,7 @@ static char ja_kvoContext;
 }
 
 - (void)stylePanel:(UIView *)panel {
-    panel.layer.cornerRadius = 6.0f;
+    panel.layer.cornerRadius = 0.0f;
     panel.clipsToBounds = YES;
 }
 
@@ -378,6 +378,8 @@ static char ja_kvoContext;
             [self _showCenterPanel:YES bounce:NO];
         }];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)_swapCenter:(UIViewController *)previous previousState:(JASidePanelState)previousState with:(UIViewController *)next {
@@ -1037,6 +1039,36 @@ static char ja_kvoContext;
                 }
             }];
         }
+    }
+}
+
+-(BOOL)prefersStatusBarHidden{
+    if (self.centerPanel && [self.centerPanel isKindOfClass:[UINavigationController class]]) {
+        UINavigationController* nvc=(UINavigationController*)self.centerPanel;
+        if (nvc.visibleViewController && [nvc.visibleViewController respondsToSelector:@selector(prefersStatusBarHidden)]) {
+            return [nvc.visibleViewController prefersStatusBarHidden];
+        }else{
+            return NO;
+        }
+    }else if (self.centerPanel && [self.centerPanel respondsToSelector:@selector(prefersStatusBarHidden)]) {
+        return [self.centerPanel prefersStatusBarHidden];
+    }else{
+        return NO;
+    }
+}
+
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    if (self.centerPanel && [self.centerPanel isKindOfClass:[UINavigationController class]]) {
+        UINavigationController* nvc=(UINavigationController*)self.centerPanel;
+        if (nvc.visibleViewController && [nvc.visibleViewController respondsToSelector:@selector(prefersStatusBarHidden)]) {
+            return [nvc.visibleViewController preferredStatusBarStyle];
+        }else{
+            return UIStatusBarStyleDefault;
+        }
+    }else if (self.centerPanel && [self.centerPanel respondsToSelector:@selector(prefersStatusBarHidden)]) {
+        return [self.centerPanel preferredStatusBarStyle];
+    }else{
+        return UIStatusBarStyleDefault;
     }
 }
 
