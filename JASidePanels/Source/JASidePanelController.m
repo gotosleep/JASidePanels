@@ -26,6 +26,13 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 
+#if defined(__LP64__) && __LP64__
+#define cgfabs(x) fabs(x)
+#else
+#define cgfabs(x) fabsf(x)
+#endif
+
+
 static char ja_kvoContext;
 
 @interface JASidePanelController() {
@@ -463,7 +470,7 @@ static char ja_kvoContext;
         if (translate.x > 0 && ! self.allowLeftSwipe) {
             return NO;
         }
-        BOOL possible = translate.x != 0 && ((fabsf(translate.y) / fabsf(translate.x)) < 1.0f);
+        BOOL possible = translate.x != 0 && ((cgfabs(translate.y) / cgfabs(translate.x)) < 1.0f);
         if (possible && ((translate.x > 0 && self.leftPanel) || (translate.x < 0 && self.rightPanel))) {
             return YES;
         }
@@ -633,7 +640,7 @@ static char ja_kvoContext;
             return movement <= -minimum;
 		}
         case JASidePanelCenterVisible: {
-            return fabsf(movement) >= minimum;
+            return cgfabs(movement) >= minimum;
 		}
         case JASidePanelRightVisible: {
             return movement >= minimum;
@@ -726,8 +733,8 @@ static char ja_kvoContext;
 #pragma mark - Animation
 
 - (CGFloat)_calculatedDuration {
-    CGFloat remaining = fabsf(self.centerPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x);	
-    CGFloat max = _locationBeforePan.x == _centerPanelRestingFrame.origin.x ? remaining : fabsf(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
+    CGFloat remaining = cgfabs(self.centerPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x);
+    CGFloat max = _locationBeforePan.x == _centerPanelRestingFrame.origin.x ? remaining : cgfabs(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
     return max > 0.0f ? self.maximumAnimationDuration * (remaining / max) : self.maximumAnimationDuration;
 }
 
