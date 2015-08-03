@@ -243,6 +243,7 @@ static char ja_kvoContext;
 
 - (void)setState:(JASidePanelState)state {
     if (state != _state) {
+        [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
         _state = state;
         switch (_state) {
             case JASidePanelCenterVisible: {
