@@ -463,7 +463,7 @@ static char ja_kvoContext;
         if (translate.x > 0 && ! self.allowLeftSwipe) {
             return NO;
         }
-        BOOL possible = translate.x != 0 && ((fabsf(translate.y) / fabsf(translate.x)) < 1.0f);
+        BOOL possible = translate.x != 0 && ((fabs(translate.y) / fabs(translate.x)) < 1.0f);
         if (possible && ((translate.x > 0 && self.leftPanel) || (translate.x < 0 && self.rightPanel))) {
             return YES;
         }
@@ -633,7 +633,7 @@ static char ja_kvoContext;
             return movement <= -minimum;
 		}
         case JASidePanelCenterVisible: {
-            return fabsf(movement) >= minimum;
+            return fabs(movement) >= minimum;
 		}
         case JASidePanelRightVisible: {
             return movement >= minimum;
@@ -726,8 +726,8 @@ static char ja_kvoContext;
 #pragma mark - Animation
 
 - (CGFloat)_calculatedDuration {
-    CGFloat remaining = fabsf(self.centerPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x);	
-    CGFloat max = _locationBeforePan.x == _centerPanelRestingFrame.origin.x ? remaining : fabsf(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
+    CGFloat remaining = fabs(self.centerPanelContainer.frame.origin.x - _centerPanelRestingFrame.origin.x);	
+    CGFloat max = _locationBeforePan.x == _centerPanelRestingFrame.origin.x ? remaining : fabs(_locationBeforePan.x - _centerPanelRestingFrame.origin.x);
     return max > 0.0f ? self.maximumAnimationDuration * (remaining / max) : self.maximumAnimationDuration;
 }
 
@@ -801,6 +801,7 @@ static char ja_kvoContext;
 		}
     }
     _centerPanelRestingFrame = frame;
+    _locationBeforePan = _centerPanelRestingFrame.origin;
     return _centerPanelRestingFrame;
 }
 
