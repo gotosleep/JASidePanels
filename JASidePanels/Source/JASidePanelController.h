@@ -44,6 +44,7 @@ typedef enum _JASidePanelState {
 @property (nonatomic, strong) UIViewController *leftPanel;   // optional
 @property (nonatomic, strong) UIViewController *centerPanel; // required
 @property (nonatomic, strong) UIViewController *rightPanel;  // optional
+@property (nonatomic, copy)   NSString *leftButtonForCenterPanelAccessibilityLabel; // optional, e.g. "Main Menu"
 
 // show the panels
 - (void)showLeftPanel:(BOOL)animated __attribute__((deprecated("Use -showLeftPanelAnimated: instead")));

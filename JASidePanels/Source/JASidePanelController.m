@@ -49,6 +49,7 @@ static char ja_kvoContext;
 @synthesize leftPanelContainer = _leftPanelContainer;
 @synthesize rightPanelContainer = _rightPanelContainer;
 @synthesize centerPanelContainer = _centerPanelContainer;
+@synthesize leftButtonForCenterPanelAccessibilityLabel = _leftButtonForCenterPanelAccessibilityLabel;
 @synthesize tapView = _tapView;
 @synthesize style = _style;
 @synthesize state = _state;
@@ -953,7 +954,9 @@ static char ja_kvoContext;
 #pragma mark - Public Methods
 
 - (UIBarButtonItem *)leftButtonForCenterPanel {
-    return [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithImage:[[self class] defaultImage] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    leftButton.accessibilityLabel = _leftButtonForCenterPanelAccessibilityLabel;
+    return leftButton;
 }
 
 - (void)showLeftPanel:(BOOL)animated {
