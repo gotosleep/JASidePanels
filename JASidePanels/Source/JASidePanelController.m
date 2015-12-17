@@ -452,6 +452,10 @@ static char ja_kvoContext;
         return YES;
     } else if (self.panningLimitedToTopViewController && ![self _isOnTopLevelViewController:self.centerPanel]) {
         return NO;
+    } else if ([gestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+        if (self.leftPanel) {
+            return YES;
+        }
     } else if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)gestureRecognizer;
         CGPoint translate = [pan translationInView:self.centerPanelContainer];
@@ -475,10 +479,15 @@ static char ja_kvoContext;
 
 - (void)_addPanGestureToView:(UIView *)view {
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
+    UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
+    edgeGesture.edges = UIRectEdgeLeft;
+    edgeGesture.delegate = self;
     panGesture.delegate = self;
     panGesture.maximumNumberOfTouches = 1;
     panGesture.minimumNumberOfTouches = 1;
-    [view addGestureRecognizer:panGesture];	
+    [panGesture requireGestureRecognizerToFail:edgeGesture];
+    [view addGestureRecognizer:edgeGesture];
+    [view addGestureRecognizer:panGesture];
 }
 
 - (void)_handlePan:(UIGestureRecognizer *)sender {
