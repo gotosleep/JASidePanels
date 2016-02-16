@@ -49,7 +49,7 @@ Example 2: Storyboards
 1. Create a subclass of `JASidePanelController`. In this example we call it `MySidePanelController`.
 2. In the Storyboard designate the root view's owner as `MySidePanelController`.
 3. Make sure to `#import "JASidePanelController.h"` in `MySidePanelController.h`.
-4. Add more view controllers to your Storyboard, and give them identifiers "leftViewController", "centerViewController" and "rightViewController". Note that in the new XCode the identifier is called "Storyboard ID" and can be found in the Identity inspector (in older versions the identifier is found in the Attributes inspector).
+4. Add more view controllers to your Storyboard, and give them identifiers "leftViewController", "centerViewController" and "rightViewController". Note that in the new Xcode the identifier is called "Storyboard ID" and can be found in the Identity inspector (in older versions the identifier is found in the Attributes inspector).
 5. Add a method `awakeFromNib` to `MySidePanelController.m` with the following code:
 
 ```  objc
@@ -68,7 +68,7 @@ Usage
 
 Only two files are required for using JASidePanels: ` JASidePanelController.h ` & ` JASidePanelController.m `
 
-The easiest way to use JASidePanels is to copy the files into your XCode Project.
+The easiest way to use JASidePanels is to copy the files into your Xcode Project.
 
 Alternatively, you can setup a git submodule and reference the files in your Xcode project. I prefer this method as it enables you to receive bugfixes/updates for the project.
 ` git submodule add https://github.com/gotosleep/JASidePanels.git JASidePanels `
