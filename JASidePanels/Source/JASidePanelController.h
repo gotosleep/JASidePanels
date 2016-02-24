@@ -25,6 +25,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class JAFoggyContainerView;
+
 typedef enum _JASidePanelStyle {
     JASidePanelSingleActive = 0,
     JASidePanelMultipleActive
@@ -166,6 +168,6 @@ typedef enum _JASidePanelState {
 // Containers for the panels.
 @property (nonatomic, strong, readonly) UIView *leftPanelContainer;
 @property (nonatomic, strong, readonly) UIView *rightPanelContainer;
-@property (nonatomic, strong, readonly) UIView *centerPanelContainer;
+@property (nonatomic, strong, readonly) UIView *JAFoggyContainerView;
 
 @end

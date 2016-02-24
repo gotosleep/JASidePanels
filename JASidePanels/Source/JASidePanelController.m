@@ -25,6 +25,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
+#import "JAFoggyContainerView.h"
 
 static char ja_kvoContext;
 
@@ -40,7 +41,7 @@ static char ja_kvoContext;
 // panel containers
 @property (nonatomic, strong) UIView *leftPanelContainer;
 @property (nonatomic, strong) UIView *rightPanelContainer;
-@property (nonatomic, strong) UIView *centerPanelContainer;
+@property (nonatomic, strong) JAFoggyContainerView *centerPanelContainer;
 
 @end
 
@@ -156,7 +157,7 @@ static char ja_kvoContext;
     [super viewDidLoad];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
-    self.centerPanelContainer = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.centerPanelContainer = [[JAFoggyContainerView alloc] initWithFrame:self.view.bounds];
     _centerPanelRestingFrame = self.centerPanelContainer.frame;
     _centerPanelHidden = NO;
     
