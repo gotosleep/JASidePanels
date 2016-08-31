@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
 
   s.platform = :ios, '5.0'
   s.requires_arc = true
-  s.source_files = 'JASidePanels/Source'
+  s.source_files = 'JASidePanels/Source/*'
   s.public_header_files = 'JASidePanels/Source/*.h'
 
   s.ios.deployment_target = '5.0'
