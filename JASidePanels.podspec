@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.authors     = { 'Jesse Andersen' => 'https://github.com/gotosleep' }
   s.homepage    = 'https://github.com/gotosleep/JASidePanels'
   s.summary     = 'Reveal side ViewControllers similar to Facebook/Paths menu '
-  s.source      = { :git => "https://github.com/adrianosouzapd/JASidePanels.git", :tag => s.version.to_s }
+  s.source      = { :git => "https://github.com/gotosleep/JASidePanels.git", :tag => s.version.to_s }
   s.license     = { :type => "MIT", :file => "LICENSE" }
 
   s.platform = :ios, '5.0'
