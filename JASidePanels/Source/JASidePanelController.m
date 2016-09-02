@@ -80,6 +80,8 @@ static char ja_kvoContext;
 @synthesize allowLeftSwipe = _allowLeftSwipe;
 @synthesize allowRightSwipe = _allowRightSwipe;
 @synthesize pushesSidePanels = _pushesSidePanels;
+@synthesize shadowOpacity = _shadowOpacity;
+@synthesize shadowRadius = _shadowRadius;
 
 #pragma mark - Icon
 
@@ -148,6 +150,8 @@ static char ja_kvoContext;
     self.shouldDelegateAutorotateToVisiblePanel = YES;
     self.allowRightSwipe = YES;
     self.allowLeftSwipe = YES;
+    self.shadowRadius = 10.0f;
+    self.shadowOpacity = 0.75f;
 }
 
 #pragma mark - UIViewController
@@ -288,8 +292,8 @@ static char ja_kvoContext;
     }
     container.layer.shadowPath = shadowPath.CGPath;	
     container.layer.shadowColor = [UIColor blackColor].CGColor;
-    container.layer.shadowRadius = 10.0f;
-    container.layer.shadowOpacity = 0.75f;
+    container.layer.shadowRadius = _shadowRadius;
+    container.layer.shadowOpacity = _shadowOpacity;
     container.clipsToBounds = NO;
 }
 
