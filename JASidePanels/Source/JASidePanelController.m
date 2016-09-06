@@ -227,11 +227,13 @@ static char ja_kvoContext;
 
 #endif
 
-- (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    self.centerPanelContainer.frame = [self _adjustCenterFrame];	
-    [self _layoutSideContainers:YES duration:duration];
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+
+    self.centerPanelContainer.frame = [self _adjustCenterFrame];
+    [self _layoutSideContainers:YES duration:0.0];
     [self _layoutSidePanels];
-    [self styleContainer:self.centerPanelContainer animate:YES duration:duration];
+    [self styleContainer:self.centerPanelContainer animate:YES duration:0.0];
     if (self.centerPanelHidden) {
         CGRect frame = self.centerPanelContainer.frame;
         frame.origin.x = self.state == JASidePanelLeftVisible ? self.centerPanelContainer.frame.size.width : -self.centerPanelContainer.frame.size.width;
