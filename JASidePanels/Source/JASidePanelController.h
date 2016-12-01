@@ -36,6 +36,12 @@ typedef enum _JASidePanelState {
     JASidePanelRightVisible
 } JASidePanelState;
 
+extern NSString * const JASidePanelLeftDidShowNotification;
+
+extern NSString * const JASidePanelRightDidShowNotification;
+
+extern NSString * const JASidePanelCenterDidShowNotification;
+
 @interface JASidePanelController : UIViewController<UIGestureRecognizerDelegate>
 
 #pragma mark - Usage

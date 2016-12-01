@@ -26,6 +26,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 
+NSString * const JASidePanelLeftDidShowNotification = @"JASidePanelLeftDidShowNotification";
+
+NSString * const JASidePanelRightDidShowNotification = @"JASidePanelRightDidShowNotification";
+
+NSString * const JASidePanelCenterDidShowNotification = @"JASidePanelCenterDidShowNotification";
+
 static char ja_kvoContext;
 
 @interface JASidePanelController() {
@@ -829,7 +835,9 @@ static char ja_kvoContext;
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:nil];
+        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:JASidePanelLeftDidShowNotification object:nil];
+        }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
@@ -851,7 +859,9 @@ static char ja_kvoContext;
     [self _adjustCenterFrame];
     
     if (animated) {
-        [self _animateCenterPanel:shouldBounce completion:nil];
+        [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:JASidePanelRightDidShowNotification object:nil];
+        }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
         [self styleContainer:self.centerPanelContainer animate:NO duration:0.0f];
@@ -876,6 +886,7 @@ static char ja_kvoContext;
             self.leftPanelContainer.hidden = YES;
             self.rightPanelContainer.hidden = YES;
             [self _unloadPanels];
+            [[NSNotificationCenter defaultCenter] postNotificationName:JASidePanelCenterDidShowNotification object:nil];
         }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
