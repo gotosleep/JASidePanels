@@ -132,6 +132,8 @@ static char ja_kvoContext;
 
 - (void)_baseInit {
     self.style = JASidePanelSingleActive;
+    self.leftFixedWidth = NAN;
+    self.rightFixedWidth = NAN;
     self.leftGapPercentage = 0.8f;
     self.rightGapPercentage = 0.8f;
     self.minimumMovePercentage = 0.15f;
@@ -808,7 +810,7 @@ static char ja_kvoContext;
     if (self.centerPanelHidden && self.shouldResizeLeftPanel) {
         return self.view.bounds.size.width;
     } else {
-        return self.leftFixedWidth ? self.leftFixedWidth : floorf(self.view.bounds.size.width * self.leftGapPercentage);
+        return self.leftFixedWidth == self.leftFixedWidth ? self.leftFixedWidth : floorf(self.view.bounds.size.width * self.leftGapPercentage);
     }
 }
 
@@ -816,7 +818,7 @@ static char ja_kvoContext;
     if (self.centerPanelHidden && self.shouldResizeRightPanel) {
         return self.view.bounds.size.width;
     } else {
-        return self.rightFixedWidth ? self.rightFixedWidth : floorf(self.view.bounds.size.width * self.rightGapPercentage);
+        return self.rightFixedWidth == self.rightFixedWidth ? self.rightFixedWidth : floorf(self.view.bounds.size.width * self.rightGapPercentage);
     }    
 }
 
