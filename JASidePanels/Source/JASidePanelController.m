@@ -473,12 +473,13 @@ static char ja_kvoContext;
 
 #pragma mark - Pan Gestures
 
-- (void)_addPanGestureToView:(UIView *)view {
+- (UIPanGestureRecognizer*)_addPanGestureToView:(UIView *)view {
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handlePan:)];
     panGesture.delegate = self;
     panGesture.maximumNumberOfTouches = 1;
     panGesture.minimumNumberOfTouches = 1;
-    [view addGestureRecognizer:panGesture];	
+    [view addGestureRecognizer:panGesture];
+	return panGesture;
 }
 
 - (void)_handlePan:(UIGestureRecognizer *)sender {
@@ -576,18 +577,20 @@ static char ja_kvoContext;
         if (_tapView) {
             _tapView.frame = self.centerPanelContainer.bounds;
             _tapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            [self _addTapGestureToView:_tapView];
+            UITapGestureRecognizer *tapGesture = [self _addTapGestureToView:_tapView];
             if (self.recognizesPanGesture) {
-                [self _addPanGestureToView:_tapView];
+                UIPanGestureRecognizer *panGesture = [self _addPanGestureToView:_tapView];
+				[tapGesture requireGestureRecognizerToFail:panGesture];
             }
             [self.centerPanelContainer addSubview:_tapView];
         }
     }
 }
 
-- (void)_addTapGestureToView:(UIView *)view {
+- (UITapGestureRecognizer*)_addTapGestureToView:(UIView *)view {
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_centerPanelTapped:)];
     [view addGestureRecognizer:tapGesture];	
+	return tapGesture;
 }
 
 - (void)_centerPanelTapped:(__unused UIGestureRecognizer *)gesture {
