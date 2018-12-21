@@ -192,28 +192,6 @@ static char ja_kvoContext;
     [self _adjustCenterFrame]; //Account for possible rotation while view appearing
 }
 
-#if !defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.tapView = nil;
-    self.centerPanelContainer = nil;
-    self.leftPanelContainer = nil;
-    self.rightPanelContainer = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    __strong UIViewController *visiblePanel = self.visiblePanel;
-
-    if (self.shouldDelegateAutorotateToVisiblePanel) {
-        return [visiblePanel shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-    } else {
-        return YES;
-    }
-}
-
-#else
-
 - (BOOL)shouldAutorotate {
     __strong UIViewController *visiblePanel = self.visiblePanel;
 
