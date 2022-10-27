@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:JASidePanelsSPM">
+   </FileRef>
+   <FileRef
       location = "group:JASidePanels.xcodeproj">
    </FileRef>
 </Workspace>
