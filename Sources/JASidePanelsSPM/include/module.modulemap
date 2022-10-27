@@ -1,0 +1,4 @@
+module JASidePanelsSPM {
+    header "JASidePanelController.h"
+    header "UIViewController+JASidePanel.h"
+}
